@@ -61,7 +61,7 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .page-item:hover .actions{opacity:1}
 .page-item .actions button{background:none;border:none;color:#9ca3af;cursor:pointer;padding:3px 5px;border-radius:4px;font-size:11px}
 .canvas-wrap.drag-over .canvas{outline:2px dashed var(--primary);outline-offset:-2px}
-/* Estilos elementos HTML reales */
+/* Elementos HTML */
 .e-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;text-decoration:none;font-family:inherit}
 .e-img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
 .e-video,.e-audio{width:100%;border-radius:inherit}
@@ -89,15 +89,63 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .e-alert-danger{background:#fef2f2;border-color:#ef4444;color:#991b1b}
 .e-code{background:#1e293b;color:#e2e8f0;padding:14px 16px;border-radius:8px;font-family:'Courier New',monospace;font-size:13px;overflow-x:auto;white-space:pre;margin:0}
 .e-blockquote{border-left:4px solid var(--primary);padding:10px 16px;margin:0;background:#f9fafb;font-style:italic;color:#4b5563;border-radius:0 8px 8px 0}
-.e-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);height:100%}
-.e-card img{width:100%;height:160px;object-fit:cover}
-.e-card .card-body{padding:14px}
-.e-card .card-title{font-weight:700;font-size:16px;margin:0 0 6px}
-.e-card .card-text{color:#6b7280;font-size:13px;margin:0 0 12px}
 .e-list{padding-left:24px;margin:0}
 .e-list li{margin-bottom:4px}
 .e-divider{border:none;border-top:2px solid #e5e7eb;margin:8px 0;width:100%}
 .e-counter{font-size:48px;font-weight:700;text-align:center;color:var(--primary)}
+/* Tarjetas */
+.tcard{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);height:100%;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+.tcard:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+.tcard-img{width:100%;height:180px;object-fit:cover;display:block;flex-shrink:0;background:#f3f4f6}
+.tcard-body{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.tcard-title{font-weight:700;font-size:17px;margin:0;color:#1f2937;line-height:1.3}
+.tcard-text{color:#6b7280;font-size:13px;margin:0;line-height:1.5;flex:1}
+.tcard-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;background:#3b82f6;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none;font-family:inherit;align-self:flex-start;margin-top:4px}
+.tcard-horizontal{flex-direction:row}
+.tcard-horizontal .tcard-img{width:40%;height:100%}
+.tcard-overlay{position:relative;overflow:hidden;border-radius:12px;height:100%}
+.tcard-overlay-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.tcard-overlay-body{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff}
+.tcard-overlay-title{font-weight:700;font-size:18px;margin:0 0 6px;color:#fff}
+.tcard-overlay-text{font-size:13px;margin:0 0 12px;color:rgba(255,255,255,.9);line-height:1.5}
+.tcard-overlay .tcard-btn{background:#fff;color:#1f2937}
+.tcard-circle img{border-radius:50%;width:100px;height:100px;margin:16px auto 8px;display:block;object-fit:cover;border:3px solid #e5e7eb}
+.tcard-circle .tcard-body{padding-top:0;text-align:center}
+.tcard-circle .tcard-title,.tcard-circle .tcard-text{text-align:center}
+.tcard-circle .tcard-btn{align-self:center}
+/* Carrusel fade */
+.carousel{position:relative;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:inherit}
+.carousel-slide{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:all .5s ease}
+.carousel-slide.active{opacity:1;z-index:1}
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center}
+.carousel-arrow.prev{left:12px}.carousel-arrow.next{right:12px}
+.carousel-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:20}
+.carousel-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;border:1px solid rgba(0,0,0,.2)}
+.carousel-dot.active{background:#fff}
+/* Galería carrusel */
+.gallery-wrap{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;background:#f3f4f6}
+.gallery-track{display:flex;height:100%;gap:8px;transition:transform .6s cubic-bezier(.4,0,.2,1);will-change:transform;align-items:center;padding:8px}
+.gallery-item{flex:0 0 auto;height:100%;border-radius:8px;overflow:hidden;background:#e5e7eb;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center}
+.gallery-arrow.prev{left:10px}.gallery-arrow.next{right:10px}
+.gallery-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:20;background:rgba(0,0,0,.35);padding:4px 8px;border-radius:20px}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}
+.gallery-dot.active{background:#fff}
+/* === NUEVO: CARRUSEL DE TARJETAS === */
+.cardcar-wrap{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;background:transparent}
+.cardcar-track{display:flex;height:100%;gap:16px;transition:transform .6s cubic-bezier(.4,0,.2,1);will-change:transform;align-items:stretch;padding:8px}
+.cardcar-item{flex:0 0 auto;height:100%;display:flex;flex-direction:column;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.cardcar-img{width:100%;height:55%;object-fit:cover;display:block;background:#f3f4f6;flex-shrink:0}
+.cardcar-body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1;overflow:hidden}
+.cardcar-title{font-weight:700;font-size:15px;margin:0;color:#1f2937;line-height:1.3}
+.cardcar-text{color:#6b7280;font-size:12px;margin:0;line-height:1.4;flex:1;overflow:hidden}
+.cardcar-btn{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;background:#3b82f6;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit;align-self:flex-start;transition:background .2s}
+.cardcar-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center}
+.cardcar-arrow.prev{left:12px}.cardcar-arrow.next{right:12px}
+.cardcar-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:20;background:rgba(0,0,0,.4);padding:4px 8px;border-radius:20px}
+.cardcar-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}
+.cardcar-dot.active{background:#fff}
 </style>
 </head>
 <body>
@@ -105,7 +153,7 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 <header class="topbar">
   <div style="display:flex;align-items:center;gap:12px">
     <i class="fa-solid fa-cube" style="color:#3b82f6;font-size:20px"></i>
-    <input type="text" id="proj-title" value="Mi Proyecto Web" style="font-weight:bold;font-size:15px;border:none;outline:none;padding:4px 8px;width:180px">
+    <input type="text" id="proj-title" value="Mi Proyecto Web Pro" style="font-weight:bold;font-size:15px;border:none;outline:none;padding:4px 8px;width:190px">
   </div>
   <div style="display:flex;gap:8px;background:#f3f4f6;padding:4px;border-radius:8px">
     <button class="vp-btn active" data-view="desktop" title="Escritorio"><i class="fa-solid fa-desktop"></i></button>
@@ -113,8 +161,8 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
     <button class="vp-btn" data-view="mobile" title="Móvil"><i class="fa-solid fa-mobile-screen-button"></i></button>
   </div>
   <div style="display:flex;gap:8px">
-    <button id="btn-undo" style="background:none;border:none;padding:8px;color:#6b7280;cursor:pointer" title="Deshacer (Ctrl+Z)"><i class="fa-solid fa-rotate-left"></i></button>
-    <button id="btn-redo" style="background:none;border:none;padding:8px;color:#6b7280;cursor:pointer" title="Rehacer (Ctrl+Y)"><i class="fa-solid fa-rotate-right"></i></button>
+    <button id="btn-undo" style="background:none;border:none;padding:8px;color:#6b7280;cursor:pointer"><i class="fa-solid fa-rotate-left"></i></button>
+    <button id="btn-redo" style="background:none;border:none;padding:8px;color:#6b7280;cursor:pointer"><i class="fa-solid fa-rotate-right"></i></button>
     <button id="btn-export" class="btn-p"><i class="fa-solid fa-download" style="margin-right:6px"></i>Exportar Sitio</button>
   </div>
 </header>
@@ -235,6 +283,41 @@ const LIB = [
     { type:'image', label:'Imagen enlace', icon:'fa-external-link-alt', props:{ src:'https://placehold.co/600x400/ef4444/fff?text=Enlace', href:'https://google.com' }},
     { type:'image', label:'Imagen redonda', icon:'fa-circle', props:{ src:'https://placehold.co/300x300/10b981/fff?text=Avatar', borderRadius:150, width:200, height:200 }}
   ]},
+  { cat:'🎴 Tarjetas', items:[
+    { type:'card', label:'Tarjeta básica', icon:'fa-address-card', props:{
+      cardStyle:'basic',
+      img:'https://placehold.co/400x300/3b82f6/fff?text=Foto',
+      title:'Mi título',
+      text:'Descripción de la tarjeta.',
+      buttonText:'Ver más',
+      buttonHref:'#',
+      buttonColor:'#3b82f6'
+    }},
+    { type:'card', label:'Tarjeta horizontal', icon:'fa-id-card', props:{ cardStyle:'horizontal', img:'https://placehold.co/400x300/8b5cf6/fff?text=Foto', title:'Tarjeta horizontal', text:'Imagen a la izquierda.', buttonText:'Leer más', buttonHref:'#', buttonColor:'#8b5cf6' }},
+    { type:'card', label:'Tarjeta overlay', icon:'fa-image', props:{ cardStyle:'overlay', img:'https://placehold.co/600x500/ef4444/fff?text=Foto', title:'Título sobre imagen', text:'Texto descriptivo.', buttonText:'Comprar', buttonHref:'#', buttonColor:'#ef4444' }},
+    { type:'card', label:'Tarjeta circular', icon:'fa-circle-user', props:{ cardStyle:'circle', img:'https://placehold.co/300x300/10b981/fff?text=Avatar', title:'Nombre', text:'Cargo o descripción.', buttonText:'Contactar', buttonHref:'#', buttonColor:'#10b981' }},
+    { type:'card', label:'Tarjeta producto', icon:'fa-tag', props:{ cardStyle:'product', img:'https://placehold.co/400x400/f59e0b/fff?text=Producto', title:'Producto Premium', text:'Descripción del producto.', price:'29,99 €', buttonText:'Añadir', buttonHref:'#', buttonColor:'#f59e0b' }}
+  ]},
+  { cat:'🎞️ Carruseles y Galerías', items:[
+    { type:'carousel', label:'Carrusel imágenes', icon:'fa-images', props:{
+      images:['https://placehold.co/900x500/3b82f6/fff?text=Slide+1','https://placehold.co/900x500/ef4444/fff?text=Slide+2','https://placehold.co/900x500/10b981/fff?text=Slide+3'],
+      autoplay:true, interval:3000, showArrows:true, showDots:true, transition:'fade'
+    }},
+    { type:'gallery', label:'Galería carrusel', icon:'fa-film', props:{
+      images:['https://placehold.co/400x300/3b82f6/fff?text=Foto+1','https://placehold.co/400x300/ef4444/fff?text=Foto+2','https://placehold.co/400x300/10b981/fff?text=Foto+3','https://placehold.co/400x300/8b5cf6/fff?text=Foto+4','https://placehold.co/400x300/f59e0b/fff?text=Foto+5','https://placehold.co/400x300/0ea5e9/fff?text=Foto+6'],
+      autoplay:true, interval:2500, showArrows:true, showDots:true, itemsPerView:3, gap:8
+    }},
+    { type:'cardcarousel', label:'Carrusel tarjetas', icon:'fa-rectangle-ad', props:{
+      cards:[
+        { img:'https://placehold.co/400x300/3b82f6/fff?text=Card+1', title:'Primera tarjeta', text:'Descripción breve de esta tarjeta.', buttonText:'Ver más', buttonHref:'#', buttonColor:'#3b82f6' },
+        { img:'https://placehold.co/400x300/ef4444/fff?text=Card+2', title:'Segunda tarjeta', text:'Otra descripción interesante.', buttonText:'Comprar', buttonHref:'#', buttonColor:'#ef4444' },
+        { img:'https://placehold.co/400x300/10b981/fff?text=Card+3', title:'Tercera tarjeta', text:'Contenido de la tercera.', buttonText:'Leer', buttonHref:'#', buttonColor:'#10b981' },
+        { img:'https://placehold.co/400x300/8b5cf6/fff?text=Card+4', title:'Cuarta tarjeta', text:'Descripción de la cuarta.', buttonText:'Ver', buttonHref:'#', buttonColor:'#8b5cf6' },
+        { img:'https://placehold.co/400x300/f59e0b/fff?text=Card+5', title:'Quinta tarjeta', text:'Contenido de la quinta.', buttonText:'Saber más', buttonHref:'#', buttonColor:'#f59e0b' }
+      ],
+      autoplay:true, interval:3000, showArrows:true, showDots:true, itemsPerView:3, gap:16
+    }}
+  ]},
   { cat:'🎥 Multimedia', items:[
     { type:'video', label:'Vídeo', icon:'fa-video', props:{ src:'https://www.w3schools.com/html/mov_bbb.mp4', controls:true }},
     { type:'audio', label:'Audio', icon:'fa-music', props:{ src:'https://www.w3schools.com/html/horse.mp3', controls:true }},
@@ -242,27 +325,17 @@ const LIB = [
     { type:'iframe', label:'Mapa', icon:'fa-map', props:{ src:'https://www.openstreetmap.org/export/embed.html?bbox=-0.13,51.50,-0.11,51.51&layer=mapnik' }}
   ]},
   { cat:'📋 Formularios', items:[
-    { type:'form', label:'Formulario', icon:'fa-file-lines', props:{ fields:[
-      { type:'text', label:'Nombre', placeholder:'Tu nombre', required:true },
-      { type:'email', label:'Email', placeholder:'tu@email.com', required:true },
-      { type:'textarea', label:'Mensaje', placeholder:'Escribe aquí...', required:false }
-    ], buttonText:'Enviar' }},
+    { type:'form', label:'Formulario', icon:'fa-file-lines', props:{ fields:[{ type:'text', label:'Nombre', placeholder:'Tu nombre', required:true },{ type:'email', label:'Email', placeholder:'tu@email.com', required:true },{ type:'textarea', label:'Mensaje', placeholder:'Escribe aquí...', required:false }], buttonText:'Enviar' }},
     { type:'input', label:'Campo texto', icon:'fa-i-cursor', props:{ label:'Nombre', placeholder:'Escribe...', inputType:'text' }},
     { type:'input', label:'Email', icon:'fa-envelope', props:{ label:'Email', placeholder:'tu@email.com', inputType:'email' }},
-    { type:'input', label:'Contraseña', icon:'fa-lock', props:{ label:'Contraseña', placeholder:'••••••••', inputType:'password' }},
-    { type:'input', label:'Fecha', icon:'fa-calendar', props:{ label:'Fecha', inputType:'date' }},
-    { type:'input', label:'Número', icon:'fa-hashtag', props:{ label:'Cantidad', inputType:'number' }},
-    { type:'input', label:'Rango', icon:'fa-sliders', props:{ label:'Rango', inputType:'range', value:50 }},
     { type:'select', label:'Selector', icon:'fa-caret-down', props:{ label:'Elige', options:['Opción 1','Opción 2','Opción 3'] }},
     { type:'checkbox', label:'Checkbox', icon:'fa-square-check', props:{ label:'Acepto los términos' }},
-    { type:'radio', label:'Radio', icon:'fa-circle-dot', props:{ label:'Opción A', name:'grupo', value:'a' }},
     { type:'textarea', label:'Área texto', icon:'fa-align-left', props:{ label:'Mensaje', placeholder:'Escribe aquí...' }}
   ]},
   { cat:'🎛️ Interactivos', items:[
     { type:'details', label:'Acordeón', icon:'fa-caret-square-down', props:{ summary:'¿Qué es esto?', content:'Un acordeón con details de HTML.' }},
     { type:'alert', label:'Aviso Info', icon:'fa-circle-info', props:{ alertType:'info', text:'Esto es un aviso informativo.' }},
     { type:'alert', label:'Aviso Éxito', icon:'fa-circle-check', props:{ alertType:'success', text:'¡Operación completada!' }},
-    { type:'alert', label:'Aviso Peligro', icon:'fa-triangle-exclamation', props:{ alertType:'danger', text:'¡Atención! Algo ha ido mal.' }},
     { type:'progress', label:'Progreso', icon:'fa-bars-progress', props:{ value:65, max:100, showLabel:true }},
     { type:'counter', label:'Contador', icon:'fa-arrow-up-9-1', props:{ value:1234, label:'Usuarios' }}
   ]},
@@ -271,7 +344,6 @@ const LIB = [
   ]},
   { cat:'🏗️ Estructura', items:[
     { type:'container', label:'Contenedor', icon:'fa-square', props:{ bgColor:'#f9fafb', border:'1px solid #e5e7eb', borderRadius:8 }},
-    { type:'card', label:'Card completa', icon:'fa-address-card', props:{ title:'Título', text:'Descripción breve', img:'https://placehold.co/400x200/3b82f6/fff?text=Card', buttonText:'Ver más' }},
     { type:'divider', label:'Separador', icon:'fa-minus', props:{}}
   ]},
   { cat:'⭐ Iconos y Redes', items:[
@@ -297,18 +369,26 @@ function defaults(type){
     link:{ width:180,height:40,text:'Ir a Google',href:'https://google.com',target:'_blank',color:'#3b82f6',fontSize:15 },
     button:{ width:160,height:48,text:'Haz clic',href:'',bgColor:'#3b82f6',color:'#ffffff',fontSize:15,borderRadius:8,icon:'' },
     image:{ width:400,height:260,src:'https://placehold.co/600x400/3b82f6/fff?text=Imagen',alt:'Imagen',objectFit:'cover',href:'' },
+    card:{ width:300,height:360,cardStyle:'basic',img:'https://placehold.co/400x300/3b82f6/fff?text=Foto',title:'Mi título',text:'Esta es la descripción.',buttonText:'Ver más',buttonHref:'#',buttonColor:'#3b82f6',imgHeight:180 },
+    carousel:{ width:500,height:320,images:['https://placehold.co/900x500/3b82f6/fff?text=Slide+1','https://placehold.co/900x500/ef4444/fff?text=Slide+2','https://placehold.co/900x500/10b981/fff?text=Slide+3'],autoplay:true,interval:3000,showArrows:true,showDots:true,transition:'fade' },
+    gallery:{ width:800,height:280,images:['https://placehold.co/400x300/3b82f6/fff?text=Foto+1','https://placehold.co/400x300/ef4444/fff?text=Foto+2','https://placehold.co/400x300/10b981/fff?text=Foto+3','https://placehold.co/400x300/8b5cf6/fff?text=Foto+4','https://placehold.co/400x300/f59e0b/fff?text=Foto+5','https://placehold.co/400x300/0ea5e9/fff?text=Foto+6'],autoplay:true,interval:2500,showArrows:true,showDots:true,itemsPerView:3,gap:8 },
+    cardcarousel:{ width:900,height:400,
+      cards:[
+        { img:'https://placehold.co/400x300/3b82f6/fff?text=Card+1', title:'Primera tarjeta', text:'Descripción breve de esta tarjeta.', buttonText:'Ver más', buttonHref:'#', buttonColor:'#3b82f6' },
+        { img:'https://placehold.co/400x300/ef4444/fff?text=Card+2', title:'Segunda tarjeta', text:'Otra descripción interesante.', buttonText:'Comprar', buttonHref:'#', buttonColor:'#ef4444' },
+        { img:'https://placehold.co/400x300/10b981/fff?text=Card+3', title:'Tercera tarjeta', text:'Contenido de la tercera.', buttonText:'Leer', buttonHref:'#', buttonColor:'#10b981' },
+        { img:'https://placehold.co/400x300/8b5cf6/fff?text=Card+4', title:'Cuarta tarjeta', text:'Descripción de la cuarta.', buttonText:'Ver', buttonHref:'#', buttonColor:'#8b5cf6' },
+        { img:'https://placehold.co/400x300/f59e0b/fff?text=Card+5', title:'Quinta tarjeta', text:'Contenido de la quinta.', buttonText:'Saber más', buttonHref:'#', buttonColor:'#f59e0b' }
+      ],
+      autoplay:true, interval:3000, showArrows:true, showDots:true, itemsPerView:3, gap:16
+    },
     video:{ width:480,height:270,src:'https://www.w3schools.com/html/mov_bbb.mp4',controls:true,autoplay:false,loop:false,muted:false },
     audio:{ width:400,height:54,src:'https://www.w3schools.com/html/horse.mp3',controls:true },
     iframe:{ width:500,height:300,src:'https://www.youtube.com/embed/dQw4w9WgXcQ',borderRadius:8 },
-    form:{ width:400,height:280,fields:[
-      { type:'text',label:'Nombre',placeholder:'Tu nombre',required:true },
-      { type:'email',label:'Email',placeholder:'tu@email.com',required:true },
-      { type:'textarea',label:'Mensaje',placeholder:'Escribe aquí...',required:false }
-    ],buttonText:'Enviar',bgColor:'#ffffff' },
+    form:{ width:400,height:280,fields:[{ type:'text',label:'Nombre',placeholder:'Tu nombre',required:true },{ type:'email',label:'Email',placeholder:'tu@email.com',required:true },{ type:'textarea',label:'Mensaje',placeholder:'Escribe aquí...',required:false }],buttonText:'Enviar',bgColor:'#ffffff' },
     input:{ width:300,height:70,label:'Campo',placeholder:'Escribe...',inputType:'text',required:false },
     select:{ width:300,height:70,label:'Elige',options:['Opción 1','Opción 2','Opción 3'] },
     checkbox:{ width:280,height:30,label:'Acepto los términos',checked:false },
-    radio:{ width:280,height:30,label:'Opción A',name:'grupo',value:'a' },
     textarea:{ width:350,height:110,label:'Mensaje',placeholder:'Escribe aquí...' },
     details:{ width:400,height:80,summary:'¿Qué es esto?',content:'Un acordeón con details de HTML.' },
     alert:{ width:400,height:60,alertType:'info',text:'Esto es un aviso informativo.' },
@@ -316,7 +396,6 @@ function defaults(type){
     counter:{ width:200,height:100,value:1234,label:'Usuarios' },
     table:{ width:500,height:180,rows:[['Nombre','Edad','Ciudad'],['Ana','28','Madrid'],['Luis','34','Barcelona']],header:true },
     container:{ width:400,height:250,bgColor:'#f9fafb',border:'1px solid #e5e7eb' },
-    card:{ width:300,height:340,title:'Título',text:'Descripción breve',img:'https://placehold.co/400x200/3b82f6/fff?text=Card',buttonText:'Ver más',buttonHref:'#' },
     divider:{ width:400,height:2,color:'#e5e7eb' },
     icon:{ width:48,height:48,icon:'fa-star',size:32,color:'#f59e0b',href:'' },
     social:{ width:44,height:44,icon:'fa-brands fa-instagram',url:'https://instagram.com',color:'#e1306c',size:32,shape:'circle' }
@@ -350,7 +429,7 @@ function deleteEl(id){
   saveHistory();
 }
 
-/* ========== RENDER ELEMENTOS ========== */
+/* ========== RENDER ========== */
 function renderAll(){
   canvas.querySelectorAll('.elemento').forEach(n => n.remove());
   getElements().forEach(renderElement);
@@ -423,6 +502,10 @@ function syncDOM(dom, el){
     const img = `<img src="${el.src}" alt="${el.alt||''}" class="e-img" style="object-fit:${el.objectFit||'cover'}" draggable="false">`;
     html = el.href ? `<a href="${el.href}" target="_blank" style="display:block;width:100%;height:100%;pointer-events:none">${img}</a>` : img;
   }
+  else if(T === 'card') html = buildCard(el);
+  else if(T === 'carousel') html = buildCarousel(el);
+  else if(T === 'gallery') html = buildGallery(el);
+  else if(T === 'cardcarousel') html = buildCardCarousel(el);
   else if(T === 'video') html = `<video class="e-video" src="${el.src}" ${el.controls?'controls':''} ${el.autoplay?'autoplay':''} ${el.loop?'loop':''} ${el.muted?'muted':''} style="width:100%;height:100%"></video>`;
   else if(T === 'audio') html = `<audio class="e-audio" src="${el.src}" ${el.controls?'controls':''} style="width:100%"></audio>`;
   else if(T === 'iframe') html = `<iframe class="e-iframe" src="${el.src}" allowfullscreen loading="lazy"></iframe>`;
@@ -441,7 +524,6 @@ function syncDOM(dom, el){
   }
   else if(T === 'select') html = `<div><label class="e-label">${esc(el.label||'')}</label><select class="e-input">${el.options.map(o=>`<option>${esc(o)}</option>`).join('')}</select></div>`;
   else if(T === 'checkbox') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="checkbox" ${el.checked?'checked':''}> ${esc(el.label)}</label>`;
-  else if(T === 'radio') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="radio" name="${el.name}" value="${el.value}"> ${esc(el.label)}</label>`;
   else if(T === 'textarea') html = `<div><label class="e-label">${esc(el.label||'')}</label><textarea class="e-input" placeholder="${esc(el.placeholder||'')}" rows="3"></textarea></div>`;
   else if(T === 'details') html = `<details class="e-details"><summary>${esc(el.summary)}</summary><div class="details-content">${el.content}</div></details>`;
   else if(T === 'alert'){
@@ -459,7 +541,6 @@ function syncDOM(dom, el){
     t += `</table>`;
     html = t;
   }
-  else if(T === 'card') html = `<div class="e-card"><img src="${el.img}" alt=""><div class="card-body"><h3 class="card-title">${esc(el.title)}</h3><p class="card-text">${esc(el.text)}</p><a href="${el.buttonHref||'#'}" class="e-btn" style="background:#3b82f6;color:#fff;font-size:13px;padding:8px 14px">${esc(el.buttonText)}</a></div></div>`;
   else if(T === 'divider') html = `<hr class="e-divider" style="border-top-color:${el.color}">`;
   else if(T === 'icon'){
     const ih = `<i class="fa-solid ${el.icon}" style="font-size:${el.size}px;color:${el.color}"></i>`;
@@ -468,7 +549,194 @@ function syncDOM(dom, el){
   else if(T === 'social') html = `<a href="${el.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:${el.shape==='circle'?'50%':'8px'};background:${el.color};color:#fff;text-decoration:none"><i class="${el.icon}" style="font-size:${el.size}px"></i></a>`;
   else html = '';
   if(!dom.querySelector('[contenteditable="true"]')) dom.innerHTML = html;
+
+  if(T === 'carousel') initCarousel(dom, el);
+  if(T === 'gallery') initGallery(dom, el);
+  if(T === 'cardcarousel') initCardCarousel(dom, el);
 }
+
+/* ========== TARJETAS ========== */
+function buildCard(el){
+  const style = el.cardStyle || 'basic';
+  const imgH = el.imgHeight || 180;
+  const btnStyle = `background:${el.buttonColor||'#3b82f6'};color:#fff`;
+  if(style === 'basic') return `<div class="tcard">${el.img?`<img src="${el.img}" class="tcard-img" style="height:${imgH}px" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title">${esc(el.title)}</h3><p class="tcard-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  if(style === 'horizontal') return `<div class="tcard tcard-horizontal">${el.img?`<img src="${el.img}" class="tcard-img" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title">${esc(el.title)}</h3><p class="tcard-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  if(style === 'overlay') return `<div class="tcard tcard-overlay"><img src="${el.img}" class="tcard-overlay-img" draggable="false"><div class="tcard-overlay-body"><h3 class="tcard-overlay-title">${esc(el.title)}</h3><p class="tcard-overlay-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  if(style === 'circle') return `<div class="tcard tcard-circle">${el.img?`<img src="${el.img}" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title">${esc(el.title)}</h3><p class="tcard-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  if(style === 'product') return `<div class="tcard">${el.img?`<img src="${el.img}" class="tcard-img" style="height:${imgH}px" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title">${esc(el.title)}</h3><p class="tcard-text">${esc(el.text)}</p>${el.price?`<div style="font-size:20px;font-weight:800;color:${el.buttonColor||'#3b82f6'};margin:4px 0">${esc(el.price)}</div>`:''}${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  return '';
+}
+
+/* ========== CARRUSEL ========== */
+function buildCarousel(el){
+  const effect = el.transition || 'fade';
+  let h = `<div class="carousel" data-cid="${el.id}">`;
+  el.images.forEach((img, i) => {
+    let extra = 'transition:all .5s ease;';
+    if(effect === 'fade') extra += `opacity:${i===0?1:0};position:absolute;`;
+    else if(effect === 'slide') extra += `transform:translateX(${i===0?'0%':'100%'});position:absolute;`;
+    h += `<img src="${img}" class="carousel-slide ${i===0?'active':''}" style="object-fit:cover;width:100%;height:100%;${extra}" draggable="false" data-i="${i}">`;
+  });
+  if(el.showArrows && el.images.length > 0){
+    h += `<button class="carousel-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>`;
+    h += `<button class="carousel-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>`;
+  }
+  if(el.showDots && el.images.length > 0){
+    h += `<div class="carousel-dots">`;
+    el.images.forEach((_, i) => h += `<div class="carousel-dot ${i===0?'active':''}" data-i="${i}"></div>`);
+    h += `</div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+function initCarousel(dom, el){
+  const container = dom.querySelector('.carousel');
+  if(!container) return;
+  let idx = 0;
+  const slides = container.querySelectorAll('.carousel-slide');
+  const dots = container.querySelectorAll('.carousel-dot');
+  if(!slides.length) return;
+  const effect = el.transition || 'fade';
+  const update = n => {
+    idx = (n + slides.length) % slides.length;
+    slides.forEach((s, i) => {
+      s.classList.remove('active');
+      if(effect === 'fade') s.style.opacity = i === idx ? '1' : '0';
+      else if(effect === 'slide'){ s.style.transform = `translateX(${(i-idx)*100}%)`; s.style.opacity = '1'; }
+    });
+    slides[idx].classList.add('active');
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  };
+  const prev = container.querySelector('.prev');
+  const next = container.querySelector('.next');
+  if(prev) prev.onclick = e => { e.stopPropagation(); update(idx-1); };
+  if(next) next.onclick = e => { e.stopPropagation(); update(idx+1); };
+  dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); update(i); });
+  if(el.autoplay && el.interval){
+    if(container._timer) clearInterval(container._timer);
+    container._timer = setInterval(() => update(idx+1), el.interval);
+  }
+}
+
+/* ========== GALERÍA ========== */
+function buildGallery(el){
+  const total = el.images.length;
+  const perView = el.itemsPerView || 3;
+  const gap = el.gap || 8;
+  let h = `<div class="gallery-wrap" data-gid="${el.id}">`;
+  h += `<div class="gallery-track" style="gap:${gap}px">`;
+  el.images.forEach((img, i) => {
+    h += `<div class="gallery-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})"><img src="${img}" draggable="false" data-i="${i}"></div>`;
+  });
+  h += `</div>`;
+  if(el.showArrows && total > perView){
+    h += `<button class="gallery-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>`;
+    h += `<button class="gallery-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>`;
+  }
+  if(el.showDots && total > perView){
+    const pages = Math.ceil(total / perView);
+    h += `<div class="gallery-dots">`;
+    for(let i = 0; i < pages; i++) h += `<div class="gallery-dot ${i===0?'active':''}" data-page="${i}"></div>`;
+    h += `</div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+function initGallery(dom, el){
+  const wrap = dom.querySelector('.gallery-wrap');
+  if(!wrap) return;
+  const track = wrap.querySelector('.gallery-track');
+  const items = track.querySelectorAll('.gallery-item');
+  const dots = wrap.querySelectorAll('.gallery-dot');
+  if(!items.length) return;
+  const perView = el.itemsPerView || 3;
+  const gap = el.gap || 8;
+  const pages = Math.max(1, Math.ceil(items.length / perView));
+  let page = 0;
+  const update = () => {
+    const itemW = items[0].getBoundingClientRect().width;
+    const offset = page * perView * (itemW + gap);
+    track.style.transform = `translateX(-${offset}px)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === page));
+  };
+  const prev = wrap.querySelector('.gallery-arrow.prev');
+  const next = wrap.querySelector('.gallery-arrow.next');
+  const go = n => { page = (n + pages) % pages; update(); };
+  if(prev) prev.onclick = e => { e.stopPropagation(); go(page-1); };
+  if(next) next.onclick = e => { e.stopPropagation(); go(page+1); };
+  dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); page = i; update(); });
+  window.addEventListener('resize', update);
+  setTimeout(update, 50);
+  if(el.autoplay && el.interval && pages > 1){
+    if(wrap._timer) clearInterval(wrap._timer);
+    wrap._timer = setInterval(() => go(page+1), el.interval);
+  }
+}
+
+/* ========== NUEVO: CARRUSEL DE TARJETAS ========== */
+function buildCardCarousel(el){
+  const cards = el.cards || [];
+  const perView = el.itemsPerView || 3;
+  const gap = el.gap || 16;
+  const total = cards.length;
+  let h = `<div class="cardcar-wrap" data-ccid="${el.id}">`;
+  h += `<div class="cardcar-track" style="gap:${gap}px">`;
+  cards.forEach((c, i) => {
+    h += `<div class="cardcar-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})">
+      ${c.img ? `<img src="${c.img}" class="cardcar-img" draggable="false">` : ''}
+      <div class="cardcar-body">
+        <h3 class="cardcar-title">${esc(c.title)}</h3>
+        <p class="cardcar-text">${esc(c.text)}</p>
+        ${c.buttonText ? `<a href="${c.buttonHref||'#'}" class="cardcar-btn" style="background:${c.buttonColor||'#3b82f6'}">${esc(c.buttonText)}</a>` : ''}
+      </div>
+    </div>`;
+  });
+  h += `</div>`;
+  if(el.showArrows && total > perView){
+    h += `<button class="cardcar-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>`;
+    h += `<button class="cardcar-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>`;
+  }
+  if(el.showDots && total > perView){
+    const pages = Math.ceil(total / perView);
+    h += `<div class="cardcar-dots">`;
+    for(let i = 0; i < pages; i++) h += `<div class="cardcar-dot ${i===0?'active':''}" data-page="${i}"></div>`;
+    h += `</div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+function initCardCarousel(dom, el){
+  const wrap = dom.querySelector('.cardcar-wrap');
+  if(!wrap) return;
+  const track = wrap.querySelector('.cardcar-track');
+  const items = track.querySelectorAll('.cardcar-item');
+  const dots = wrap.querySelectorAll('.cardcar-dot');
+  if(!items.length) return;
+  const perView = el.itemsPerView || 3;
+  const gap = el.gap || 16;
+  const pages = Math.max(1, Math.ceil(items.length / perView));
+  let page = 0;
+  const update = () => {
+    const itemW = items[0].getBoundingClientRect().width;
+    const offset = page * perView * (itemW + gap);
+    track.style.transform = `translateX(-${offset}px)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === page));
+  };
+  const prev = wrap.querySelector('.cardcar-arrow.prev');
+  const next = wrap.querySelector('.cardcar-arrow.next');
+  const go = n => { page = (n + pages) % pages; update(); };
+  if(prev) prev.onclick = e => { e.stopPropagation(); go(page-1); };
+  if(next) next.onclick = e => { e.stopPropagation(); go(page+1); };
+  dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); page = i; update(); });
+  window.addEventListener('resize', update);
+  setTimeout(update, 50);
+  if(el.autoplay && el.interval && pages > 1){
+    if(wrap._timer) clearInterval(wrap._timer);
+    wrap._timer = setInterval(() => go(page+1), el.interval);
+  }
+}
+
 function esc(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
 /* ========== SELECCIÓN ========== */
@@ -541,7 +809,7 @@ function endDrag(){
   document.removeEventListener('mouseup', endDrag);
 }
 
-/* ========== RENDER TOOLS ========== */
+/* ========== TOOLS ========== */
 function renderTools(filter){
   filter = filter || '';
   const box = document.getElementById('tab-tools');
@@ -563,7 +831,6 @@ function renderTools(filter){
   });
   if(!found) html += '<div class="empty-msg"><i class="fa-solid fa-magnifying-glass"></i>Sin resultados</div>';
   box.innerHTML = html;
-
   box.querySelectorAll('.draggable').forEach(el => {
     el.addEventListener('dragstart', e => {
       e.dataTransfer.setData('text/plain', JSON.stringify({ cat:parseInt(el.dataset.cat), idx:parseInt(el.dataset.idx) }));
@@ -574,7 +841,6 @@ function renderTools(filter){
   s.addEventListener('mousedown', e => e.stopPropagation());
 }
 
-/* ========== DROP EN CANVAS ========== */
 canvasWrap.addEventListener('dragover', e => {
   e.preventDefault();
   e.dataTransfer.dropEffect = 'copy';
@@ -622,9 +888,7 @@ function renderPages(){
       '</div>';
     item.querySelector('span').onclick = () => {
       state.currentPageId = p.id;
-      clearSel();
-      renderAll();
-      renderPages();
+      clearSel(); renderAll(); renderPages();
     };
     item.querySelectorAll('button').forEach(b => {
       b.onclick = ev => {
@@ -656,17 +920,9 @@ document.getElementById('btn-add-page').onclick = () => {
 const upd = (k, v) => updateElement(state.selectedId, { [k]: v });
 
 function renderProps(){
-  if(!state.selectedId){
-    noSel.classList.remove('hidden');
-    propsPanel.classList.add('hidden');
-    return;
-  }
+  if(!state.selectedId){ noSel.classList.remove('hidden'); propsPanel.classList.add('hidden'); return; }
   const el = getElements().find(e => e.id === state.selectedId);
-  if(!el){
-    noSel.classList.remove('hidden');
-    propsPanel.classList.add('hidden');
-    return;
-  }
+  if(!el){ noSel.classList.remove('hidden'); propsPanel.classList.add('hidden'); return; }
   noSel.classList.add('hidden');
   propsPanel.classList.remove('hidden');
   propsPanel.innerHTML = '';
@@ -702,9 +958,7 @@ function renderProps(){
       inp('number','Tamaño', el.fontSize, v => upd('fontSize', parseFloat(v))),
       colInp('Color', el.color, v => upd('color', v))
     ]));
-    propsPanel.appendChild(sel('Alineación', el.textAlign, [
-      {value:'left',label:'Izquierda'},{value:'center',label:'Centro'},{value:'right',label:'Derecha'}
-    ], v => upd('textAlign', v)));
+    propsPanel.appendChild(sel('Alineación', el.textAlign, [{value:'left',label:'Izquierda'},{value:'center',label:'Centro'},{value:'right',label:'Derecha'}], v => upd('textAlign', v)));
   }
   else if(T === 'paragraph' || T === 'blockquote'){
     propsPanel.appendChild(secH('Texto'));
@@ -714,26 +968,18 @@ function renderProps(){
       colInp('Color', el.color, v => upd('color', v))
     ]));
   }
-  else if(T === 'code'){
-    propsPanel.appendChild(secH('Código'));
-    propsPanel.appendChild(textar('Código', el.text, v => upd('text', v)));
-  }
+  else if(T === 'code'){ propsPanel.appendChild(secH('Código')); propsPanel.appendChild(textar('Código', el.text, v => upd('text', v))); }
   else if(T === 'list'){
     propsPanel.appendChild(secH('Lista'));
     propsPanel.appendChild(textar('Elementos (uno por línea)', el.items.join('\n'), v => upd('items', v.split('\n').filter(x => x.trim()))));
     propsPanel.appendChild(chk('Lista numerada', el.ordered, v => upd('ordered', v)));
   }
-  else if(T === 'badge'){
-    propsPanel.appendChild(secH('Etiqueta'));
-    propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
-  }
+  else if(T === 'badge'){ propsPanel.appendChild(secH('Etiqueta')); propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v))); }
   else if(T === 'link'){
     propsPanel.appendChild(secH('Enlace'));
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
     propsPanel.appendChild(inp('text','URL', el.href, v => upd('href', v)));
-    propsPanel.appendChild(sel('Abrir en', el.target, [
-      {value:'_self',label:'Misma pestaña'},{value:'_blank',label:'Nueva pestaña'}
-    ], v => upd('target', v)));
+    propsPanel.appendChild(sel('Abrir en', el.target, [{value:'_self',label:'Misma pestaña'},{value:'_blank',label:'Nueva pestaña'}], v => upd('target', v)));
   }
   else if(T === 'button'){
     propsPanel.appendChild(secH('Botón'));
@@ -750,10 +996,141 @@ function renderProps(){
     propsPanel.appendChild(secH('Imagen'));
     propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v)));
     propsPanel.appendChild(inp('text','Alt', el.alt || '', v => upd('alt', v)));
-    propsPanel.appendChild(sel('Ajuste', el.objectFit, [
-      {value:'cover',label:'Cover'},{value:'contain',label:'Contain'},{value:'fill',label:'Fill'}
-    ], v => upd('objectFit', v)));
+    propsPanel.appendChild(sel('Ajuste', el.objectFit, [{value:'cover',label:'Cover'},{value:'contain',label:'Contain'},{value:'fill',label:'Fill'}], v => upd('objectFit', v)));
     propsPanel.appendChild(inp('text','Enlace', el.href || '', v => upd('href', v)));
+  }
+  else if(T === 'card'){
+    propsPanel.appendChild(secH('🎴 Tarjeta'));
+    propsPanel.appendChild(sel('Estilo', el.cardStyle || 'basic', [
+      {value:'basic',label:'Básica'},{value:'horizontal',label:'Horizontal'},{value:'overlay',label:'Overlay'},{value:'circle',label:'Circular'},{value:'product',label:'Producto'}
+    ], v => upd('cardStyle', v)));
+    propsPanel.appendChild(secH('🖼️ Imagen'));
+    propsPanel.appendChild(inp('text','URL', el.img || '', v => upd('img', v)));
+    propsPanel.appendChild(inp('number','Altura imagen (px)', el.imgHeight || 180, v => upd('imgHeight', parseInt(v))));
+    propsPanel.appendChild(secH('📝 Contenido'));
+    propsPanel.appendChild(inp('text','Título', el.title, v => upd('title', v)));
+    propsPanel.appendChild(textar('Descripción', el.text, v => upd('text', v)));
+    if((el.cardStyle || 'basic') === 'product') propsPanel.appendChild(inp('text','Precio', el.price || '', v => upd('price', v)));
+    propsPanel.appendChild(secH('🔘 Botón'));
+    propsPanel.appendChild(inp('text','Texto del botón', el.buttonText || '', v => upd('buttonText', v)));
+    propsPanel.appendChild(inp('text','URL del botón', el.buttonHref || '', v => upd('buttonHref', v)));
+    propsPanel.appendChild(colInp('Color del botón', el.buttonColor || '#3b82f6', v => upd('buttonColor', v)));
+  }
+  else if(T === 'carousel'){
+    propsPanel.appendChild(secH('Carrusel'));
+    propsPanel.appendChild(chk('Autoplay', el.autoplay, v => upd('autoplay', v)));
+    if(el.autoplay) propsPanel.appendChild(inp('number','Intervalo (ms)', el.interval || 3000, v => upd('interval', parseInt(v))));
+    propsPanel.appendChild(chk('Mostrar flechas', el.showArrows, v => upd('showArrows', v)));
+    propsPanel.appendChild(chk('Mostrar indicadores', el.showDots, v => upd('showDots', v)));
+    propsPanel.appendChild(sel('Efecto', el.transition || 'fade', [{value:'fade',label:'Desvanecer'},{value:'slide',label:'Deslizar'}], v => upd('transition', v)));
+    propsPanel.appendChild(secH('Imágenes'));
+    const imgBox = document.createElement('div');
+    (el.images || []).forEach((url, i) => {
+      const r = document.createElement('div');
+      r.style.cssText = 'display:flex;gap:6px;margin-bottom:6px';
+      r.innerHTML = '<input type="text" class="ci" value="' + esc(url) + '" data-i="' + i + '" style="flex:1;padding:4px">' +
+        '<button class="btn-s" style="padding:4px 8px;background:#fef2f2;color:#dc2626;font-size:11px" data-del="' + i + '"><i class="fa-solid fa-trash"></i></button>';
+      imgBox.appendChild(r);
+    });
+    const addImg = document.createElement('button');
+    addImg.className = 'btn-s';
+    addImg.style.cssText = 'width:100%;font-size:12px;margin-top:4px';
+    addImg.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir imagen';
+    addImg.onclick = () => { el.images.push('https://placehold.co/900x500/e2e8f0/475569?text=Nueva'); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    imgBox.appendChild(addImg);
+    propsPanel.appendChild(imgBox);
+    imgBox.querySelectorAll('input[data-i]').forEach(inp2 => {
+      inp2.onchange = () => { el.images[parseInt(inp2.dataset.i)] = inp2.value; saveHistory(); syncDOM(document.getElementById(el.id), el); };
+    });
+    imgBox.querySelectorAll('button[data-del]').forEach(b => {
+      b.onclick = () => { el.images.splice(parseInt(b.dataset.del), 1); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    });
+  }
+  else if(T === 'gallery'){
+    propsPanel.appendChild(secH('Galería carrusel'));
+    propsPanel.appendChild(chk('Autoplay', el.autoplay, v => upd('autoplay', v)));
+    if(el.autoplay) propsPanel.appendChild(inp('number','Intervalo (ms)', el.interval || 2500, v => upd('interval', parseInt(v))));
+    propsPanel.appendChild(chk('Mostrar flechas', el.showArrows, v => upd('showArrows', v)));
+    propsPanel.appendChild(chk('Mostrar indicadores', el.showDots, v => upd('showDots', v)));
+    propsPanel.appendChild(inp('number','Imágenes visibles', el.itemsPerView || 3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
+    propsPanel.appendChild(inp('number','Separación (px)', el.gap || 8, v => upd('gap', parseInt(v))));
+    propsPanel.appendChild(secH('Imágenes'));
+    const imgBox = document.createElement('div');
+    (el.images || []).forEach((url, i) => {
+      const r = document.createElement('div');
+      r.style.cssText = 'display:flex;gap:6px;margin-bottom:6px';
+      r.innerHTML = '<input type="text" class="ci" value="' + esc(url) + '" data-i="' + i + '" style="flex:1;padding:4px">' +
+        '<button class="btn-s" style="padding:4px 8px;background:#fef2f2;color:#dc2626;font-size:11px" data-del="' + i + '"><i class="fa-solid fa-trash"></i></button>';
+      imgBox.appendChild(r);
+    });
+    const addImg = document.createElement('button');
+    addImg.className = 'btn-s';
+    addImg.style.cssText = 'width:100%;font-size:12px;margin-top:4px';
+    addImg.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir imagen';
+    addImg.onclick = () => { el.images.push('https://placehold.co/400x300/e2e8f0/475569?text=Nueva'); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    imgBox.appendChild(addImg);
+    propsPanel.appendChild(imgBox);
+    imgBox.querySelectorAll('input[data-i]').forEach(inp2 => {
+      inp2.onchange = () => { el.images[parseInt(inp2.dataset.i)] = inp2.value; saveHistory(); syncDOM(document.getElementById(el.id), el); };
+    });
+    imgBox.querySelectorAll('button[data-del]').forEach(b => {
+      b.onclick = () => { el.images.splice(parseInt(b.dataset.del), 1); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    });
+  }
+  else if(T === 'cardcarousel'){
+    propsPanel.appendChild(secH('🎴 Carrusel de tarjetas'));
+    propsPanel.appendChild(chk('Autoplay', el.autoplay, v => upd('autoplay', v)));
+    if(el.autoplay) propsPanel.appendChild(inp('number','Intervalo (ms)', el.interval || 3000, v => upd('interval', parseInt(v))));
+    propsPanel.appendChild(chk('Mostrar flechas', el.showArrows, v => upd('showArrows', v)));
+    propsPanel.appendChild(chk('Mostrar indicadores', el.showDots, v => upd('showDots', v)));
+    propsPanel.appendChild(inp('number','Tarjetas visibles', el.itemsPerView || 3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
+    propsPanel.appendChild(inp('number','Separación (px)', el.gap || 16, v => upd('gap', parseInt(v))));
+
+    propsPanel.appendChild(secH('📋 Tarjetas'));
+    const cardsBox = document.createElement('div');
+    (el.cards || []).forEach((c, i) => {
+      const item = document.createElement('div');
+      item.style.cssText = 'border:1px solid #e5e7eb;border-radius:8px;padding:8px;margin-bottom:8px;background:#f9fafb';
+      item.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <strong style="font-size:11px;color:#6b7280">TARJETA ${i+1}</strong>
+          <button class="btn-s" style="padding:2px 6px;background:#fef2f2;color:#dc2626;font-size:10px;border-radius:4px;border:none;cursor:pointer" data-del="${i}"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <input type="text" class="ci" placeholder="URL imagen" value="${esc(c.img||'')}" data-i="${i}" data-k="img" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <input type="text" class="ci" placeholder="Título" value="${esc(c.title||'')}" data-i="${i}" data-k="title" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <textarea class="ci" placeholder="Descripción" data-i="${i}" data-k="text" rows="2" style="margin-bottom:4px;padding:5px;font-size:12px">${esc(c.text||'')}</textarea>
+        <input type="text" class="ci" placeholder="Texto botón" value="${esc(c.buttonText||'')}" data-i="${i}" data-k="buttonText" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <input type="text" class="ci" placeholder="URL botón" value="${esc(c.buttonHref||'')}" data-i="${i}" data-k="buttonHref" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <div style="display:flex;gap:6px;align-items:center">
+          <label style="font-size:10px;color:#6b7280">Color botón:</label>
+          <input type="color" value="${c.buttonColor||'#3b82f6'}" data-i="${i}" data-k="buttonColor" style="width:36px;height:24px;border:none;border-radius:4px;cursor:pointer">
+        </div>
+      `;
+      cardsBox.appendChild(item);
+    });
+    const addCard = document.createElement('button');
+    addCard.className = 'btn-s';
+    addCard.style.cssText = 'width:100%;font-size:12px;margin-top:4px';
+    addCard.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir tarjeta';
+    addCard.onclick = () => {
+      el.cards.push({ img:'https://placehold.co/400x300/e2e8f0/475569?text=Nueva', title:'Nueva tarjeta', text:'Descripción', buttonText:'Ver más', buttonHref:'#', buttonColor:'#3b82f6' });
+      saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el);
+    };
+    cardsBox.appendChild(addCard);
+    propsPanel.appendChild(cardsBox);
+    cardsBox.querySelectorAll('input[data-k],textarea[data-k]').forEach(inp2 => {
+      inp2.onchange = () => {
+        const i = parseInt(inp2.dataset.i);
+        el.cards[i][inp2.dataset.k] = inp2.value;
+        saveHistory(); syncDOM(document.getElementById(el.id), el);
+      };
+    });
+    cardsBox.querySelectorAll('button[data-del]').forEach(b => {
+      b.onclick = () => {
+        el.cards.splice(parseInt(b.dataset.del), 1);
+        saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el);
+      };
+    });
   }
   else if(T === 'video'){
     propsPanel.appendChild(secH('Vídeo'));
@@ -768,31 +1145,16 @@ function renderProps(){
     propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v)));
     propsPanel.appendChild(chk('Controles', el.controls, v => upd('controls', v)));
   }
-  else if(T === 'iframe'){
-    propsPanel.appendChild(secH('Contenido embebido'));
-    propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v)));
-  }
+  else if(T === 'iframe'){ propsPanel.appendChild(secH('Contenido embebido')); propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v))); }
   else if(T === 'form'){
     propsPanel.appendChild(secH('Formulario'));
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText, v => upd('buttonText', v)));
-    const fb = document.createElement('div');
-    (el.fields || []).forEach((f, i) => {
-      const r = document.createElement('div');
-      r.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;background:#f9fafb;padding:6px;border-radius:6px';
-      r.innerHTML = '<input type="text" class="ci" value="' + esc(f.label) + '" data-i="' + i + '" data-k="label" style="flex:1;padding:4px">' +
-        '<button class="btn-s" style="padding:4px 8px;background:#fef2f2;color:#dc2626;font-size:11px" data-del="' + i + '"><i class="fa-solid fa-trash"></i></button>';
-      fb.appendChild(r);
-    });
-    propsPanel.appendChild(fb);
   }
   else if(T === 'input'){
     propsPanel.appendChild(secH('Campo'));
     propsPanel.appendChild(inp('text','Etiqueta', el.label || '', v => upd('label', v)));
     propsPanel.appendChild(inp('text','Placeholder', el.placeholder || '', v => upd('placeholder', v)));
-    propsPanel.appendChild(sel('Tipo', el.inputType, [
-      {value:'text',label:'Texto'},{value:'email',label:'Email'},{value:'password',label:'Contraseña'},
-      {value:'number',label:'Número'},{value:'tel',label:'Teléfono'},{value:'date',label:'Fecha'},{value:'range',label:'Rango'}
-    ], v => upd('inputType', v)));
+    propsPanel.appendChild(sel('Tipo', el.inputType, [{value:'text',label:'Texto'},{value:'email',label:'Email'},{value:'password',label:'Contraseña'},{value:'number',label:'Número'},{value:'tel',label:'Teléfono'},{value:'date',label:'Fecha'}], v => upd('inputType', v)));
     propsPanel.appendChild(chk('Obligatorio', el.required, v => upd('required', v)));
   }
   else if(T === 'select'){
@@ -804,10 +1166,6 @@ function renderProps(){
     propsPanel.appendChild(secH('Checkbox'));
     propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
     propsPanel.appendChild(chk('Marcado', el.checked, v => upd('checked', v)));
-  }
-  else if(T === 'radio'){
-    propsPanel.appendChild(secH('Radio'));
-    propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
   }
   else if(T === 'textarea'){
     propsPanel.appendChild(secH('Área texto'));
@@ -821,9 +1179,7 @@ function renderProps(){
   }
   else if(T === 'alert'){
     propsPanel.appendChild(secH('Aviso'));
-    propsPanel.appendChild(sel('Tipo', el.alertType, [
-      {value:'info',label:'Info'},{value:'success',label:'Éxito'},{value:'warning',label:'Advertencia'},{value:'danger',label:'Peligro'}
-    ], v => upd('alertType', v)));
+    propsPanel.appendChild(sel('Tipo', el.alertType, [{value:'info',label:'Info'},{value:'success',label:'Éxito'},{value:'warning',label:'Advertencia'},{value:'danger',label:'Peligro'}], v => upd('alertType', v)));
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
   }
   else if(T === 'progress'){
@@ -848,18 +1204,7 @@ function renderProps(){
       upd('rows', rows);
     }));
   }
-  else if(T === 'card'){
-    propsPanel.appendChild(secH('Tarjeta'));
-    propsPanel.appendChild(inp('text','Título', el.title, v => upd('title', v)));
-    propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
-    propsPanel.appendChild(inp('text','Imagen URL', el.img, v => upd('img', v)));
-    propsPanel.appendChild(inp('text','Botón texto', el.buttonText, v => upd('buttonText', v)));
-    propsPanel.appendChild(inp('text','Botón URL', el.buttonHref, v => upd('buttonHref', v)));
-  }
-  else if(T === 'divider'){
-    propsPanel.appendChild(secH('Separador'));
-    propsPanel.appendChild(colInp('Color', el.color, v => upd('color', v)));
-  }
+  else if(T === 'divider'){ propsPanel.appendChild(secH('Separador')); propsPanel.appendChild(colInp('Color', el.color, v => upd('color', v))); }
   else if(T === 'icon'){
     propsPanel.appendChild(secH('Icono'));
     propsPanel.appendChild(inp('text','Clase (fa-star)', el.icon, v => upd('icon', v)));
@@ -873,9 +1218,7 @@ function renderProps(){
     propsPanel.appendChild(secH('Red Social'));
     propsPanel.appendChild(inp('text','URL', el.url, v => upd('url', v)));
     propsPanel.appendChild(colInp('Color', el.color, v => upd('color', v)));
-    propsPanel.appendChild(sel('Forma', el.shape, [
-      {value:'circle',label:'Círculo'},{value:'square',label:'Cuadrado'}
-    ], v => upd('shape', v)));
+    propsPanel.appendChild(sel('Forma', el.shape, [{value:'circle',label:'Círculo'},{value:'square',label:'Cuadrado'}], v => upd('shape', v)));
   }
 
   propsPanel.appendChild(secH('Acciones'));
@@ -903,94 +1246,60 @@ function renderProps(){
   propsPanel.appendChild(row2);
 }
 
-function secH(text){
-  const h = document.createElement('h4');
-  h.className = 'sec-h';
-  h.innerText = text;
-  return h;
-}
-function row(cs){
-  const d = document.createElement('div');
-  d.className = 'crow';
-  cs.forEach(c => d.appendChild(c));
-  return d;
-}
+function secH(text){ const h = document.createElement('h4'); h.className = 'sec-h'; h.innerText = text; return h; }
+function row(cs){ const d = document.createElement('div'); d.className = 'crow'; cs.forEach(c => d.appendChild(c)); return d; }
 function inp(type, label, value, onChange){
-  const w = document.createElement('div');
-  w.className = 'cg';
-  w.style.flex = '1';
+  const w = document.createElement('div'); w.className = 'cg'; w.style.flex = '1';
   w.innerHTML = '<label class="cl">' + label + '</label>';
   const i = document.createElement('input');
-  i.type = type;
-  i.value = value !== undefined ? value : '';
-  i.className = 'ci';
+  i.type = type; i.value = value !== undefined ? value : ''; i.className = 'ci';
   i.onchange = e => { onChange(e.target.value); saveHistory(); };
-  w.appendChild(i);
-  return w;
+  w.appendChild(i); return w;
 }
 function textar(label, value, onChange){
-  const w = document.createElement('div');
-  w.className = 'cg';
+  const w = document.createElement('div'); w.className = 'cg';
   w.innerHTML = '<label class="cl">' + label + '</label>';
   const t = document.createElement('textarea');
-  t.value = value !== undefined ? value : '';
-  t.className = 'ci';
-  t.rows = 4;
+  t.value = value !== undefined ? value : ''; t.className = 'ci'; t.rows = 4;
   t.onchange = e => { onChange(e.target.value); saveHistory(); };
-  w.appendChild(t);
-  return w;
+  w.appendChild(t); return w;
 }
 function colInp(label, value, onChange){
   const safe = (typeof value === 'string') ? value : 'transparent';
-  const w = document.createElement('div');
-  w.className = 'cg';
-  w.style.flex = '1';
+  const w = document.createElement('div'); w.className = 'cg'; w.style.flex = '1';
   w.innerHTML = '<label class="cl">' + label + '</label>';
-  const flex = document.createElement('div');
-  flex.style.cssText = 'display:flex;gap:8px;align-items:center';
+  const flex = document.createElement('div'); flex.style.cssText = 'display:flex;gap:8px;align-items:center';
   const cp = document.createElement('input');
-  cp.type = 'color';
-  cp.value = safe.startsWith('#') ? safe.substring(0,7) : '#ffffff';
+  cp.type = 'color'; cp.value = safe.startsWith('#') ? safe.substring(0,7) : '#ffffff';
   cp.style.cssText = 'width:28px;height:28px;padding:0;border:none;border-radius:4px;cursor:pointer;background:transparent';
   const ti = document.createElement('input');
-  ti.type = 'text';
-  ti.value = safe;
-  ti.className = 'ci';
-  ti.style.flex = '1';
+  ti.type = 'text'; ti.value = safe; ti.className = 'ci'; ti.style.flex = '1';
   cp.oninput = e => { ti.value = e.target.value; onChange(e.target.value); };
   cp.onchange = () => saveHistory();
   ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; onChange(e.target.value); saveHistory(); };
   flex.appendChild(cp); flex.appendChild(ti);
-  w.appendChild(flex);
-  return w;
+  w.appendChild(flex); return w;
 }
 function sel(label, value, options, onChange){
-  const w = document.createElement('div');
-  w.className = 'cg';
+  const w = document.createElement('div'); w.className = 'cg';
   w.innerHTML = '<label class="cl">' + label + '</label>';
-  const s = document.createElement('select');
-  s.className = 'ci';
+  const s = document.createElement('select'); s.className = 'ci';
   options.forEach(opt => {
     const o = document.createElement('option');
-    o.value = opt.value;
-    o.innerText = opt.label;
+    o.value = opt.value; o.innerText = opt.label;
     if(String(opt.value) === String(value)) o.selected = true;
     s.appendChild(o);
   });
   s.onchange = e => { onChange(e.target.value); saveHistory(); };
-  w.appendChild(s);
-  return w;
+  w.appendChild(s); return w;
 }
 function chk(label, checked, onChange){
-  const w = document.createElement('div');
-  w.className = 'chk-row';
+  const w = document.createElement('div'); w.className = 'chk-row';
   w.innerHTML = '<label>' + label + '</label>';
   const i = document.createElement('input');
-  i.type = 'checkbox';
-  i.checked = !!checked;
+  i.type = 'checkbox'; i.checked = !!checked;
   i.onchange = e => { onChange(e.target.checked); saveHistory(); };
-  w.appendChild(i);
-  return w;
+  w.appendChild(i); return w;
 }
 
 /* ========== VIEWPORT ========== */
@@ -1000,6 +1309,10 @@ document.querySelectorAll('.vp-btn').forEach(btn => {
     btn.classList.add('active');
     canvas.className = 'canvas ' + btn.dataset.view;
     updateSelBox();
+    getElements().forEach(el => {
+      if(el.type === 'gallery'){ const dom = document.getElementById(el.id); if(dom) initGallery(dom, el); }
+      if(el.type === 'cardcarousel'){ const dom = document.getElementById(el.id); if(dom) initCardCarousel(dom, el); }
+    });
   };
 });
 
@@ -1008,7 +1321,7 @@ document.getElementById('btn-export').onclick = () => {
   const projTitle = document.getElementById('proj-title').value || 'Mi Sitio';
   const buildHTML = page => {
     const o = [];
-    o.push('<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(page.title) + ' - ' + esc(projTitle) + '</title>\n<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">\n<style>\nbody{margin:0;font-family:Inter,system-ui,sans-serif;background:#fff;overflow-x:hidden}\n.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh}\n.elemento{position:absolute;box-sizing:border-box;word-break:break-word}\n.e-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;text-decoration:none;font-family:inherit}\n.e-img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}\n.e-video,.e-audio{width:100%;border-radius:inherit}\n.e-iframe{width:100%;height:100%;border:none;border-radius:inherit}\n.e-form{display:flex;flex-direction:column;gap:10px}\n.e-input{width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;outline:none}\n.e-label{font-size:12px;font-weight:600;color:#374151;margin-bottom:3px;display:block}\n.e-details{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}\n.e-details summary{padding:12px 16px;cursor:pointer;background:#f9fafb;font-weight:600;list-style:none;position:relative;padding-right:36px}\n.e-details summary::-webkit-details-marker{display:none}\n.e-details summary::after{content:"+";position:absolute;right:16px;font-size:20px;color:#3b82f6}\n.e-details[open] summary::after{content:"−"}\n.e-details .details-content{padding:12px 16px;border-top:1px solid #e5e7eb}\n.e-table{width:100%;border-collapse:collapse}\n.e-table th,.e-table td{border:1px solid #e5e7eb;padding:8px 12px;text-align:left}\n.e-table th{background:#f9fafb;font-weight:600}\n.e-progress{width:100%;height:20px;background:#e5e7eb;border-radius:10px;overflow:hidden}\n.e-progress-bar{height:100%;background:#3b82f6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600}\n.e-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}\n.e-alert{padding:12px 16px;border-radius:8px;border-left:4px solid;font-size:14px;display:flex;gap:10px;align-items:flex-start}\n.e-alert-info{background:#eff6ff;border-color:#3b82f6;color:#1e40af}\n.e-alert-success{background:#f0fdf4;border-color:#10b981;color:#065f46}\n.e-alert-warning{background:#fffbeb;border-color:#f59e0b;color:#92400e}\n.e-alert-danger{background:#fef2f2;border-color:#ef4444;color:#991b1b}\n.e-code{background:#1e293b;color:#e2e8f0;padding:14px 16px;border-radius:8px;font-family:Courier New,monospace;font-size:13px;overflow-x:auto;white-space:pre;margin:0}\n.e-blockquote{border-left:4px solid #3b82f6;padding:10px 16px;margin:0;background:#f9fafb;font-style:italic;color:#4b5563;border-radius:0 8px 8px 0}\n.e-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);height:100%}\n.e-card img{width:100%;height:160px;object-fit:cover}\n.e-card .card-body{padding:14px}\n.e-card .card-title{font-weight:700;font-size:16px;margin:0 0 6px}\n.e-card .card-text{color:#6b7280;font-size:13px;margin:0 0 12px}\n.e-list{padding-left:24px;margin:0}\n.e-list li{margin-bottom:4px}\n.e-divider{border:none;border-top:2px solid #e5e7eb;margin:8px 0;width:100%}\n.e-counter{font-size:48px;font-weight:700;text-align:center;color:#3b82f6}\n</style>\n</head>\n<body>\n<div class="page-container">');
+    o.push('<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(page.title) + ' - ' + esc(projTitle) + '</title>\n<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">\n<style>\nbody{margin:0;font-family:Inter,system-ui,sans-serif;background:#fff;overflow-x:hidden}\n.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh}\n.elemento{position:absolute;box-sizing:border-box;word-break:break-word}\n.e-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;text-decoration:none;font-family:inherit}\n.e-img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}\n.e-video,.e-audio{width:100%;border-radius:inherit}\n.e-iframe{width:100%;height:100%;border:none;border-radius:inherit}\n.e-form{display:flex;flex-direction:column;gap:10px}\n.e-input{width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;outline:none}\n.e-label{font-size:12px;font-weight:600;color:#374151;margin-bottom:3px;display:block}\n.e-details{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}\n.e-details summary{padding:12px 16px;cursor:pointer;background:#f9fafb;font-weight:600;list-style:none;position:relative;padding-right:36px}\n.e-details summary::-webkit-details-marker{display:none}\n.e-details summary::after{content:"+";position:absolute;right:16px;font-size:20px;color:#3b82f6}\n.e-details[open] summary::after{content:"−"}\n.e-details .details-content{padding:12px 16px;border-top:1px solid #e5e7eb}\n.e-table{width:100%;border-collapse:collapse}\n.e-table th,.e-table td{border:1px solid #e5e7eb;padding:8px 12px;text-align:left}\n.e-table th{background:#f9fafb;font-weight:600}\n.e-progress{width:100%;height:20px;background:#e5e7eb;border-radius:10px;overflow:hidden}\n.e-progress-bar{height:100%;background:#3b82f6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600}\n.e-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}\n.e-alert{padding:12px 16px;border-radius:8px;border-left:4px solid;font-size:14px;display:flex;gap:10px;align-items:flex-start}\n.e-alert-info{background:#eff6ff;border-color:#3b82f6;color:#1e40af}\n.e-alert-success{background:#f0fdf4;border-color:#10b981;color:#065f46}\n.e-alert-warning{background:#fffbeb;border-color:#f59e0b;color:#92400e}\n.e-alert-danger{background:#fef2f2;border-color:#ef4444;color:#991b1b}\n.e-code{background:#1e293b;color:#e2e8f0;padding:14px 16px;border-radius:8px;font-family:Courier New,monospace;font-size:13px;overflow-x:auto;white-space:pre;margin:0}\n.e-blockquote{border-left:4px solid #3b82f6;padding:10px 16px;margin:0;background:#f9fafb;font-style:italic;color:#4b5563;border-radius:0 8px 8px 0}\n.e-list{padding-left:24px;margin:0}\n.e-list li{margin-bottom:4px}\n.e-divider{border:none;border-top:2px solid #e5e7eb;margin:8px 0;width:100%}\n.e-counter{font-size:48px;font-weight:700;text-align:center;color:#3b82f6}\n.tcard{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);height:100%;display:flex;flex-direction:column}\n.tcard-img{width:100%;height:180px;object-fit:cover;display:block;flex-shrink:0;background:#f3f4f6}\n.tcard-body{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}\n.tcard-title{font-weight:700;font-size:17px;margin:0;color:#1f2937;line-height:1.3}\n.tcard-text{color:#6b7280;font-size:13px;margin:0;line-height:1.5;flex:1}\n.tcard-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;background:#3b82f6;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none;font-family:inherit;align-self:flex-start;margin-top:4px}\n.tcard-horizontal{flex-direction:row}\n.tcard-horizontal .tcard-img{width:40%;height:100%}\n.tcard-overlay{position:relative;overflow:hidden;border-radius:12px;height:100%}\n.tcard-overlay-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}\n.tcard-overlay-body{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff}\n.tcard-overlay-title{font-weight:700;font-size:18px;margin:0 0 6px;color:#fff}\n.tcard-overlay-text{font-size:13px;margin:0 0 12px;color:rgba(255,255,255,.9);line-height:1.5}\n.tcard-overlay .tcard-btn{background:#fff;color:#1f2937}\n.tcard-circle img{border-radius:50%;width:100px;height:100px;margin:16px auto 8px;display:block;object-fit:cover;border:3px solid #e5e7eb}\n.tcard-circle .tcard-body{padding-top:0;text-align:center}\n.tcard-circle .tcard-title,.tcard-circle .tcard-text{text-align:center}\n.tcard-circle .tcard-btn{align-self:center}\n.carousel{position:relative;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:inherit}\n.carousel-slide{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:all .5s ease}\n.carousel-slide.active{opacity:1;z-index:1}\n.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center}\n.carousel-arrow.prev{left:12px}.carousel-arrow.next{right:12px}\n.carousel-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:20}\n.carousel-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}\n.carousel-dot.active{background:#fff}\n.gallery-wrap{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;background:#f3f4f6}\n.gallery-track{display:flex;height:100%;gap:8px;transition:transform .6s cubic-bezier(.4,0,.2,1);align-items:center;padding:8px}\n.gallery-item{flex:0 0 auto;height:100%;border-radius:8px;overflow:hidden;background:#e5e7eb;box-shadow:0 2px 6px rgba(0,0,0,.08)}\n.gallery-item img{width:100%;height:100%;object-fit:cover;display:block}\n.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center}\n.gallery-arrow.prev{left:10px}.gallery-arrow.next{right:10px}\n.gallery-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:20;background:rgba(0,0,0,.35);padding:4px 8px;border-radius:20px}\n.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}\n.gallery-dot.active{background:#fff}\n.cardcar-wrap{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit;background:transparent}\n.cardcar-track{display:flex;height:100%;gap:16px;transition:transform .6s cubic-bezier(.4,0,.2,1);align-items:stretch;padding:8px}\n.cardcar-item{flex:0 0 auto;height:100%;display:flex;flex-direction:column;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}\n.cardcar-img{width:100%;height:55%;object-fit:cover;display:block;background:#f3f4f6;flex-shrink:0}\n.cardcar-body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1;overflow:hidden}\n.cardcar-title{font-weight:700;font-size:15px;margin:0;color:#1f2937;line-height:1.3}\n.cardcar-text{color:#6b7280;font-size:12px;margin:0;line-height:1.4;flex:1}\n.cardcar-btn{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;background:#3b82f6;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit;align-self:flex-start}\n.cardcar-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center}\n.cardcar-arrow.prev{left:12px}.cardcar-arrow.next{right:12px}\n.cardcar-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:20;background:rgba(0,0,0,.4);padding:4px 8px;border-radius:20px}\n.cardcar-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}\n.cardcar-dot.active{background:#fff}\n</style>\n</head>\n<body>\n<div class="page-container">');
     page.elements.forEach(el => {
       const st = 'left:'+el.x+'px;top:'+el.y+'px;width:'+el.width+'px;height:'+el.height+'px;z-index:'+el.zIndex+';opacity:'+el.opacity+';border-radius:'+(el.borderRadius||0)+'px;box-shadow:'+el.boxShadow+';border:'+el.border+';background-color:'+(el.bgColor||'transparent')+';';
       const T = el.type;
@@ -1029,6 +1342,58 @@ document.getElementById('btn-export').onclick = () => {
         const img = '<img src="'+el.src+'" alt="'+(el.alt||'')+'" style="width:100%;height:100%;object-fit:'+(el.objectFit||'cover')+';border-radius:inherit">';
         o.push(el.href ? '<a class="elemento" href="'+el.href+'" target="_blank" style="'+st+'display:block">'+img+'</a>' : '<div class="elemento" style="'+st+'">'+img+'</div>');
       }
+      else if(T==='card'){
+        const style = el.cardStyle || 'basic';
+        const imgH = el.imgHeight || 180;
+        const btnStyle = 'background:'+(el.buttonColor||'#3b82f6')+';color:#fff';
+        if(style === 'basic') o.push('<div class="elemento" style="'+st+'"><div class="tcard">'+(el.img?'<img src="'+el.img+'" class="tcard-img" style="height:'+imgH+'px">':'')+'<div class="tcard-body"><h3 class="tcard-title">'+esc(el.title)+'</h3><p class="tcard-text">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'')+'</div></div></div>');
+        else if(style === 'horizontal') o.push('<div class="elemento" style="'+st+'"><div class="tcard tcard-horizontal">'+(el.img?'<img src="'+el.img+'" class="tcard-img">':'')+'<div class="tcard-body"><h3 class="tcard-title">'+esc(el.title)+'</h3><p class="tcard-text">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'')+'</div></div></div>');
+        else if(style === 'overlay') o.push('<div class="elemento" style="'+st+'"><div class="tcard tcard-overlay"><img src="'+el.img+'" class="tcard-overlay-img"><div class="tcard-overlay-body"><h3 class="tcard-overlay-title">'+esc(el.title)+'</h3><p class="tcard-overlay-text">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'')+'</div></div></div>');
+        else if(style === 'circle') o.push('<div class="elemento" style="'+st+'"><div class="tcard tcard-circle">'+(el.img?'<img src="'+el.img+'">':'')+'<div class="tcard-body"><h3 class="tcard-title">'+esc(el.title)+'</h3><p class="tcard-text">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'')+'</div></div></div>');
+        else if(style === 'product') o.push('<div class="elemento" style="'+st+'"><div class="tcard">'+(el.img?'<img src="'+el.img+'" class="tcard-img" style="height:'+imgH+'px">':'')+'<div class="tcard-body"><h3 class="tcard-title">'+esc(el.title)+'</h3><p class="tcard-text">'+esc(el.text)+'</p>'+(el.price?'<div style="font-size:20px;font-weight:800;color:'+(el.buttonColor||'#3b82f6')+';margin:4px 0">'+esc(el.price)+'</div>':'')+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'')+'</div></div></div>');
+      }
+      else if(T==='carousel'){
+        let h = '<div class="elemento carousel" style="'+st+'">';
+        el.images.forEach((img, i) => { h += '<img src="'+img+'" class="carousel-slide '+(i===0?'active':'')+'" data-i="'+i+'">'; });
+        if(el.showArrows){ h += '<button class="carousel-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="carousel-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>'; }
+        if(el.showDots){ h += '<div class="carousel-dots">'; el.images.forEach((_, i) => h += '<div class="carousel-dot '+(i===0?'active':'')+'" data-i="'+i+'"></div>'); h += '</div>'; }
+        h += '</div>';
+        const scriptC = '<script>(function(){var c=document.currentScript.previousElementSibling;if(!c)return;var i=0;var sl=c.querySelectorAll(".carousel-slide");var dt=c.querySelectorAll(".carousel-dot");function u(n){i=(n+sl.length)%sl.length;sl.forEach(function(s,x){s.classList.remove("active");s.style.opacity=x===i?"1":"0";});sl[i].classList.add("active");dt.forEach(function(d,x){d.classList.toggle("active",x===i);});}var p=c.querySelector(".prev");var nx=c.querySelector(".next");if(p)p.onclick=function(){u(i-1)};if(nx)nx.onclick=function(){u(i+1)};dt.forEach(function(d,x){d.onclick=function(){u(x)}});'+(el.autoplay && el.interval ? 'setInterval(function(){u(i+1)},'+el.interval+');' : '')+'})();</scr'+'ipt>';
+        o.push(h); o.push(scriptC);
+      }
+      else if(T==='gallery'){
+        const perView = el.itemsPerView || 3;
+        const gap = el.gap || 8;
+        const total = el.images.length;
+        let h = '<div class="elemento gallery-wrap" style="'+st+'"><div class="gallery-track" style="gap:'+gap+'px">';
+        el.images.forEach((img, i) => { h += '<div class="gallery-item" style="width:calc((100% - '+(gap*(perView-1))+'px)/'+perView+')"><img src="'+img+'" data-i="'+i+'"></div>'; });
+        h += '</div>';
+        if(el.showArrows && total > perView){ h += '<button class="gallery-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>'; }
+        if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += '<div class="gallery-dots">'; for(let i = 0; i < pages; i++) h += '<div class="gallery-dot '+(i===0?'active':'')+'" data-page="'+i+'"></div>'; h += '</div>'; }
+        h += '</div>';
+        const scriptG = '<script>(function(){var w=document.currentScript.previousElementSibling;if(!w)return;var tr=w.querySelector(".gallery-track");var items=tr.querySelectorAll(".gallery-item");var dt=w.querySelectorAll(".gallery-dot");var pv='+perView+';var gp='+gap+';var pages=Math.max(1,Math.ceil(items.length/pv));var pg=0;function u(){var iw=items[0].getBoundingClientRect().width;var off=pg*pv*(iw+gp);tr.style.transform="translateX(-"+off+"px)";dt.forEach(function(d,i){d.classList.toggle("active",i===pg);});}var p=w.querySelector(".prev");var nx=w.querySelector(".next");function go(n){pg=(n+pages)%pages;u();}if(p)p.onclick=function(e){e.stopPropagation();go(pg-1)};if(nx)nx.onclick=function(e){e.stopPropagation();go(pg+1)};dt.forEach(function(d,i){d.onclick=function(e){e.stopPropagation();pg=i;u();}});window.addEventListener("resize",u);setTimeout(u,50);'+(el.autoplay && el.interval && total > perView ? 'setInterval(function(){go(pg+1)},'+el.interval+');' : '')+'})();</scr'+'ipt>';
+        o.push(h); o.push(scriptG);
+      }
+      else if(T==='cardcarousel'){
+        const cards = el.cards || [];
+        const perView = el.itemsPerView || 3;
+        const gap = el.gap || 16;
+        const total = cards.length;
+        let h = '<div class="elemento cardcar-wrap" style="'+st+'"><div class="cardcar-track" style="gap:'+gap+'px">';
+        cards.forEach(c => {
+          h += '<div class="cardcar-item" style="width:calc((100% - '+(gap*(perView-1))+'px)/'+perView+')">';
+          if(c.img) h += '<img src="'+c.img+'" class="cardcar-img">';
+          h += '<div class="cardcar-body"><h3 class="cardcar-title">'+esc(c.title)+'</h3><p class="cardcar-text">'+esc(c.text)+'</p>';
+          if(c.buttonText) h += '<a href="'+(c.buttonHref||'#')+'" class="cardcar-btn" style="background:'+(c.buttonColor||'#3b82f6')+'">'+esc(c.buttonText)+'</a>';
+          h += '</div></div>';
+        });
+        h += '</div>';
+        if(el.showArrows && total > perView){ h += '<button class="cardcar-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="cardcar-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>'; }
+        if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += '<div class="cardcar-dots">'; for(let i = 0; i < pages; i++) h += '<div class="cardcar-dot '+(i===0?'active':'')+'" data-page="'+i+'"></div>'; h += '</div>'; }
+        h += '</div>';
+        const scriptCC = '<script>(function(){var w=document.currentScript.previousElementSibling;if(!w)return;var tr=w.querySelector(".cardcar-track");var items=tr.querySelectorAll(".cardcar-item");var dt=w.querySelectorAll(".cardcar-dot");var pv='+perView+';var gp='+gap+';var pages=Math.max(1,Math.ceil(items.length/pv));var pg=0;function u(){var iw=items[0].getBoundingClientRect().width;var off=pg*pv*(iw+gp);tr.style.transform="translateX(-"+off+"px)";dt.forEach(function(d,i){d.classList.toggle("active",i===pg);});}var p=w.querySelector(".prev");var nx=w.querySelector(".next");function go(n){pg=(n+pages)%pages;u();}if(p)p.onclick=function(e){e.stopPropagation();go(pg-1)};if(nx)nx.onclick=function(e){e.stopPropagation();go(pg+1)};dt.forEach(function(d,i){d.onclick=function(e){e.stopPropagation();pg=i;u();}});window.addEventListener("resize",u);setTimeout(u,50);'+(el.autoplay && el.interval && total > perView ? 'setInterval(function(){go(pg+1)},'+el.interval+');' : '')+'})();</scr'+'ipt>';
+        o.push(h); o.push(scriptCC);
+      }
       else if(T==='video') o.push('<video class="elemento e-video" src="'+el.src+'" style="'+st+'" '+(el.controls?'controls':'')+' '+(el.autoplay?'autoplay':'')+' '+(el.loop?'loop':'')+' '+(el.muted?'muted':'')+'></video>');
       else if(T==='audio') o.push('<audio class="elemento e-audio" src="'+el.src+'" style="'+st+'" '+(el.controls?'controls':'')+'></audio>');
       else if(T==='iframe') o.push('<iframe class="elemento e-iframe" src="'+el.src+'" style="'+st+'" allowfullscreen loading="lazy"></iframe>');
@@ -1043,7 +1408,6 @@ document.getElementById('btn-export').onclick = () => {
       else if(T==='input') o.push('<div class="elemento" style="'+st+'"><label class="e-label">'+esc(el.label||'')+'</label><input type="'+(el.inputType||'text')+'" class="e-input" placeholder="'+esc(el.placeholder||'')+'" '+(el.required?'required':'')+'></div>');
       else if(T==='select') o.push('<div class="elemento" style="'+st+'"><label class="e-label">'+esc(el.label||'')+'</label><select class="e-input">'+el.options.map(x=>'<option>'+esc(x)+'</option>').join('')+'</select></div>');
       else if(T==='checkbox') o.push('<label class="elemento" style="'+st+'display:flex;align-items:center;gap:8px"><input type="checkbox" '+(el.checked?'checked':'')+'> '+esc(el.label)+'</label>');
-      else if(T==='radio') o.push('<label class="elemento" style="'+st+'display:flex;align-items:center;gap:8px"><input type="radio" name="'+el.name+'" value="'+el.value+'"> '+esc(el.label)+'</label>');
       else if(T==='textarea') o.push('<div class="elemento" style="'+st+'"><label class="e-label">'+esc(el.label||'')+'</label><textarea class="e-input" placeholder="'+esc(el.placeholder||'')+'" rows="3"></textarea></div>');
       else if(T==='details') o.push('<details class="elemento e-details" style="'+st+'"><summary>'+esc(el.summary)+'</summary><div class="details-content">'+el.content+'</div></details>');
       else if(T==='alert'){
@@ -1061,7 +1425,6 @@ document.getElementById('btn-export').onclick = () => {
         t += '</table>';
         o.push(t);
       }
-      else if(T==='card') o.push('<div class="elemento e-card" style="'+st+'"><img src="'+el.img+'" alt=""><div class="card-body"><h3 class="card-title">'+esc(el.title)+'</h3><p class="card-text">'+esc(el.text)+'</p><a href="'+(el.buttonHref||'#')+'" class="e-btn" style="background:#3b82f6;color:#fff;font-size:13px;padding:8px 14px">'+esc(el.buttonText)+'</a></div></div>');
       else if(T==='divider') o.push('<hr class="elemento e-divider" style="'+st+'border-top-color:'+el.color+'">');
       else if(T==='icon'){
         const ih = '<i class="fa-solid '+el.icon+'" style="font-size:'+el.size+'px;color:'+el.color+'"></i>';
