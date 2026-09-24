@@ -212,7 +212,6 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .e-img-overlay{position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit}
 .e-img-overlay img{width:100%;height:100%;object-fit:cover;display:block}
 .e-img-overlay-txt{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff}
-/* Editor de enlaces de navegación */
 .nav-link-edit{background:#f9fafb;padding:8px;border-radius:6px;margin-bottom:8px;border:1px solid #e5e7eb}
 .nav-link-edit .nav-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
 .nav-link-edit input{flex:1;padding:5px 8px;font-size:12px;border:1px solid #d1d5db;border-radius:4px;outline:none}
@@ -499,7 +498,7 @@ const LIB = [
         { text:'Sobre mí', href:'#sobre', target:'_self' },
         { text:'Contacto', href:'#contacto', target:'_self' }
       ],
-      bgColor:'#ffffff', textColor:'#4b5563', brandColor:'#1f2937', linkHover:'#3b82f6'
+      bgColor:'#ffffff', textColor:'#4b5563', brandColor:'#1f2937'
     }},
     { type:'hero', label:'Hero (portada)', icon:'fa-mountain-sun', props:{ title:'Bienvenido a mi web', subtitle:'Diseño moderno y profesional', buttonText:'Comenzar', buttonHref:'#', bgColor:'#3b82f6' }},
     { type:'footer', label:'Pie de página', icon:'fa-shoe-prints', props:{ title:'Mi Empresa', text:'© 2024 Todos los derechos reservados.', socials:true }},
@@ -582,24 +581,24 @@ function defaults(type){
     heading:{ width:600,height:70,text:'Título Principal',level:1,fontSize:42,fontWeight:'bold',color:'#1f2937',textAlign:'left' },
     paragraph:{ width:500,height:60,text:'Escribe tu párrafo aquí.',fontSize:16,color:'#374151',textAlign:'left' },
     blockquote:{ width:500,height:80,text:'Una cita inspiradora.',fontSize:16,color:'#4b5563' },
-    code:{ width:500,height:100,text:'const saludo = "Hola";',fontSize:13 },
+    code:{ width:500,height:100,text:'const saludo = "Hola";',fontSize:13,codeBg:'#1e293b',codeColor:'#e2e8f0' },
     list:{ width:300,height:120,items:['Elemento 1','Elemento 2','Elemento 3'],ordered:false,fontSize:15,color:'#374151' },
-    checklist:{ width:350,height:130,items:['Primer punto completado','Segundo punto','Tercer punto'],fontSize:14,color:'#374151' },
+    checklist:{ width:350,height:130,items:['Primer punto completado','Segundo punto','Tercer punto'],fontSize:14,color:'#374151',checkColor:'#10b981' },
     badge:{ width:100,height:30,text:'Nuevo',fontSize:12,color:'#1d4ed8',bgColor:'#dbeafe' },
-    stars:{ width:150,height:30,count:5 },
+    stars:{ width:150,height:30,count:5,color:'#f59e0b' },
     link:{ width:180,height:40,text:'Ir a Google',href:'https://google.com',target:'_blank',color:'#3b82f6',fontSize:15 },
     button:{ width:170,height:48,text:'Haz clic',href:'',bgColor:'#3b82f6',color:'#ffffff',fontSize:15,borderRadius:8,icon:'',border:'none' },
     image:{ width:400,height:260,src:'https://placehold.co/600x400/3b82f6/fff?text=Imagen',alt:'Imagen',objectFit:'cover',href:'' },
-    imgOverlay:{ width:600,height:350,src:'https://placehold.co/700x500/8b5cf6/fff?text=Overlay',title:'Título sobre imagen',subtitle:'Subtítulo descriptivo',href:'' },
-    card:{ width:300,height:360,cardStyle:'basic',img:'https://placehold.co/400x300/3b82f6/fff?text=Foto',title:'Mi título',text:'Esta es la descripción.',buttonText:'Ver más',buttonHref:'#',buttonColor:'#3b82f6',imgHeight:180 },
-    carousel:{ width:500,height:320,images:['https://placehold.co/900x500/3b82f6/fff?text=1','https://placehold.co/900x500/ef4444/fff?text=2','https://placehold.co/900x500/10b981/fff?text=3'],autoplay:true,interval:3000,showArrows:true,showDots:true,transition:'fade' },
-    gallery:{ width:800,height:280,images:['https://placehold.co/400x300/3b82f6/fff?text=1','https://placehold.co/400x300/ef4444/fff?text=2','https://placehold.co/400x300/10b981/fff?text=3','https://placehold.co/400x300/8b5cf6/fff?text=4','https://placehold.co/400x300/f59e0b/fff?text=5','https://placehold.co/400x300/0ea5e9/fff?text=6'],autoplay:true,interval:2500,showArrows:true,showDots:true,itemsPerView:3,gap:8 },
+    imgOverlay:{ width:600,height:350,src:'https://placehold.co/700x500/8b5cf6/fff?text=Overlay',title:'Título sobre imagen',subtitle:'Subtítulo descriptivo',href:'',textColor:'#ffffff' },
+    card:{ width:300,height:360,cardStyle:'basic',img:'https://placehold.co/400x300/3b82f6/fff?text=Foto',title:'Mi título',text:'Esta es la descripción.',buttonText:'Ver más',buttonHref:'#',buttonColor:'#3b82f6',imgHeight:180,titleColor:'#1f2937',textColor:'#6b7280',bgColor:'#ffffff' },
+    carousel:{ width:500,height:320,images:['https://placehold.co/900x500/3b82f6/fff?text=1','https://placehold.co/900x500/ef4444/fff?text=2','https://placehold.co/900x500/10b981/fff?text=3'],autoplay:true,interval:3000,showArrows:true,showDots:true,transition:'fade',arrowColor:'#000000',arrowBg:'rgba(0,0,0,0.6)',dotColor:'#ffffff' },
+    gallery:{ width:800,height:280,images:['https://placehold.co/400x300/3b82f6/fff?text=1','https://placehold.co/400x300/ef4444/fff?text=2','https://placehold.co/400x300/10b981/fff?text=3','https://placehold.co/400x300/8b5cf6/fff?text=4','https://placehold.co/400x300/f59e0b/fff?text=5','https://placehold.co/400x300/0ea5e9/fff?text=6'],autoplay:true,interval:2500,showArrows:true,showDots:true,itemsPerView:3,gap:8,bgColor:'#f3f4f6' },
     cardcarousel:{ width:900,height:400,cards:[
       { img:'https://placehold.co/400x300/3b82f6/fff?text=1', title:'Primera', text:'Descripción.', buttonText:'Ver más', buttonHref:'#', buttonColor:'#3b82f6' },
       { img:'https://placehold.co/400x300/ef4444/fff?text=2', title:'Segunda', text:'Otra descripción.', buttonText:'Comprar', buttonHref:'#', buttonColor:'#ef4444' },
       { img:'https://placehold.co/400x300/10b981/fff?text=3', title:'Tercera', text:'Contenido.', buttonText:'Leer', buttonHref:'#', buttonColor:'#10b981' },
       { img:'https://placehold.co/400x300/8b5cf6/fff?text=4', title:'Cuarta', text:'Descripción.', buttonText:'Ver', buttonHref:'#', buttonColor:'#8b5cf6' }
-    ],autoplay:true,interval:3000,showArrows:true,showDots:true,itemsPerView:3,gap:16 },
+    ],autoplay:true,interval:3000,showArrows:true,showDots:true,itemsPerView:3,gap:16,bgColor:'#ffffff',titleColor:'#1f2937',textColor:'#6b7280' },
     masonry:{ width:600,height:500,images:['https://placehold.co/400x300/3b82f6/fff?text=1','https://placehold.co/400x600/ef4444/fff?text=2','https://placehold.co/400x400/10b981/fff?text=3','https://placehold.co/400x500/8b5cf6/fff?text=4','https://placehold.co/400x300/f59e0b/fff?text=5','https://placehold.co/400x500/0ea5e9/fff?text=6'] },
     navbar:{ width:1160,height:64,
       brand:'MiMarca', brandHref:'#',
@@ -609,46 +608,46 @@ function defaults(type){
         { text:'Sobre mí', href:'#sobre', target:'_self' },
         { text:'Contacto', href:'#contacto', target:'_self' }
       ],
-      bgColor:'#ffffff', textColor:'#4b5563', brandColor:'#1f2937', linkHover:'#3b82f6'
+      bgColor:'#ffffff', textColor:'#4b5563', brandColor:'#1f2937', borderBottom:'1px solid #e5e7eb'
     },
-    hero:{ width:1160,height:400,title:'Bienvenido a mi web',subtitle:'Diseño moderno y profesional',buttonText:'Comenzar',buttonHref:'#',bgColor:'#3b82f6' },
-    footer:{ width:1160,height:220,title:'Mi Empresa',text:'© 2024 Todos los derechos reservados. Hecho con ❤️',socials:true },
+    hero:{ width:1160,height:400,title:'Bienvenido a mi web',subtitle:'Diseño moderno y profesional',buttonText:'Comenzar',buttonHref:'#',bgColor:'#3b82f6',bgColor2:'#8b5cf6',titleColor:'#ffffff',textColor:'#ffffff',buttonColor:'#ffffff',buttonTextColor:'#3b82f6' },
+    footer:{ width:1160,height:220,title:'Mi Empresa',text:'© 2024 Todos los derechos reservados. Hecho con ❤️',socials:true,bgColor:'#1f2937',titleColor:'#ffffff',textColor:'#9ca3af',socialColor:'#9ca3af' },
     container:{ width:400,height:250,bgColor:'#f9fafb',border:'1px solid #e5e7eb' },
     divider:{ width:500,height:2,color:'#e5e7eb' },
-    sepIcon:{ width:500,height:30,icon:'fa-star' },
-    progress:{ width:350,height:20,value:65,max:100,showLabel:true },
-    circleProgress:{ width:140,height:140,value:75,label:'75%' },
-    counter:{ width:200,height:100,value:1234,label:'Usuarios' },
-    stats:{ width:600,height:120,items:[{num:'1.2K',lbl:'Clientes'},{num:'98%',lbl:'Satisfacción'},{num:'24/7',lbl:'Soporte'}] },
-    countdown:{ width:500,height:100,days:'5',hours:'12',minutes:'30',seconds:'45' },
-    table:{ width:500,height:180,rows:[['Nombre','Edad','Ciudad'],['Ana','28','Madrid'],['Luis','34','Barcelona']],header:true },
+    sepIcon:{ width:500,height:30,icon:'fa-star',color:'#3b82f6',lineColor:'#e5e7eb' },
+    progress:{ width:350,height:20,value:65,max:100,showLabel:true,bgColor:'#e5e7eb',barColor:'#3b82f6',textColor:'#ffffff' },
+    circleProgress:{ width:140,height:140,value:75,label:'75%',bgColor:'#e5e7eb',barColor:'#3b82f6',textColor:'#3b82f6' },
+    counter:{ width:200,height:100,value:1234,label:'Usuarios',numColor:'#3b82f6',labelColor:'#6b7280' },
+    stats:{ width:600,height:120,items:[{num:'1.2K',lbl:'Clientes'},{num:'98%',lbl:'Satisfacción'},{num:'24/7',lbl:'Soporte'}],numColor:'#3b82f6',labelColor:'#6b7280' },
+    countdown:{ width:500,height:100,days:'5',hours:'12',minutes:'30',seconds:'45',bgColor:'#1f2937',numColor:'#ffffff',labelColor:'#9ca3af' },
+    table:{ width:500,height:180,rows:[['Nombre','Edad','Ciudad'],['Ana','28','Madrid'],['Luis','34','Barcelona']],header:true,bgColor:'#ffffff',headerBg:'#f9fafb',headerColor:'#1f2937',textColor:'#374151',borderColor:'#e5e7eb' },
     pricing:{ width:900,height:400,plans:[
       { name:'Básico', price:'9', period:'/mes', features:['1 usuario','1 GB','Soporte email'], featured:false },
       { name:'Pro', price:'29', period:'/mes', features:['10 usuarios','50 GB','Soporte 24/7','API'], featured:true },
       { name:'Empresa', price:'99', period:'/mes', features:['Ilimitado','1 TB','Soporte VIP','SLA'], featured:false }
-    ] },
+    ],bgColor:'#ffffff',featuredColor:'#3b82f6',textColor:'#1f2937',mutedColor:'#6b7280',checkColor:'#10b981' },
     video:{ width:480,height:270,src:'https://www.w3schools.com/html/mov_bbb.mp4',controls:true,autoplay:false,loop:false,muted:false },
     audio:{ width:400,height:54,src:'https://www.w3schools.com/html/horse.mp3',controls:true },
     iframe:{ width:500,height:300,src:'https://www.youtube.com/embed/dQw4w9WgXcQ',borderRadius:8 },
-    testimonial:{ width:600,height:140,avatar:'https://placehold.co/150x150/3b82f6/fff?text=JM',text:'Este producto ha cambiado mi vida por completo.',author:'Juan Martínez',role:'CEO' },
-    form:{ width:400,height:280,fields:[{ type:'text',label:'Nombre',placeholder:'Tu nombre',required:true },{ type:'email',label:'Email',placeholder:'tu@email.com',required:true },{ type:'textarea',label:'Mensaje',placeholder:'Escribe aquí...',required:false }],buttonText:'Enviar',bgColor:'#ffffff' },
-    input:{ width:300,height:70,label:'Campo',placeholder:'Escribe...',inputType:'text',required:false },
-    select:{ width:300,height:70,label:'Elige',options:['Opción 1','Opción 2','Opción 3'] },
-    checkbox:{ width:280,height:30,label:'Acepto los términos',checked:false },
-    radio:{ width:280,height:30,label:'Opción A',name:'grupo',value:'a' },
-    textarea:{ width:350,height:110,label:'Mensaje',placeholder:'Escribe aquí...' },
-    details:{ width:400,height:80,summary:'¿Qué es esto?',content:'Un acordeón con details de HTML.' },
+    testimonial:{ width:600,height:140,avatar:'https://placehold.co/150x150/3b82f6/fff?text=JM',text:'Este producto ha cambiado mi vida por completo.',author:'Juan Martínez',role:'CEO',bgColor:'#ffffff',textColor:'#4b5563',authorColor:'#1f2937',roleColor:'#9ca3af',borderColor:'#e5e7eb' },
+    form:{ width:400,height:280,fields:[{ type:'text',label:'Nombre',placeholder:'Tu nombre',required:true },{ type:'email',label:'Email',placeholder:'tu@email.com',required:true },{ type:'textarea',label:'Mensaje',placeholder:'Escribe aquí...',required:false }],buttonText:'Enviar',bgColor:'#ffffff',labelColor:'#374151',buttonColor:'#3b82f6',buttonTextColor:'#ffffff' },
+    input:{ width:300,height:70,label:'Campo',placeholder:'Escribe...',inputType:'text',required:false,labelColor:'#374151' },
+    select:{ width:300,height:70,label:'Elige',options:['Opción 1','Opción 2','Opción 3'],labelColor:'#374151' },
+    checkbox:{ width:280,height:30,label:'Acepto los términos',checked:false,color:'#374151' },
+    radio:{ width:280,height:30,label:'Opción A',name:'grupo',value:'a',color:'#374151' },
+    textarea:{ width:350,height:110,label:'Mensaje',placeholder:'Escribe aquí...',labelColor:'#374151' },
+    details:{ width:400,height:80,summary:'¿Qué es esto?',content:'Un acordeón con details de HTML.',summaryBg:'#f9fafb',summaryColor:'#1f2937',textColor:'#374151',borderColor:'#e5e7eb',iconColor:'#3b82f6' },
     alert:{ width:400,height:60,alertType:'info',text:'Esto es un aviso informativo.' },
-    ribbon:{ width:400,height:40,text:'🔥 Oferta especial',bgColor:'#f59e0b' },
+    ribbon:{ width:400,height:40,text:'🔥 Oferta especial',bgColor:'#f59e0b',color:'#ffffff' },
     icon:{ width:48,height:48,icon:'fa-star',size:32,color:'#f59e0b',href:'' },
     social:{ width:44,height:44,icon:'fa-brands fa-instagram',url:'https://instagram.com',color:'#e1306c',size:20,shape:'circle' },
-    socials:{ width:250,height:50,icons:['fa-brands fa-facebook','fa-brands fa-instagram','fa-brands fa-x-twitter','fa-brands fa-youtube'] },
+    socials:{ width:250,height:50,icons:['fa-brands fa-facebook','fa-brands fa-instagram','fa-brands fa-x-twitter','fa-brands fa-youtube'],color:'#3b82f6' },
     timeline:{ width:500,height:400,items:[
       { date:'2020', title:'Fundación', text:'Comenzamos nuestro viaje.' },
       { date:'2022', title:'Expansión', text:'Llegamos a 10 países.' },
       { date:'2024', title:'Innovación', text:'Nuevos productos.' }
-    ] },
-    whatsapp:{ width:70,height:70,href:'https://wa.me/34600000000' }
+    ],lineColor:'#e5e7eb',dotColor:'#3b82f6',dateColor:'#9ca3af',titleColor:'#1f2937',textColor:'#6b7280' },
+    whatsapp:{ width:70,height:70,href:'https://wa.me/34600000000',color:'#25d366' }
   };
   return { ...base, ...(d[type]||{}) };
 }
@@ -692,8 +691,8 @@ function renderElement(el){
     dom.id = el.id;
     dom.className = 'elemento';
     dom.addEventListener('dblclick', e => {
-      if(['heading','paragraph','blockquote','code','badge','button','link'].includes(el.type)){
-        const t = dom.querySelector('h1,h2,h3,h4,h5,h6,p,blockquote,pre,span,a,button') || dom;
+      if(['heading','paragraph','blockquote','badge','button','link'].includes(el.type)){
+        const t = dom.querySelector('h1,h2,h3,h4,h5,h6,p,blockquote,span,a,button') || dom;
         t.contentEditable = true;
         t.focus();
         t.style.cursor = 'text';
@@ -728,7 +727,7 @@ function syncDOM(dom, el){
     borderRadius: (el.borderRadius||0)+'px',
     boxShadow: el.boxShadow||'none',
     border: el.border||'none',
-    backgroundColor: el.bgColor||'transparent',
+    backgroundColor: (el.type === 'code') ? 'transparent' : (el.bgColor||'transparent'),
     padding: el.padding||'0'
   });
   const T = el.type;
@@ -736,12 +735,12 @@ function syncDOM(dom, el){
 
   if(T === 'heading') html = `<h${el.level} style="margin:0;font-size:${el.fontSize}px;font-weight:${el.fontWeight};color:${el.color};text-align:${el.textAlign}">${esc(el.text)}</h${el.level}>`;
   else if(T === 'paragraph') html = `<p style="margin:0;font-size:${el.fontSize}px;color:${el.color};text-align:${el.textAlign};line-height:1.6">${esc(el.text)}</p>`;
-  else if(T === 'blockquote') html = `<blockquote class="e-blockquote" style="font-size:${el.fontSize}px;color:${el.color}">${esc(el.text)}</blockquote>`;
-  else if(T === 'code') html = `<pre class="e-code" style="font-size:${el.fontSize}px">${esc(el.text)}</pre>`;
+  else if(T === 'blockquote') html = `<blockquote class="e-blockquote" style="font-size:${el.fontSize}px;color:${el.color};border-left-color:${el.color}">${esc(el.text)}</blockquote>`;
+  else if(T === 'code') html = `<pre class="e-code" style="font-size:${el.fontSize}px;background:${el.codeBg};color:${el.codeColor}">${esc(el.text)}</pre>`;
   else if(T === 'list') html = `<ul class="e-list" style="font-size:${el.fontSize}px;color:${el.color};list-style:${el.ordered?'decimal':'disc'}">${el.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`;
-  else if(T === 'checklist') html = `<ul class="e-checklist" style="font-size:${el.fontSize}px;color:${el.color}">${el.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`;
+  else if(T === 'checklist') html = `<ul class="e-checklist" style="font-size:${el.fontSize}px;color:${el.color}">${el.items.map(i=>`<li style="color:${el.color}"><span style="color:${el.checkColor};font-weight:800;margin-right:8px">✓</span>${esc(i)}</li>`).join('')}</ul>`;
   else if(T === 'badge') html = `<span class="e-badge" style="font-size:${el.fontSize}px;color:${el.color};background:${el.bgColor}">${esc(el.text)}</span>`;
-  else if(T === 'stars') html = `<div class="e-stars" style="font-size:${el.fontSize||20}px">${'★'.repeat(el.count)}${'☆'.repeat(5-el.count)}</div>`;
+  else if(T === 'stars') html = `<div class="e-stars" style="font-size:${el.fontSize||20}px;color:${el.color}">${'★'.repeat(el.count)}${'☆'.repeat(5-el.count)}</div>`;
   else if(T === 'link') html = `<a href="${el.href||'#'}" target="${el.target||'_self'}" style="font-size:${el.fontSize}px;color:${el.color};text-decoration:underline">${esc(el.text)}</a>`;
   else if(T === 'button'){
     const ic = el.icon ? `<i class="fa-solid ${el.icon}"></i>` : '';
@@ -753,70 +752,72 @@ function syncDOM(dom, el){
     const img = `<img src="${el.src}" alt="${el.alt||''}" class="e-img" style="object-fit:${el.objectFit||'cover'}" draggable="false">`;
     html = el.href ? `<a href="${el.href}" target="_blank" style="display:block;width:100%;height:100%;pointer-events:none">${img}</a>` : img;
   }
-  else if(T === 'imgOverlay') html = `<div class="e-img-overlay"><img src="${el.src}" draggable="false"><div class="e-img-overlay-txt"><h2 style="margin:0 0 6px;font-size:24px;font-weight:800">${esc(el.title)}</h2><p style="margin:0;font-size:14px;opacity:.9">${esc(el.subtitle)}</p></div></div>`;
+  else if(T === 'imgOverlay') html = `<div class="e-img-overlay"><img src="${el.src}" draggable="false"><div class="e-img-overlay-txt"><h2 style="margin:0 0 6px;font-size:24px;font-weight:800;color:${el.textColor||'#fff'}">${esc(el.title)}</h2><p style="margin:0;font-size:14px;opacity:.9;color:${el.textColor||'#fff'}">${esc(el.subtitle)}</p></div></div>`;
   else if(T === 'card') html = buildCard(el);
   else if(T === 'carousel') html = buildCarousel(el);
   else if(T === 'gallery') html = buildGallery(el);
   else if(T === 'cardcarousel') html = buildCardCarousel(el);
   else if(T === 'masonry') html = `<div class="e-masonry">${el.images.map(i=>`<img src="${i}" draggable="false">`).join('')}</div>`;
   else if(T === 'navbar') html = buildNavbar(el);
-  else if(T === 'hero') html = `<div class="e-hero" style="background:linear-gradient(135deg,${el.bgColor},#8b5cf6)"><h1>${esc(el.title)}</h1><p>${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn">${esc(el.buttonText)}</a></div>`;
-  else if(T === 'footer') html = `<footer class="e-footer"><h3>${esc(el.title)}</h3><p>${esc(el.text)}</p>${el.socials?`<div class="e-footer-social"><a href="#"><i class="fa-brands fa-facebook"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-x-twitter"></i></a><a href="#"><i class="fa-brands fa-youtube"></i></a></div>`:''}</footer>`;
+  else if(T === 'hero') html = `<div class="e-hero" style="background:linear-gradient(135deg,${el.bgColor},${el.bgColor2||el.bgColor})"><h1 style="color:${el.titleColor}">${esc(el.title)}</h1><p style="color:${el.textColor}">${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn" style="background:${el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText)}</a></div>`;
+  else if(T === 'footer') html = `<footer class="e-footer" style="background:${el.bgColor}"><h3 style="color:${el.titleColor}">${esc(el.title)}</h3><p style="color:${el.textColor}">${esc(el.text)}</p>${el.socials?`<div class="e-footer-social"><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-facebook"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-instagram"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-x-twitter"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-youtube"></i></a></div>`:''}</footer>`;
   else if(T === 'divider') html = `<hr class="e-divider" style="border-top-color:${el.color}">`;
-  else if(T === 'sepIcon') html = `<div class="e-sep"><div class="e-sep-line"></div><i class="fa-solid ${el.icon} e-sep-icon"></i><div class="e-sep-line"></div></div>`;
-  else if(T === 'progress') html = `<div class="e-progress"><div class="e-progress-bar" style="width:${(el.value/el.max*100)}%">${el.showLabel?el.value+'%':''}</div></div>`;
+  else if(T === 'sepIcon') html = `<div class="e-sep"><div class="e-sep-line" style="background:${el.lineColor}"></div><i class="fa-solid ${el.icon} e-sep-icon" style="color:${el.color}"></i><div class="e-sep-line" style="background:${el.lineColor}"></div></div>`;
+  else if(T === 'progress') html = `<div class="e-progress" style="background:${el.bgColor}"><div class="e-progress-bar" style="width:${(el.value/el.max*100)}%;background:${el.barColor};color:${el.textColor}">${el.showLabel?el.value+'%':''}</div></div>`;
   else if(T === 'circleProgress'){
     const offset = 314 - (314 * el.value / 100);
-    html = `<div class="e-circle-prog"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="50"/><circle class="fg" cx="60" cy="60" r="50" style="stroke-dashoffset:${offset}"/></svg><div class="txt">${esc(el.label)}</div></div>`;
+    html = `<div class="e-circle-prog"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="50" style="stroke:${el.bgColor}"/><circle class="fg" cx="60" cy="60" r="50" style="stroke:${el.barColor};stroke-dashoffset:${offset}"/></svg><div class="txt" style="color:${el.textColor}">${esc(el.label)}</div></div>`;
   }
-  else if(T === 'counter') html = `<div><div class="e-counter">${el.value}</div><div style="text-align:center;color:#6b7280;font-size:14px;margin-top:4px">${esc(el.label)}</div></div>`;
-  else if(T === 'stats') html = `<div class="e-stats">${el.items.map(it=>`<div class="e-stat"><span class="e-stat-num">${esc(it.num)}</span><span class="e-stat-lbl">${esc(it.lbl)}</span></div>`).join('')}</div>`;
-  else if(T === 'countdown') html = `<div class="e-countdown"><div class="e-cd-box"><span class="e-cd-num">${el.days}</span><span class="e-cd-lbl">Días</span></div><div class="e-cd-box"><span class="e-cd-num">${el.hours}</span><span class="e-cd-lbl">Horas</span></div><div class="e-cd-box"><span class="e-cd-num">${el.minutes}</span><span class="e-cd-lbl">Min</span></div><div class="e-cd-box"><span class="e-cd-num">${el.seconds}</span><span class="e-cd-lbl">Seg</span></div></div>`;
+  else if(T === 'counter') html = `<div><div class="e-counter" style="color:${el.numColor}">${el.value}</div><div style="text-align:center;color:${el.labelColor};font-size:14px;margin-top:4px">${esc(el.label)}</div></div>`;
+  else if(T === 'stats') html = `<div class="e-stats">${el.items.map(it=>`<div class="e-stat"><span class="e-stat-num" style="color:${el.numColor}">${esc(it.num)}</span><span class="e-stat-lbl" style="color:${el.labelColor}">${esc(it.lbl)}</span></div>`).join('')}</div>`;
+  else if(T === 'countdown') html = `<div class="e-countdown">${['days','hours','minutes','seconds'].map((k,i)=>`<div class="e-cd-box" style="background:${el.bgColor}"><span class="e-cd-num" style="color:${el.numColor}">${el[k]}</span><span class="e-cd-lbl" style="color:${el.labelColor}">${['Días','Horas','Min','Seg'][i]}</span></div>`).join('')}</div>`;
   else if(T === 'table'){
-    let t = `<table class="e-table">`;
+    let t = `<table class="e-table" style="background:${el.bgColor}">`;
     el.rows.forEach((r,i) => {
-      const tag = (i===0 && el.header) ? 'th' : 'td';
-      t += `<tr>${r.map(c => `<${tag}>${esc(c)}</${tag}>`).join('')}</tr>`;
+      const isHeader = (i===0 && el.header);
+      const tag = isHeader ? 'th' : 'td';
+      const style = isHeader ? `background:${el.headerBg};color:${el.headerColor};border-color:${el.borderColor}` : `color:${el.textColor};border-color:${el.borderColor}`;
+      t += `<tr>${r.map(c => `<${tag} style="${style}">${esc(c)}</${tag}>`).join('')}</tr>`;
     });
     t += `</table>`;
     html = t;
   }
-  else if(T === 'pricing') html = `<div class="e-pricing">${el.plans.map(p=>`<div class="e-price-card ${p.featured?'featured':''}"><h3>${esc(p.name)}</h3><div class="amount">${esc(p.price)}<span>${esc(p.period)}</span></div><ul>${p.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul><button class="e-btn" style="background:${p.featured?'#3b82f6':'#e5e7eb'};color:${p.featured?'#fff':'#1f2937'};width:100%">Elegir</button></div>`).join('')}</div>`;
+  else if(T === 'pricing') html = `<div class="e-pricing">${el.plans.map(p=>`<div class="e-price-card ${p.featured?'featured':''}" style="background:${el.bgColor};border-color:${p.featured?el.featuredColor:'#e5e7eb'}"><h3 style="color:${el.mutedColor}">${esc(p.name)}</h3><div class="amount" style="color:${el.textColor}">${esc(p.price)}<span style="color:${el.mutedColor}">${esc(p.period)}</span></div><ul style="color:${el.textColor}">${p.features.map(f=>`<li style="color:${el.textColor}"><span style="color:${el.checkColor};font-weight:700">✓</span> ${esc(f)}</li>`).join('')}</ul><button class="e-btn" style="background:${p.featured?el.featuredColor:'#e5e7eb'};color:${p.featured?'#fff':el.textColor};width:100%">Elegir</button></div>`).join('')}</div>`;
   else if(T === 'video') html = `<video class="e-video" src="${el.src}" ${el.controls?'controls':''} ${el.autoplay?'autoplay':''} ${el.loop?'loop':''} ${el.muted?'muted':''} style="width:100%;height:100%"></video>`;
   else if(T === 'audio') html = `<audio class="e-audio" src="${el.src}" ${el.controls?'controls':''} style="width:100%"></audio>`;
   else if(T === 'iframe') html = `<iframe class="e-iframe" src="${el.src}" allowfullscreen loading="lazy"></iframe>`;
-  else if(T === 'testimonial') html = `<div class="e-testimonial"><img src="${el.avatar}" draggable="false"><div><p class="e-testimonial-text">"${esc(el.text)}"</p><p class="e-testimonial-author">${esc(el.author)}</p><p class="e-testimonial-role">${esc(el.role)}</p></div></div>`;
+  else if(T === 'testimonial') html = `<div class="e-testimonial" style="background:${el.bgColor};border-color:${el.borderColor}"><img src="${el.avatar}" draggable="false"><div><p class="e-testimonial-text" style="color:${el.textColor}">"${esc(el.text)}"</p><p class="e-testimonial-author" style="color:${el.authorColor}">${esc(el.author)}</p><p class="e-testimonial-role" style="color:${el.roleColor}">${esc(el.role)}</p></div></div>`;
   else if(T === 'form'){
     const f = (el.fields||[]).map(x => {
       const req = x.required ? 'required' : '';
-      if(x.type === 'textarea') return `<div><label class="e-label">${esc(x.label||'')}</label><textarea class="e-input" placeholder="${esc(x.placeholder||'')}" rows="3" ${req}></textarea></div>`;
-      return `<div><label class="e-label">${esc(x.label||'')}</label><input type="${x.type||'text'}" class="e-input" placeholder="${esc(x.placeholder||'')}" ${req}></div>`;
+      if(x.type === 'textarea') return `<div><label class="e-label" style="color:${el.labelColor}">${esc(x.label||'')}</label><textarea class="e-input" placeholder="${esc(x.placeholder||'')}" rows="3" ${req}></textarea></div>`;
+      return `<div><label class="e-label" style="color:${el.labelColor}">${esc(x.label||'')}</label><input type="${x.type||'text'}" class="e-input" placeholder="${esc(x.placeholder||'')}" ${req}></div>`;
     }).join('');
-    html = `<form class="e-form" onsubmit="event.preventDefault();alert('Formulario enviado')">${f}<button type="submit" class="e-btn" style="background:#3b82f6;color:#fff">${esc(el.buttonText||'Enviar')}</button></form>`;
+    html = `<form class="e-form" style="background:${el.bgColor}" onsubmit="event.preventDefault();alert('Formulario enviado')">${f}<button type="submit" class="e-btn" style="background:${el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText||'Enviar')}</button></form>`;
   }
   else if(T === 'input'){
     const req = el.required ? 'required' : '';
     const val = el.value !== undefined ? `value="${el.value}"` : '';
-    html = `<div><label class="e-label">${esc(el.label||'')}</label><input type="${el.inputType||'text'}" class="e-input" placeholder="${esc(el.placeholder||'')}" ${req} ${val}></div>`;
+    html = `<div><label class="e-label" style="color:${el.labelColor}">${esc(el.label||'')}</label><input type="${el.inputType||'text'}" class="e-input" placeholder="${esc(el.placeholder||'')}" ${req} ${val}></div>`;
   }
-  else if(T === 'select') html = `<div><label class="e-label">${esc(el.label||'')}</label><select class="e-input">${el.options.map(o=>`<option>${esc(o)}</option>`).join('')}</select></div>`;
-  else if(T === 'checkbox') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="checkbox" ${el.checked?'checked':''}> ${esc(el.label)}</label>`;
-  else if(T === 'radio') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="radio" name="${el.name}" value="${el.value}"> ${esc(el.label)}</label>`;
-  else if(T === 'textarea') html = `<div><label class="e-label">${esc(el.label||'')}</label><textarea class="e-input" placeholder="${esc(el.placeholder||'')}" rows="3"></textarea></div>`;
-  else if(T === 'details') html = `<details class="e-details"><summary>${esc(el.summary)}</summary><div class="details-content">${el.content}</div></details>`;
+  else if(T === 'select') html = `<div><label class="e-label" style="color:${el.labelColor}">${esc(el.label||'')}</label><select class="e-input">${el.options.map(o=>`<option>${esc(o)}</option>`).join('')}</select></div>`;
+  else if(T === 'checkbox') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:${el.color}"><input type="checkbox" ${el.checked?'checked':''}> ${esc(el.label)}</label>`;
+  else if(T === 'radio') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:${el.color}"><input type="radio" name="${el.name}" value="${el.value}"> ${esc(el.label)}</label>`;
+  else if(T === 'textarea') html = `<div><label class="e-label" style="color:${el.labelColor}">${esc(el.label||'')}</label><textarea class="e-input" placeholder="${esc(el.placeholder||'')}" rows="3"></textarea></div>`;
+  else if(T === 'details') html = `<details class="e-details" style="border-color:${el.borderColor}"><summary style="background:${el.summaryBg};color:${el.summaryColor}">${esc(el.summary)}</summary><div class="details-content" style="color:${el.textColor}">${el.content}</div></details>`;
   else if(T === 'alert'){
     const ic = { info:'fa-circle-info', success:'fa-circle-check', warning:'fa-triangle-exclamation', danger:'fa-triangle-exclamation' };
     html = `<div class="e-alert e-alert-${el.alertType}"><i class="fa-solid ${ic[el.alertType]}"></i><div>${esc(el.text)}</div></div>`;
   }
-  else if(T === 'ribbon') html = `<div class="e-ribbon" style="background:${el.bgColor}">${esc(el.text)}</div>`;
+  else if(T === 'ribbon') html = `<div class="e-ribbon" style="background:${el.bgColor};color:${el.color}">${esc(el.text)}</div>`;
   else if(T === 'icon'){
     const ih = `<i class="fa-solid ${el.icon}" style="font-size:${el.size}px;color:${el.color}"></i>`;
     html = el.href ? `<a href="${el.href}" target="_blank" style="color:inherit">${ih}</a>` : ih;
   }
   else if(T === 'social') html = `<a href="${el.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:${el.shape==='circle'?'50%':'8px'};background:${el.color};color:#fff;text-decoration:none"><i class="${el.icon}" style="font-size:${el.size}px"></i></a>`;
-  else if(T === 'socials') html = `<div class="e-socials">${el.icons.map(ic=>`<a href="#" class="e-social" style="background:#3b82f6"><i class="${ic}"></i></a>`).join('')}</div>`;
-  else if(T === 'timeline') html = `<div class="e-timeline">${el.items.map(it=>`<div class="e-timeline-item"><div class="e-timeline-date">${esc(it.date)}</div><h4 class="e-timeline-title">${esc(it.title)}</h4><p class="e-timeline-text">${esc(it.text)}</p></div>`).join('')}</div>`;
-  else if(T === 'whatsapp') html = `<a href="${el.href}" target="_blank" class="e-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>`;
+  else if(T === 'socials') html = `<div class="e-socials">${el.icons.map(ic=>`<a href="#" class="e-social" style="background:${el.color}"><i class="${ic}"></i></a>`).join('')}</div>`;
+  else if(T === 'timeline') html = `<div class="e-timeline">${el.items.map(it=>`<div class="e-timeline-item" style="--line-color:${el.lineColor};--dot-color:${el.dotColor}"><div class="e-timeline-date" style="color:${el.dateColor}">${esc(it.date)}</div><h4 class="e-timeline-title" style="color:${el.titleColor}">${esc(it.title)}</h4><p class="e-timeline-text" style="color:${el.textColor}">${esc(it.text)}</p></div>`).join('')}</div>`;
+  else if(T === 'whatsapp') html = `<a href="${el.href}" target="_blank" class="e-whatsapp" style="background:${el.color}"><i class="fa-brands fa-whatsapp"></i></a>`;
   else html = '';
 
   if(!dom.querySelector('[contenteditable="true"]')) dom.innerHTML = html;
@@ -826,13 +827,14 @@ function syncDOM(dom, el){
   if(T === 'cardcarousel') initCardCarousel(dom, el);
 }
 
-/* ========== NAVBAR (NUEVO) ========== */
+/* ========== NAVBAR ========== */
 function buildNavbar(el){
   const links = el.navLinks || [];
   const bg = el.bgColor || '#ffffff';
   const textColor = el.textColor || '#4b5563';
   const brandColor = el.brandColor || '#1f2937';
-  let h = `<nav class="e-nav" style="background:${bg}">`;
+  const borderBottom = el.borderBottom || '1px solid #e5e7eb';
+  let h = `<nav class="e-nav" style="background:${bg};border-bottom:${borderBottom}">`;
   h += `<a href="${el.brandHref||'#'}" class="e-nav-logo" style="color:${brandColor}">${esc(el.brand)}</a>`;
   h += `<ul class="e-nav-links">`;
   links.forEach(l => {
@@ -842,17 +844,25 @@ function buildNavbar(el){
   return h;
 }
 
+/* ========== CARD ========== */
 function buildCard(el){
   const style = el.cardStyle || 'basic';
   const imgH = el.imgHeight || 180;
   const btnStyle = `background:${el.buttonColor||'#3b82f6'};color:#fff`;
-  if(style === 'basic') return `<div class="tcard">${el.img?`<img src="${el.img}" class="tcard-img" style="height:${imgH}px" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title">${esc(el.title)}</h3><p class="tcard-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
-  if(style === 'horizontal') return `<div class="tcard tcard-horizontal">${el.img?`<img src="${el.img}" class="tcard-img" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title">${esc(el.title)}</h3><p class="tcard-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
-  if(style === 'overlay') return `<div class="tcard tcard-overlay"><img src="${el.img}" class="tcard-overlay-img" draggable="false"><div class="tcard-overlay-body"><h3 class="tcard-overlay-title">${esc(el.title)}</h3><p class="tcard-overlay-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
-  if(style === 'circle') return `<div class="tcard tcard-circle">${el.img?`<img src="${el.img}" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title">${esc(el.title)}</h3><p class="tcard-text">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  const cardBg = el.bgColor || '#ffffff';
+  const titleColor = el.titleColor || '#1f2937';
+  const textColor = el.textColor || '#6b7280';
+  const titleStyle = `color:${titleColor}`;
+  const textStyle = `color:${textColor}`;
+  const bgStyle = `background:${cardBg}`;
+  if(style === 'basic') return `<div class="tcard" style="${bgStyle}">${el.img?`<img src="${el.img}" class="tcard-img" style="height:${imgH}px" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  if(style === 'horizontal') return `<div class="tcard tcard-horizontal" style="${bgStyle}">${el.img?`<img src="${el.img}" class="tcard-img" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  if(style === 'overlay') return `<div class="tcard tcard-overlay"><img src="${el.img}" class="tcard-overlay-img" draggable="false"><div class="tcard-overlay-body"><h3 class="tcard-overlay-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-overlay-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  if(style === 'circle') return `<div class="tcard tcard-circle" style="${bgStyle}">${el.img?`<img src="${el.img}" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
   return '';
 }
 
+/* ========== CARRUSEL ========== */
 function buildCarousel(el){
   const effect = el.transition || 'fade';
   let h = `<div class="carousel" data-autoplay="${el.autoplay}" data-interval="${el.interval||3000}" data-transition="${effect}">`;
@@ -862,8 +872,15 @@ function buildCarousel(el){
     else if(effect === 'slide') extra += `transform:translateX(${i===0?'0%':'100%'});position:absolute;`;
     h += `<img src="${img}" class="carousel-slide ${i===0?'active':''}" style="object-fit:cover;width:100%;height:100%;${extra}" draggable="false" data-i="${i}">`;
   });
-  if(el.showArrows && el.images.length > 0){ h += `<button class="carousel-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="carousel-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>`; }
-  if(el.showDots && el.images.length > 0){ h += `<div class="carousel-dots">`; el.images.forEach((_, i) => h += `<div class="carousel-dot ${i===0?'active':''}" data-i="${i}"></div>`); h += `</div>`; }
+  if(el.showArrows && el.images.length > 0){
+    const arrowStyle = `background:${el.arrowBg||'rgba(0,0,0,0.6)'};color:${el.arrowColor||'#fff'}`;
+    h += `<button class="carousel-arrow prev" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-left"></i></button><button class="carousel-arrow next" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-right"></i></button>`;
+  }
+  if(el.showDots && el.images.length > 0){
+    h += `<div class="carousel-dots">`;
+    el.images.forEach((_, i) => h += `<div class="carousel-dot ${i===0?'active':''}" data-i="${i}" style="background:${i===0?(el.dotColor||'#fff'):'rgba(255,255,255,0.5)'}"></div>`);
+    h += `</div>`;
+  }
   h += `</div>`;
   return h;
 }
@@ -875,6 +892,7 @@ function initCarousel(dom, el){
   const dots = container.querySelectorAll('.carousel-dot');
   if(!slides.length) return;
   const effect = el.transition || 'fade';
+  const dotColor = el.dotColor || '#ffffff';
   const update = n => {
     idx = (n + slides.length) % slides.length;
     slides.forEach((s, i) => {
@@ -883,7 +901,10 @@ function initCarousel(dom, el){
       else if(effect === 'slide'){ s.style.transform = `translateX(${(i-idx)*100}%)`; s.style.opacity = '1'; }
     });
     slides[idx].classList.add('active');
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+      d.style.background = i === idx ? dotColor : 'rgba(255,255,255,0.5)';
+    });
   };
   const prev = container.querySelector('.prev');
   const next = container.querySelector('.next');
@@ -893,14 +914,18 @@ function initCarousel(dom, el){
   if(el.autoplay && el.interval){ if(container._timer) clearInterval(container._timer); container._timer = setInterval(() => update(idx+1), el.interval); }
 }
 
+/* ========== GALERÍA ========== */
 function buildGallery(el){
   const total = el.images.length;
   const perView = el.itemsPerView || 3;
   const gap = el.gap || 8;
-  let h = `<div class="gallery-wrap" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||2500}"><div class="gallery-track" style="gap:${gap}px">`;
+  let h = `<div class="gallery-wrap" style="background:${el.bgColor||'#f3f4f6'}" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||2500}"><div class="gallery-track" style="gap:${gap}px">`;
   el.images.forEach((img, i) => { h += `<div class="gallery-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})"><img src="${img}" draggable="false" data-i="${i}"></div>`; });
   h += `</div>`;
-  if(el.showArrows && total > perView){ h += `<button class="gallery-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>`; }
+  if(el.showArrows && total > perView){
+    const arrowStyle = `background:${el.arrowBg||'rgba(0,0,0,0.55)'};color:${el.arrowColor||'#fff'}`;
+    h += `<button class="gallery-arrow prev" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-arrow next" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-right"></i></button>`;
+  }
   if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += `<div class="gallery-dots">`; for(let i = 0; i < pages; i++) h += `<div class="gallery-dot ${i===0?'active':''}" data-page="${i}"></div>`; h += `</div>`; }
   h += `</div>`;
   return h;
@@ -933,14 +958,18 @@ function initGallery(dom, el){
   if(el.autoplay && el.interval && pages > 1){ if(wrap._timer) clearInterval(wrap._timer); wrap._timer = setInterval(() => go(page+1), el.interval); }
 }
 
+/* ========== CARRUSEL TARJETAS ========== */
 function buildCardCarousel(el){
   const cards = el.cards || [];
   const perView = el.itemsPerView || 3;
   const gap = el.gap || 16;
   const total = cards.length;
+  const cardBg = el.bgColor || '#ffffff';
+  const titleColor = el.titleColor || '#1f2937';
+  const textColor = el.textColor || '#6b7280';
   let h = `<div class="cardcar-wrap" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||3000}"><div class="cardcar-track" style="gap:${gap}px">`;
   cards.forEach((c, i) => {
-    h += `<div class="cardcar-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})">${c.img ? `<img src="${c.img}" class="cardcar-img" draggable="false">` : ''}<div class="cardcar-body"><h3 class="cardcar-title">${esc(c.title)}</h3><p class="cardcar-text">${esc(c.text)}</p>${c.buttonText ? `<a href="${c.buttonHref||'#'}" class="cardcar-btn" style="background:${c.buttonColor||'#3b82f6'}">${esc(c.buttonText)}</a>` : ''}</div></div>`;
+    h += `<div class="cardcar-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView});background:${cardBg}">${c.img ? `<img src="${c.img}" class="cardcar-img" draggable="false">` : ''}<div class="cardcar-body"><h3 class="cardcar-title" style="color:${titleColor}">${esc(c.title)}</h3><p class="cardcar-text" style="color:${textColor}">${esc(c.text)}</p>${c.buttonText ? `<a href="${c.buttonHref||'#'}" class="cardcar-btn" style="background:${c.buttonColor||'#3b82f6'}">${esc(c.buttonText)}</a>` : ''}</div></div>`;
   });
   h += `</div>`;
   if(el.showArrows && total > perView){ h += `<button class="cardcar-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="cardcar-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>`; }
@@ -1028,6 +1057,7 @@ function onDrag(e){
 }
 function endDrag(){ if(drag) saveHistory(); drag = null; document.removeEventListener('mousemove', onDrag); document.removeEventListener('mouseup', endDrag); }
 
+/* ========== TOOLS ========== */
 function renderTools(filter){
   filter = filter || '';
   const box = document.getElementById('tab-tools');
@@ -1130,10 +1160,41 @@ function renderProps(){
   propsPanel.appendChild(row([inp('number','Opacidad', el.opacity, v => upd('opacity', parseFloat(v))), inp('number','z-index', el.zIndex, v => upd('zIndex', parseInt(v)))]));
 
   const T = el.type;
+
+  // ===== COLORES ESPECÍFICOS POR TIPO =====
   if(T === 'heading' || T === 'paragraph' || T === 'blockquote'){
     propsPanel.appendChild(secH('Texto'));
     propsPanel.appendChild(inp('text','Contenido', el.text, v => upd('text', v)));
     propsPanel.appendChild(row([inp('number','Tamaño', el.fontSize, v => upd('fontSize', parseFloat(v))), colInp('Color', el.color, v => upd('color', v))]));
+  }
+  else if(T === 'code'){
+    propsPanel.appendChild(secH('Código'));
+    propsPanel.appendChild(textar('Código', el.text, v => upd('text', v)));
+    propsPanel.appendChild(colInp('Fondo', el.codeBg, v => upd('codeBg', v)));
+    propsPanel.appendChild(colInp('Color texto', el.codeColor, v => upd('codeColor', v)));
+  }
+  else if(T === 'list'){
+    propsPanel.appendChild(secH('Lista'));
+    propsPanel.appendChild(textar('Elementos (uno por línea)', el.items.join('\n'), v => upd('items', v.split('\n').filter(x=>x.trim()))));
+    propsPanel.appendChild(chk('Numerada', el.ordered, v => upd('ordered', v)));
+    propsPanel.appendChild(colInp('Color texto', el.color, v => upd('color', v)));
+  }
+  else if(T === 'checklist'){
+    propsPanel.appendChild(secH('Lista check'));
+    propsPanel.appendChild(textar('Elementos (uno por línea)', el.items.join('\n'), v => upd('items', v.split('\n').filter(x=>x.trim()))));
+    propsPanel.appendChild(colInp('Color texto', el.color, v => upd('color', v)));
+    propsPanel.appendChild(colInp('Color check ✓', el.checkColor, v => upd('checkColor', v)));
+  }
+  else if(T === 'badge'){
+    propsPanel.appendChild(secH('Etiqueta'));
+    propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
+    propsPanel.appendChild(colInp('Color fondo', el.bgColor, v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.color, v => upd('color', v)));
+  }
+  else if(T === 'stars'){
+    propsPanel.appendChild(secH('Estrellas'));
+    propsPanel.appendChild(inp('number','Cantidad (1-5)', el.count, v => upd('count', Math.min(5, Math.max(1, parseInt(v))))));
+    propsPanel.appendChild(colInp('Color estrellas', el.color, v => upd('color', v)));
   }
   else if(T === 'button' || T === 'link'){
     propsPanel.appendChild(secH('Botón/Enlace'));
@@ -1142,11 +1203,19 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Icono (fa-star)', el.icon||'', v => upd('icon', v)));
     propsPanel.appendChild(row([colInp('Fondo', el.bgColor, v => upd('bgColor', v)), colInp('Texto', el.color, v => upd('color', v))]));
   }
-  else if(T === 'image' || T === 'imgOverlay'){
+  else if(T === 'image'){
     propsPanel.appendChild(secH('Imagen'));
     propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v)));
-    if(el.title !== undefined) propsPanel.appendChild(inp('text','Título', el.title, v => upd('title', v)));
-    if(el.subtitle !== undefined) propsPanel.appendChild(inp('text','Subtítulo', el.subtitle, v => upd('subtitle', v)));
+    propsPanel.appendChild(inp('text','Alt', el.alt||'', v => upd('alt', v)));
+    propsPanel.appendChild(sel('Ajuste', el.objectFit, [{value:'cover',label:'Cover'},{value:'contain',label:'Contain'},{value:'fill',label:'Fill'}], v => upd('objectFit', v)));
+    propsPanel.appendChild(inp('text','Enlace', el.href||'', v => upd('href', v)));
+  }
+  else if(T === 'imgOverlay'){
+    propsPanel.appendChild(secH('Imagen overlay'));
+    propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v)));
+    propsPanel.appendChild(inp('text','Título', el.title, v => upd('title', v)));
+    propsPanel.appendChild(inp('text','Subtítulo', el.subtitle, v => upd('subtitle', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#ffffff', v => upd('textColor', v)));
   }
   else if(T === 'card'){
     propsPanel.appendChild(secH('Tarjeta'));
@@ -1156,70 +1225,143 @@ function renderProps(){
     propsPanel.appendChild(textar('Descripción', el.text, v => upd('text', v)));
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText||'', v => upd('buttonText', v)));
     propsPanel.appendChild(inp('text','URL botón', el.buttonHref||'', v => upd('buttonHref', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo tarjeta', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color título', el.titleColor||'#1f2937', v => upd('titleColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color botón', el.buttonColor||'#3b82f6', v => upd('buttonColor', v)));
+  }
+  else if(T === 'carousel'){
+    propsPanel.appendChild(secH('Carrusel'));
+    propsPanel.appendChild(chk('Autoplay', el.autoplay, v => upd('autoplay', v)));
+    if(el.autoplay) propsPanel.appendChild(inp('number','Intervalo (ms)', el.interval||3000, v => upd('interval', parseInt(v))));
+    propsPanel.appendChild(chk('Flechas', el.showArrows, v => upd('showArrows', v)));
+    propsPanel.appendChild(chk('Indicadores', el.showDots, v => upd('showDots', v)));
+    propsPanel.appendChild(sel('Efecto', el.transition||'fade', [{value:'fade',label:'Desvanecer'},{value:'slide',label:'Deslizar'}], v => upd('transition', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Color flechas', el.arrowColor||'#ffffff', v => upd('arrowColor', v)));
+    propsPanel.appendChild(colInp('Color puntos', el.dotColor||'#ffffff', v => upd('dotColor', v)));
+    propsPanel.appendChild(secH('Imágenes'));
+    const imgBox = document.createElement('div');
+    (el.images || []).forEach((url, i) => {
+      const r = document.createElement('div');
+      r.style.cssText = 'display:flex;gap:6px;margin-bottom:6px';
+      r.innerHTML = '<input type="text" class="ci" value="' + esc(url) + '" data-i="' + i + '" style="flex:1;padding:4px"><button class="btn-s" style="padding:4px 8px;background:#fef2f2;color:#dc2626;font-size:11px" data-del="' + i + '"><i class="fa-solid fa-trash"></i></button>';
+      imgBox.appendChild(r);
+    });
+    const addImg = document.createElement('button');
+    addImg.className = 'btn-s'; addImg.style.cssText = 'width:100%;font-size:12px;margin-top:4px';
+    addImg.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir imagen';
+    addImg.onclick = () => { el.images.push('https://placehold.co/900x500/e2e8f0/475569?text=Nueva'); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    imgBox.appendChild(addImg); propsPanel.appendChild(imgBox);
+    imgBox.querySelectorAll('input[data-i]').forEach(inp2 => { inp2.onchange = () => { el.images[parseInt(inp2.dataset.i)] = inp2.value; saveHistory(); syncDOM(document.getElementById(el.id), el); }; });
+    imgBox.querySelectorAll('button[data-del]').forEach(b => { b.onclick = () => { el.images.splice(parseInt(b.dataset.del), 1); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); }; });
+  }
+  else if(T === 'gallery'){
+    propsPanel.appendChild(secH('Galería'));
+    propsPanel.appendChild(chk('Autoplay', el.autoplay, v => upd('autoplay', v)));
+    if(el.autoplay) propsPanel.appendChild(inp('number','Intervalo (ms)', el.interval||2500, v => upd('interval', parseInt(v))));
+    propsPanel.appendChild(chk('Flechas', el.showArrows, v => upd('showArrows', v)));
+    propsPanel.appendChild(chk('Indicadores', el.showDots, v => upd('showDots', v)));
+    propsPanel.appendChild(inp('number','Visibles', el.itemsPerView||3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
+    propsPanel.appendChild(inp('number','Separación', el.gap||8, v => upd('gap', parseInt(v))));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#f3f4f6', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color flechas', el.arrowColor||'#ffffff', v => upd('arrowColor', v)));
+    propsPanel.appendChild(secH('Imágenes'));
+    const imgBox = document.createElement('div');
+    (el.images || []).forEach((url, i) => {
+      const r = document.createElement('div');
+      r.style.cssText = 'display:flex;gap:6px;margin-bottom:6px';
+      r.innerHTML = '<input type="text" class="ci" value="' + esc(url) + '" data-i="' + i + '" style="flex:1;padding:4px"><button class="btn-s" style="padding:4px 8px;background:#fef2f2;color:#dc2626;font-size:11px" data-del="' + i + '"><i class="fa-solid fa-trash"></i></button>';
+      imgBox.appendChild(r);
+    });
+    const addImg = document.createElement('button');
+    addImg.className = 'btn-s'; addImg.style.cssText = 'width:100%;font-size:12px;margin-top:4px';
+    addImg.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir imagen';
+    addImg.onclick = () => { el.images.push('https://placehold.co/400x300/e2e8f0/475569?text=Nueva'); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    imgBox.appendChild(addImg); propsPanel.appendChild(imgBox);
+    imgBox.querySelectorAll('input[data-i]').forEach(inp2 => { inp2.onchange = () => { el.images[parseInt(inp2.dataset.i)] = inp2.value; saveHistory(); syncDOM(document.getElementById(el.id), el); }; });
+    imgBox.querySelectorAll('button[data-del]').forEach(b => { b.onclick = () => { el.images.splice(parseInt(b.dataset.del), 1); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); }; });
+  }
+  else if(T === 'cardcarousel'){
+    propsPanel.appendChild(secH('Carrusel de tarjetas'));
+    propsPanel.appendChild(chk('Autoplay', el.autoplay, v => upd('autoplay', v)));
+    if(el.autoplay) propsPanel.appendChild(inp('number','Intervalo (ms)', el.interval||3000, v => upd('interval', parseInt(v))));
+    propsPanel.appendChild(chk('Flechas', el.showArrows, v => upd('showArrows', v)));
+    propsPanel.appendChild(chk('Indicadores', el.showDots, v => upd('showDots', v)));
+    propsPanel.appendChild(inp('number','Visibles', el.itemsPerView||3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
+    propsPanel.appendChild(inp('number','Separación', el.gap||16, v => upd('gap', parseInt(v))));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo tarjetas', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color título', el.titleColor||'#1f2937', v => upd('titleColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
+    propsPanel.appendChild(secH('📋 Tarjetas'));
+    const cardsBox = document.createElement('div');
+    (el.cards || []).forEach((c, i) => {
+      const item = document.createElement('div');
+      item.style.cssText = 'border:1px solid #e5e7eb;border-radius:8px;padding:8px;margin-bottom:8px;background:#f9fafb';
+      item.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <strong style="font-size:11px;color:#6b7280">TARJETA ${i+1}</strong>
+          <button class="btn-s" style="padding:2px 6px;background:#fef2f2;color:#dc2626;font-size:10px;border-radius:4px;border:none;cursor:pointer" data-del="${i}"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <input type="text" class="ci" placeholder="URL imagen" value="${esc(c.img||'')}" data-i="${i}" data-k="img" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <input type="text" class="ci" placeholder="Título" value="${esc(c.title||'')}" data-i="${i}" data-k="title" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <textarea class="ci" placeholder="Descripción" data-i="${i}" data-k="text" rows="2" style="margin-bottom:4px;padding:5px;font-size:12px">${esc(c.text||'')}</textarea>
+        <input type="text" class="ci" placeholder="Texto botón" value="${esc(c.buttonText||'')}" data-i="${i}" data-k="buttonText" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <input type="text" class="ci" placeholder="URL botón" value="${esc(c.buttonHref||'')}" data-i="${i}" data-k="buttonHref" style="margin-bottom:4px;padding:5px;font-size:12px">
+        <div style="display:flex;gap:6px;align-items:center">
+          <label style="font-size:10px;color:#6b7280">Color botón:</label>
+          <input type="color" value="${c.buttonColor||'#3b82f6'}" data-i="${i}" data-k="buttonColor" style="width:36px;height:24px;border:none;border-radius:4px;cursor:pointer">
+        </div>
+      `;
+      cardsBox.appendChild(item);
+    });
+    const addCard = document.createElement('button');
+    addCard.className = 'btn-s'; addCard.style.cssText = 'width:100%;font-size:12px;margin-top:4px';
+    addCard.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir tarjeta';
+    addCard.onclick = () => { el.cards.push({ img:'https://placehold.co/400x300/e2e8f0/475569?text=Nueva', title:'Nueva tarjeta', text:'Descripción', buttonText:'Ver más', buttonHref:'#', buttonColor:'#3b82f6' }); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    cardsBox.appendChild(addCard); propsPanel.appendChild(cardsBox);
+    cardsBox.querySelectorAll('input[data-k],textarea[data-k]').forEach(inp2 => { inp2.onchange = () => { const i = parseInt(inp2.dataset.i); el.cards[i][inp2.dataset.k] = inp2.value; saveHistory(); syncDOM(document.getElementById(el.id), el); }; });
+    cardsBox.querySelectorAll('button[data-del]').forEach(b => { b.onclick = () => { el.cards.splice(parseInt(b.dataset.del), 1); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); }; });
   }
   else if(T === 'navbar'){
     propsPanel.appendChild(secH('🎯 Barra de navegación'));
-    propsPanel.appendChild(inp('text','Marca (texto)', el.brand, v => upd('brand', v)));
+    propsPanel.appendChild(inp('text','Marca', el.brand, v => upd('brand', v)));
     propsPanel.appendChild(inp('text','URL de la marca', el.brandHref||'#', v => upd('brandHref', v)));
-
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo barra', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color marca', el.brandColor||'#1f2937', v => upd('brandColor', v)));
+    propsPanel.appendChild(colInp('Color botones', el.textColor||'#4b5563', v => upd('textColor', v)));
     propsPanel.appendChild(secH('🔗 Botones del menú'));
     const navBox = document.createElement('div');
     (el.navLinks || []).forEach((link, i) => {
       const row = document.createElement('div');
       row.className = 'nav-link-edit';
       row.innerHTML = `
-        <label>Texto del botón ${i+1}</label>
-        <div class="nav-row">
-          <input type="text" data-i="${i}" data-k="text" value="${esc(link.text)}" placeholder="Ej: Inicio">
-        </div>
+        <label>Texto ${i+1}</label>
+        <div class="nav-row"><input type="text" data-i="${i}" data-k="text" value="${esc(link.text)}" placeholder="Ej: Inicio"></div>
         <label>URL destino</label>
-        <div class="nav-row">
-          <input type="text" data-i="${i}" data-k="href" value="${esc(link.href)}" placeholder="https://... o #seccion">
-        </div>
+        <div class="nav-row"><input type="text" data-i="${i}" data-k="href" value="${esc(link.href)}" placeholder="#seccion"></div>
         <label>¿Abrir en?</label>
         <div class="nav-row">
           <select data-i="${i}" data-k="target" style="flex:1;padding:5px 8px;font-size:12px;border:1px solid #d1d5db;border-radius:4px">
             <option value="_self"${link.target==='_self'?' selected':''}>Misma pestaña</option>
             <option value="_blank"${link.target==='_blank'?' selected':''}>Nueva pestaña</option>
           </select>
-          <button class="del-btn" data-del="${i}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+          <button class="del-btn" data-del="${i}"><i class="fa-solid fa-trash"></i></button>
         </div>
       `;
       navBox.appendChild(row);
     });
     const addBtn = document.createElement('button');
-    addBtn.className = 'btn-s';
-    addBtn.style.cssText = 'width:100%;font-size:12px;padding:8px;margin-top:4px';
+    addBtn.className = 'btn-s'; addBtn.style.cssText = 'width:100%;font-size:12px;padding:8px;margin-top:4px';
     addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Añadir botón';
-    addBtn.onclick = () => {
-      el.navLinks = el.navLinks || [];
-      el.navLinks.push({ text:'Nuevo', href:'#', target:'_self' });
-      saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el);
-    };
-    navBox.appendChild(addBtn);
-    propsPanel.appendChild(navBox);
-
-    // Eventos de inputs
-    navBox.querySelectorAll('input[data-k], select[data-k]').forEach(inp2 => {
-      inp2.onchange = () => {
-        const i = parseInt(inp2.dataset.i);
-        el.navLinks[i][inp2.dataset.k] = inp2.value;
-        saveHistory();
-        syncDOM(document.getElementById(el.id), el);
-      };
-    });
-    navBox.querySelectorAll('button[data-del]').forEach(b => {
-      b.onclick = () => {
-        el.navLinks.splice(parseInt(b.dataset.del), 1);
-        saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el);
-      };
-    });
-
-    propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo barra', el.bgColor||'#ffffff', v => upd('bgColor', v)));
-    propsPanel.appendChild(colInp('Color marca', el.brandColor||'#1f2937', v => upd('brandColor', v)));
-    propsPanel.appendChild(colInp('Color botones', el.textColor||'#4b5563', v => upd('textColor', v)));
+    addBtn.onclick = () => { el.navLinks = el.navLinks || []; el.navLinks.push({ text:'Nuevo', href:'#', target:'_self' }); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); };
+    navBox.appendChild(addBtn); propsPanel.appendChild(navBox);
+    navBox.querySelectorAll('input[data-k], select[data-k]').forEach(inp2 => { inp2.onchange = () => { el.navLinks[parseInt(inp2.dataset.i)][inp2.dataset.k] = inp2.value; saveHistory(); syncDOM(document.getElementById(el.id), el); }; });
+    navBox.querySelectorAll('button[data-del]').forEach(b => { b.onclick = () => { el.navLinks.splice(parseInt(b.dataset.del), 1); saveHistory(); renderProps(); syncDOM(document.getElementById(el.id), el); }; });
   }
   else if(T === 'hero'){
     propsPanel.appendChild(secH('Hero'));
@@ -1227,22 +1369,94 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Subtítulo', el.subtitle, v => upd('subtitle', v)));
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText, v => upd('buttonText', v)));
     propsPanel.appendChild(inp('text','URL botón', el.buttonHref, v => upd('buttonHref', v)));
-    propsPanel.appendChild(colInp('Color fondo', el.bgColor, v => upd('bgColor', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo arriba', el.bgColor, v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Fondo abajo', el.bgColor2||'#8b5cf6', v => upd('bgColor2', v)));
+    propsPanel.appendChild(colInp('Color título', el.titleColor||'#ffffff', v => upd('titleColor', v)));
+    propsPanel.appendChild(colInp('Color subtítulo', el.textColor||'#ffffff', v => upd('textColor', v)));
+    propsPanel.appendChild(colInp('Color botón fondo', el.buttonColor||'#ffffff', v => upd('buttonColor', v)));
+    propsPanel.appendChild(colInp('Color texto botón', el.buttonTextColor||'#3b82f6', v => upd('buttonTextColor', v)));
   }
   else if(T === 'footer'){
     propsPanel.appendChild(secH('Footer'));
     propsPanel.appendChild(inp('text','Título', el.title, v => upd('title', v)));
     propsPanel.appendChild(textar('Texto', el.text, v => upd('text', v)));
     propsPanel.appendChild(chk('Mostrar redes', el.socials, v => upd('socials', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#1f2937', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color título', el.titleColor||'#ffffff', v => upd('titleColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#9ca3af', v => upd('textColor', v)));
+    propsPanel.appendChild(colInp('Color iconos redes', el.socialColor||'#9ca3af', v => upd('socialColor', v)));
+  }
+  else if(T === 'divider'){
+    propsPanel.appendChild(secH('Separador'));
+    propsPanel.appendChild(colInp('Color', el.color, v => upd('color', v)));
+  }
+  else if(T === 'sepIcon'){
+    propsPanel.appendChild(secH('Separador con icono'));
+    propsPanel.appendChild(inp('text','Icono (fa-star)', el.icon, v => upd('icon', v)));
+    propsPanel.appendChild(colInp('Color icono', el.color||'#3b82f6', v => upd('color', v)));
+    propsPanel.appendChild(colInp('Color líneas', el.lineColor||'#e5e7eb', v => upd('lineColor', v)));
   }
   else if(T === 'progress'){
     propsPanel.appendChild(secH('Progreso'));
     propsPanel.appendChild(row([inp('number','Valor', el.value, v => upd('value', parseFloat(v))), inp('number','Máximo', el.max, v => upd('max', parseFloat(v)))]));
+    propsPanel.appendChild(chk('Mostrar etiqueta', el.showLabel, v => upd('showLabel', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo barra', el.bgColor||'#e5e7eb', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color barra', el.barColor||'#3b82f6', v => upd('barColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#ffffff', v => upd('textColor', v)));
+  }
+  else if(T === 'circleProgress'){
+    propsPanel.appendChild(secH('Progreso circular'));
+    propsPanel.appendChild(inp('number','Valor (0-100)', el.value, v => upd('value', Math.min(100, Math.max(0, parseFloat(v))))));
+    propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo círculo', el.bgColor||'#e5e7eb', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color progreso', el.barColor||'#3b82f6', v => upd('barColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#3b82f6', v => upd('textColor', v)));
   }
   else if(T === 'counter'){
     propsPanel.appendChild(secH('Contador'));
     propsPanel.appendChild(inp('number','Valor', el.value, v => upd('value', parseFloat(v))));
     propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
+    propsPanel.appendChild(colInp('Color número', el.numColor||'#3b82f6', v => upd('numColor', v)));
+    propsPanel.appendChild(colInp('Color etiqueta', el.labelColor||'#6b7280', v => upd('labelColor', v)));
+  }
+  else if(T === 'stats'){
+    propsPanel.appendChild(secH('Estadísticas'));
+    propsPanel.appendChild(colInp('Color números', el.numColor||'#3b82f6', v => upd('numColor', v)));
+    propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#6b7280', v => upd('labelColor', v)));
+  }
+  else if(T === 'countdown'){
+    propsPanel.appendChild(secH('Cuenta atrás'));
+    propsPanel.appendChild(row([inp('number','Días', el.days, v => upd('days', v)), inp('number','Horas', el.hours, v => upd('hours', v))]));
+    propsPanel.appendChild(row([inp('number','Min', el.minutes, v => upd('minutes', v)), inp('number','Seg', el.seconds, v => upd('seconds', v))]));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo cajas', el.bgColor||'#1f2937', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color números', el.numColor||'#ffffff', v => upd('numColor', v)));
+    propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#9ca3af', v => upd('labelColor', v)));
+  }
+  else if(T === 'table'){
+    propsPanel.appendChild(secH('Tabla'));
+    propsPanel.appendChild(chk('Encabezado', el.header, v => upd('header', v)));
+    const txt = el.rows.map(r => r.join(' | ')).join('\n');
+    propsPanel.appendChild(textar('Filas (celdas separadas por |)', txt, v => { const rows = v.split('\n').filter(l => l.trim()).map(l => l.split('|').map(c => c.trim())); upd('rows', rows); }));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo tabla', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Fondo encabezado', el.headerBg||'#f9fafb', v => upd('headerBg', v)));
+    propsPanel.appendChild(colInp('Color encabezado', el.headerColor||'#1f2937', v => upd('headerColor', v)));
+    propsPanel.appendChild(colInp('Color celdas', el.textColor||'#374151', v => upd('textColor', v)));
+    propsPanel.appendChild(colInp('Color bordes', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
+  }
+  else if(T === 'pricing'){
+    propsPanel.appendChild(secH('Tabla precios'));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo tarjetas', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color destacado', el.featuredColor||'#3b82f6', v => upd('featuredColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#1f2937', v => upd('textColor', v)));
+    propsPanel.appendChild(colInp('Color secundario', el.mutedColor||'#6b7280', v => upd('mutedColor', v)));
+    propsPanel.appendChild(colInp('Color check', el.checkColor||'#10b981', v => upd('checkColor', v)));
   }
   else if(T === 'video'){
     propsPanel.appendChild(secH('Vídeo'));
@@ -1252,7 +1466,86 @@ function renderProps(){
     propsPanel.appendChild(chk('Bucle', el.loop, v => upd('loop', v)));
     propsPanel.appendChild(chk('Silenciado', el.muted, v => upd('muted', v)));
   }
+  else if(T === 'audio'){
+    propsPanel.appendChild(secH('Audio'));
+    propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v)));
+    propsPanel.appendChild(chk('Controles', el.controls, v => upd('controls', v)));
+  }
   else if(T === 'iframe'){ propsPanel.appendChild(secH('Iframe')); propsPanel.appendChild(inp('text','URL', el.src, v => upd('src', v))); }
+  else if(T === 'testimonial'){
+    propsPanel.appendChild(secH('Testimonio'));
+    propsPanel.appendChild(inp('text','Avatar URL', el.avatar, v => upd('avatar', v)));
+    propsPanel.appendChild(textar('Texto', el.text, v => upd('text', v)));
+    propsPanel.appendChild(inp('text','Autor', el.author, v => upd('author', v)));
+    propsPanel.appendChild(inp('text','Cargo', el.role, v => upd('role', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#4b5563', v => upd('textColor', v)));
+    propsPanel.appendChild(colInp('Color autor', el.authorColor||'#1f2937', v => upd('authorColor', v)));
+    propsPanel.appendChild(colInp('Color cargo', el.roleColor||'#9ca3af', v => upd('roleColor', v)));
+    propsPanel.appendChild(colInp('Color borde', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
+  }
+  else if(T === 'form'){
+    propsPanel.appendChild(secH('Formulario'));
+    propsPanel.appendChild(inp('text','Texto botón', el.buttonText, v => upd('buttonText', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#374151', v => upd('labelColor', v)));
+    propsPanel.appendChild(colInp('Color botón fondo', el.buttonColor||'#3b82f6', v => upd('buttonColor', v)));
+    propsPanel.appendChild(colInp('Color texto botón', el.buttonTextColor||'#ffffff', v => upd('buttonTextColor', v)));
+  }
+  else if(T === 'input'){
+    propsPanel.appendChild(secH('Campo'));
+    propsPanel.appendChild(inp('text','Etiqueta', el.label||'', v => upd('label', v)));
+    propsPanel.appendChild(inp('text','Placeholder', el.placeholder||'', v => upd('placeholder', v)));
+    propsPanel.appendChild(sel('Tipo', el.inputType, [{value:'text',label:'Texto'},{value:'email',label:'Email'},{value:'password',label:'Contraseña'},{value:'number',label:'Número'},{value:'tel',label:'Teléfono'},{value:'date',label:'Fecha'},{value:'range',label:'Rango'}], v => upd('inputType', v)));
+    propsPanel.appendChild(chk('Obligatorio', el.required, v => upd('required', v)));
+    propsPanel.appendChild(colInp('Color etiqueta', el.labelColor||'#374151', v => upd('labelColor', v)));
+  }
+  else if(T === 'select'){
+    propsPanel.appendChild(secH('Selector'));
+    propsPanel.appendChild(inp('text','Etiqueta', el.label||'', v => upd('label', v)));
+    propsPanel.appendChild(textar('Opciones (una por línea)', el.options.join('\n'), v => upd('options', v.split('\n').filter(x=>x.trim()))));
+    propsPanel.appendChild(colInp('Color etiqueta', el.labelColor||'#374151', v => upd('labelColor', v)));
+  }
+  else if(T === 'checkbox'){
+    propsPanel.appendChild(secH('Checkbox'));
+    propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
+    propsPanel.appendChild(chk('Marcado', el.checked, v => upd('checked', v)));
+    propsPanel.appendChild(colInp('Color texto', el.color||'#374151', v => upd('color', v)));
+  }
+  else if(T === 'radio'){
+    propsPanel.appendChild(secH('Radio'));
+    propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
+    propsPanel.appendChild(colInp('Color texto', el.color||'#374151', v => upd('color', v)));
+  }
+  else if(T === 'textarea'){
+    propsPanel.appendChild(secH('Área texto'));
+    propsPanel.appendChild(inp('text','Etiqueta', el.label||'', v => upd('label', v)));
+    propsPanel.appendChild(inp('text','Placeholder', el.placeholder||'', v => upd('placeholder', v)));
+    propsPanel.appendChild(colInp('Color etiqueta', el.labelColor||'#374151', v => upd('labelColor', v)));
+  }
+  else if(T === 'details'){
+    propsPanel.appendChild(secH('Acordeón'));
+    propsPanel.appendChild(inp('text','Título', el.summary, v => upd('summary', v)));
+    propsPanel.appendChild(textar('Contenido (HTML)', el.content, v => upd('content', v)));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Fondo título', el.summaryBg||'#f9fafb', v => upd('summaryBg', v)));
+    propsPanel.appendChild(colInp('Color título', el.summaryColor||'#1f2937', v => upd('summaryColor', v)));
+    propsPanel.appendChild(colInp('Color contenido', el.textColor||'#374151', v => upd('textColor', v)));
+    propsPanel.appendChild(colInp('Color borde', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
+  }
+  else if(T === 'alert'){
+    propsPanel.appendChild(secH('Aviso'));
+    propsPanel.appendChild(sel('Tipo', el.alertType, [{value:'info',label:'Info'},{value:'success',label:'Éxito'},{value:'warning',label:'Advertencia'},{value:'danger',label:'Peligro'}], v => upd('alertType', v)));
+    propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
+  }
+  else if(T === 'ribbon'){
+    propsPanel.appendChild(secH('Cinta'));
+    propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
+    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#f59e0b', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.color||'#ffffff', v => upd('color', v)));
+  }
   else if(T === 'icon'){
     propsPanel.appendChild(secH('Icono'));
     propsPanel.appendChild(inp('text','Clase (fa-star)', el.icon, v => upd('icon', v)));
@@ -1263,29 +1556,27 @@ function renderProps(){
     propsPanel.appendChild(secH('Red Social'));
     propsPanel.appendChild(inp('text','URL', el.url, v => upd('url', v)));
     propsPanel.appendChild(colInp('Color', el.color, v => upd('color', v)));
+    propsPanel.appendChild(sel('Forma', el.shape, [{value:'circle',label:'Círculo'},{value:'square',label:'Cuadrado'}], v => upd('shape', v)));
   }
-  else if(T === 'testimonial'){
-    propsPanel.appendChild(secH('Testimonio'));
-    propsPanel.appendChild(inp('text','Avatar URL', el.avatar, v => upd('avatar', v)));
-    propsPanel.appendChild(textar('Texto', el.text, v => upd('text', v)));
-    propsPanel.appendChild(inp('text','Autor', el.author, v => upd('author', v)));
-    propsPanel.appendChild(inp('text','Cargo', el.role, v => upd('role', v)));
+  else if(T === 'socials'){
+    propsPanel.appendChild(secH('Grupo redes'));
+    propsPanel.appendChild(textar('Iconos (uno por línea)', el.icons.join('\n'), v => upd('icons', v.split('\n').filter(x=>x.trim()))));
+    propsPanel.appendChild(colInp('Color fondo', el.color||'#3b82f6', v => upd('color', v)));
   }
-  else if(T === 'alert'){
-    propsPanel.appendChild(secH('Aviso'));
-    propsPanel.appendChild(sel('Tipo', el.alertType, [{value:'info',label:'Info'},{value:'success',label:'Éxito'},{value:'warning',label:'Advertencia'},{value:'danger',label:'Peligro'}], v => upd('alertType', v)));
-    propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
+  else if(T === 'timeline'){
+    propsPanel.appendChild(secH('Timeline'));
+    propsPanel.appendChild(secH('🎨 Colores'));
+    propsPanel.appendChild(colInp('Color línea', el.lineColor||'#e5e7eb', v => upd('lineColor', v)));
+    propsPanel.appendChild(colInp('Color puntos', el.dotColor||'#3b82f6', v => upd('dotColor', v)));
+    propsPanel.appendChild(colInp('Color fechas', el.dateColor||'#9ca3af', v => upd('dateColor', v)));
+    propsPanel.appendChild(colInp('Color títulos', el.titleColor||'#1f2937', v => upd('titleColor', v)));
+    propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
   }
-  else if(T === 'countdown'){
-    propsPanel.appendChild(secH('Cuenta atrás'));
-    propsPanel.appendChild(row([inp('number','Días', el.days, v => upd('days', v)), inp('number','Horas', el.hours, v => upd('hours', v))]));
-    propsPanel.appendChild(row([inp('number','Min', el.minutes, v => upd('minutes', v)), inp('number','Seg', el.seconds, v => upd('seconds', v))]));
+  else if(T === 'whatsapp'){
+    propsPanel.appendChild(secH('WhatsApp'));
+    propsPanel.appendChild(inp('text','URL', el.href, v => upd('href', v)));
+    propsPanel.appendChild(colInp('Color fondo', el.color||'#25d366', v => upd('color', v)));
   }
-  else if(T === 'divider'){ propsPanel.appendChild(secH('Separador')); propsPanel.appendChild(colInp('Color', el.color, v => upd('color', v))); }
-  else if(T === 'socials'){ propsPanel.appendChild(secH('Grupo redes')); propsPanel.appendChild(textar('Iconos (uno por línea)', el.icons.join('\n'), v => upd('icons', v.split('\n').filter(x=>x.trim())))); }
-  else if(T === 'stars'){ propsPanel.appendChild(secH('Estrellas')); propsPanel.appendChild(inp('number','Cantidad (1-5)', el.count, v => upd('count', Math.min(5, Math.max(1, parseInt(v)))))); }
-  else if(T === 'ribbon'){ propsPanel.appendChild(secH('Cinta')); propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v))); propsPanel.appendChild(colInp('Color', el.bgColor, v => upd('bgColor', v))); }
-  else if(T === 'whatsapp'){ propsPanel.appendChild(secH('WhatsApp')); propsPanel.appendChild(inp('text','URL', el.href, v => upd('href', v))); }
 
   propsPanel.appendChild(secH('Acciones'));
   const row2 = document.createElement('div');
@@ -1315,7 +1606,7 @@ function textar(label, value, onChange){
   t.onchange = e => { onChange(e.target.value); saveHistory(); }; w.appendChild(t); return w;
 }
 function colInp(label, value, onChange){
-  const safe = (typeof value === 'string') ? value : 'transparent';
+  const safe = (typeof value === 'string') ? value : '#ffffff';
   const w = document.createElement('div'); w.className = 'cg'; w.style.flex = '1';
   w.innerHTML = '<label class="cl">' + label + '</label>';
   const flex = document.createElement('div'); flex.style.cssText = 'display:flex;gap:8px;align-items:center';
@@ -1363,94 +1654,14 @@ document.getElementById('btn-export').onclick = () => {
 
   let elementsHTML = '';
   page.elements.forEach(el => {
-    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${el.border||'none'};background-color:${(el.bgColor && !el.bgColor.startsWith('linear')) ? el.bgColor : 'transparent'};`;
-    const T = el.type;
+    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${el.border||'none'};background-color:${(el.bgColor && !el.bgColor.startsWith('linear') && el.type !== 'code') ? el.bgColor : 'transparent'};`;
+    const dom = document.getElementById(el.id);
     let inner = '';
-
-    if(T === 'heading') inner = `<h${el.level} style="margin:0;font-size:${el.fontSize}px;font-weight:${el.fontWeight};color:${el.color};text-align:${el.textAlign}">${esc(el.text)}</h${el.level}>`;
-    else if(T === 'paragraph') inner = `<p style="margin:0;font-size:${el.fontSize}px;color:${el.color};text-align:${el.textAlign};line-height:1.6">${esc(el.text)}</p>`;
-    else if(T === 'blockquote') inner = `<blockquote class="e-blockquote" style="font-size:${el.fontSize}px;color:${el.color}">${esc(el.text)}</blockquote>`;
-    else if(T === 'code') inner = `<pre class="e-code" style="font-size:${el.fontSize}px">${esc(el.text)}</pre>`;
-    else if(T === 'list') inner = `<ul class="e-list" style="font-size:${el.fontSize}px;color:${el.color};list-style:${el.ordered?'decimal':'disc'}">${el.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`;
-    else if(T === 'checklist') inner = `<ul class="e-checklist" style="font-size:${el.fontSize}px;color:${el.color}">${el.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`;
-    else if(T === 'badge') inner = `<span class="e-badge" style="font-size:${el.fontSize}px;color:${el.color};background:${el.bgColor}">${esc(el.text)}</span>`;
-    else if(T === 'stars') inner = `<div class="e-stars" style="font-size:${el.fontSize||20}px">${'★'.repeat(el.count)}${'☆'.repeat(5-el.count)}</div>`;
-    else if(T === 'link') inner = `<a href="${el.href||'#'}" target="${el.target||'_self'}" style="font-size:${el.fontSize}px;color:${el.color};text-decoration:underline">${esc(el.text)}</a>`;
-    else if(T === 'button'){
-      const ic = el.icon ? `<i class="fa-solid ${el.icon}"></i>` : '';
-      const btnStyle = `background:${el.bgColor};color:${el.color};font-size:${el.fontSize}px;border:${el.border||'none'};width:100%;height:100%`;
-      if(el.href) inner = `<a href="${el.href}" class="e-btn" style="${btnStyle}">${ic}${esc(el.text)}</a>`;
-      else inner = `<button class="e-btn" type="button" style="${btnStyle}">${ic}${esc(el.text)}</button>`;
+    if(dom){
+      // Clonamos el HTML renderizado tal cual
+      const clone = dom.cloneNode(true);
+      inner = clone.innerHTML;
     }
-    else if(T === 'image'){
-      const img = `<img src="${el.src}" alt="${el.alt||''}" class="e-img" style="object-fit:${el.objectFit||'cover'}" draggable="false">`;
-      inner = el.href ? `<a href="${el.href}" target="_blank" style="display:block;width:100%;height:100%">${img}</a>` : img;
-    }
-    else if(T === 'imgOverlay') inner = `<div class="e-img-overlay"><img src="${el.src}" draggable="false"><div class="e-img-overlay-txt"><h2 style="margin:0 0 6px;font-size:24px;font-weight:800">${esc(el.title)}</h2><p style="margin:0;font-size:14px;opacity:.9">${esc(el.subtitle)}</p></div></div>`;
-    else if(T === 'card') inner = buildCard(el);
-    else if(T === 'carousel') inner = buildCarousel(el);
-    else if(T === 'gallery') inner = buildGallery(el);
-    else if(T === 'cardcarousel') inner = buildCardCarousel(el);
-    else if(T === 'masonry') inner = `<div class="e-masonry">${el.images.map(i=>`<img src="${i}" draggable="false">`).join('')}</div>`;
-    else if(T === 'navbar') inner = buildNavbar(el);
-    else if(T === 'hero') inner = `<div class="e-hero" style="background:linear-gradient(135deg,${el.bgColor},#8b5cf6)"><h1>${esc(el.title)}</h1><p>${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn">${esc(el.buttonText)}</a></div>`;
-    else if(T === 'footer') inner = `<footer class="e-footer"><h3>${esc(el.title)}</h3><p>${esc(el.text)}</p>${el.socials?`<div class="e-footer-social"><a href="#"><i class="fa-brands fa-facebook"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-x-twitter"></i></a><a href="#"><i class="fa-brands fa-youtube"></i></a></div>`:''}</footer>`;
-    else if(T === 'divider') inner = `<hr class="e-divider" style="border-top-color:${el.color}">`;
-    else if(T === 'sepIcon') inner = `<div class="e-sep"><div class="e-sep-line"></div><i class="fa-solid ${el.icon} e-sep-icon"></i><div class="e-sep-line"></div></div>`;
-    else if(T === 'progress') inner = `<div class="e-progress"><div class="e-progress-bar" style="width:${(el.value/el.max*100)}%">${el.showLabel?el.value+'%':''}</div></div>`;
-    else if(T === 'circleProgress'){
-      const offset = 314 - (314 * el.value / 100);
-      inner = `<div class="e-circle-prog"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="50"/><circle class="fg" cx="60" cy="60" r="50" style="stroke-dashoffset:${offset}"/></svg><div class="txt">${esc(el.label)}</div></div>`;
-    }
-    else if(T === 'counter') inner = `<div><div class="e-counter">${el.value}</div><div style="text-align:center;color:#6b7280;font-size:14px;margin-top:4px">${esc(el.label)}</div></div>`;
-    else if(T === 'stats') inner = `<div class="e-stats">${el.items.map(it=>`<div class="e-stat"><span class="e-stat-num">${esc(it.num)}</span><span class="e-stat-lbl">${esc(it.lbl)}</span></div>`).join('')}</div>`;
-    else if(T === 'countdown') inner = `<div class="e-countdown"><div class="e-cd-box"><span class="e-cd-num">${el.days}</span><span class="e-cd-lbl">Días</span></div><div class="e-cd-box"><span class="e-cd-num">${el.hours}</span><span class="e-cd-lbl">Horas</span></div><div class="e-cd-box"><span class="e-cd-num">${el.minutes}</span><span class="e-cd-lbl">Min</span></div><div class="e-cd-box"><span class="e-cd-num">${el.seconds}</span><span class="e-cd-lbl">Seg</span></div></div>`;
-    else if(T === 'table'){
-      let t = `<table class="e-table">`;
-      el.rows.forEach((r,i) => {
-        const tag = (i===0 && el.header) ? 'th' : 'td';
-        t += `<tr>${r.map(c => `<${tag}>${esc(c)}</${tag}>`).join('')}</tr>`;
-      });
-      t += `</table>`;
-      inner = t;
-    }
-    else if(T === 'pricing') inner = `<div class="e-pricing">${el.plans.map(p=>`<div class="e-price-card ${p.featured?'featured':''}"><h3>${esc(p.name)}</h3><div class="amount">${esc(p.price)}<span>${esc(p.period)}</span></div><ul>${p.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul><button class="e-btn" style="background:${p.featured?'#3b82f6':'#e5e7eb'};color:${p.featured?'#fff':'#1f2937'};width:100%">Elegir</button></div>`).join('')}</div>`;
-    else if(T === 'video') inner = `<video class="e-video" src="${el.src}" ${el.controls?'controls':''} ${el.autoplay?'autoplay':''} ${el.loop?'loop':''} ${el.muted?'muted':''} style="width:100%;height:100%"></video>`;
-    else if(T === 'audio') inner = `<audio class="e-audio" src="${el.src}" ${el.controls?'controls':''} style="width:100%"></audio>`;
-    else if(T === 'iframe') inner = `<iframe class="e-iframe" src="${el.src}" allowfullscreen loading="lazy"></iframe>`;
-    else if(T === 'testimonial') inner = `<div class="e-testimonial"><img src="${el.avatar}" draggable="false"><div><p class="e-testimonial-text">"${esc(el.text)}"</p><p class="e-testimonial-author">${esc(el.author)}</p><p class="e-testimonial-role">${esc(el.role)}</p></div></div>`;
-    else if(T === 'form'){
-      const f = (el.fields||[]).map(x => {
-        const req = x.required ? 'required' : '';
-        if(x.type === 'textarea') return `<div><label class="e-label">${esc(x.label||'')}</label><textarea class="e-input" placeholder="${esc(x.placeholder||'')}" rows="3" ${req}></textarea></div>`;
-        return `<div><label class="e-label">${esc(x.label||'')}</label><input type="${x.type||'text'}" class="e-input" placeholder="${esc(x.placeholder||'')}" ${req}></div>`;
-      }).join('');
-      inner = `<form class="e-form" onsubmit="event.preventDefault();alert('Formulario enviado')">${f}<button type="submit" class="e-btn" style="background:#3b82f6;color:#fff">${esc(el.buttonText||'Enviar')}</button></form>`;
-    }
-    else if(T === 'input'){
-      const req = el.required ? 'required' : '';
-      const val = el.value !== undefined ? `value="${el.value}"` : '';
-      inner = `<div><label class="e-label">${esc(el.label||'')}</label><input type="${el.inputType||'text'}" class="e-input" placeholder="${esc(el.placeholder||'')}" ${req} ${val}></div>`;
-    }
-    else if(T === 'select') inner = `<div><label class="e-label">${esc(el.label||'')}</label><select class="e-input">${el.options.map(o=>`<option>${esc(o)}</option>`).join('')}</select></div>`;
-    else if(T === 'checkbox') inner = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="checkbox" ${el.checked?'checked':''}> ${esc(el.label)}</label>`;
-    else if(T === 'radio') inner = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="radio" name="${el.name}" value="${el.value}"> ${esc(el.label)}</label>`;
-    else if(T === 'textarea') inner = `<div><label class="e-label">${esc(el.label||'')}</label><textarea class="e-input" placeholder="${esc(el.placeholder||'')}" rows="3"></textarea></div>`;
-    else if(T === 'details') inner = `<details class="e-details"><summary>${esc(el.summary)}</summary><div class="details-content">${el.content}</div></details>`;
-    else if(T === 'alert'){
-      const ic = { info:'fa-circle-info', success:'fa-circle-check', warning:'fa-triangle-exclamation', danger:'fa-triangle-exclamation' };
-      inner = `<div class="e-alert e-alert-${el.alertType}"><i class="fa-solid ${ic[el.alertType]}"></i><div>${esc(el.text)}</div></div>`;
-    }
-    else if(T === 'ribbon') inner = `<div class="e-ribbon" style="background:${el.bgColor}">${esc(el.text)}</div>`;
-    else if(T === 'icon'){
-      const ih = `<i class="fa-solid ${el.icon}" style="font-size:${el.size}px;color:${el.color}"></i>`;
-      inner = el.href ? `<a href="${el.href}" target="_blank" style="color:inherit">${ih}</a>` : ih;
-    }
-    else if(T === 'social') inner = `<a href="${el.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:${el.shape==='circle'?'50%':'8px'};background:${el.color};color:#fff;text-decoration:none"><i class="${el.icon}" style="font-size:${el.size}px"></i></a>`;
-    else if(T === 'socials') inner = `<div class="e-socials">${el.icons.map(ic=>`<a href="#" class="e-social" style="background:#3b82f6"><i class="${ic}"></i></a>`).join('')}</div>`;
-    else if(T === 'timeline') inner = `<div class="e-timeline">${el.items.map(it=>`<div class="e-timeline-item"><div class="e-timeline-date">${esc(it.date)}</div><h4 class="e-timeline-title">${esc(it.title)}</h4><p class="e-timeline-text">${esc(it.text)}</p></div>`).join('')}</div>`;
-    else if(T === 'whatsapp') inner = `<a href="${el.href}" target="_blank" class="e-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>`;
-
     elementsHTML += `<div class="elemento" style="${baseStyle}">${inner}</div>\n`;
   });
 
@@ -1470,9 +1681,7 @@ document.querySelectorAll('.carousel').forEach(function(c){
   if(p) p.onclick = function(e){ e.stopPropagation(); update(i-1); };
   if(nx) nx.onclick = function(e){ e.stopPropagation(); update(i+1); };
   dots.forEach(function(d,x){ d.onclick = function(e){ e.stopPropagation(); update(x); }; });
-  if(c.getAttribute('data-autoplay') === 'true'){
-    setInterval(function(){ update(i+1); }, parseInt(c.getAttribute('data-interval') || '3000'));
-  }
+  if(c.getAttribute('data-autoplay') === 'true'){ setInterval(function(){ update(i+1); }, parseInt(c.getAttribute('data-interval') || '3000')); }
 });
 document.querySelectorAll('.gallery-wrap').forEach(function(w){
   var track = w.querySelector('.gallery-track');
@@ -1483,21 +1692,14 @@ document.querySelectorAll('.gallery-wrap').forEach(function(w){
   var gap = parseInt(w.getAttribute('data-gap') || '8');
   var pages = Math.max(1, Math.ceil(items.length / pv));
   var pg = 0;
-  function update(){
-    var iw = items[0].getBoundingClientRect().width;
-    track.style.transform = 'translateX(-' + (pg * pv * (iw + gap)) + 'px)';
-    dots.forEach(function(d,x){ d.classList.toggle('active', x === pg); });
-  }
+  function update(){ var iw = items[0].getBoundingClientRect().width; track.style.transform = 'translateX(-' + (pg * pv * (iw + gap)) + 'px)'; dots.forEach(function(d,x){ d.classList.toggle('active', x === pg); }); }
   var p = w.querySelector('.gallery-arrow.prev'), nx = w.querySelector('.gallery-arrow.next');
   function go(n){ pg = (n + pages) % pages; update(); }
   if(p) p.onclick = function(e){ e.stopPropagation(); go(pg-1); };
   if(nx) nx.onclick = function(e){ e.stopPropagation(); go(pg+1); };
   dots.forEach(function(d,x){ d.onclick = function(e){ e.stopPropagation(); pg = x; update(); }; });
-  window.addEventListener('resize', update);
-  setTimeout(update, 50);
-  if(w.getAttribute('data-autoplay') === 'true' && pages > 1){
-    setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute('data-interval') || '2500'));
-  }
+  window.addEventListener('resize', update); setTimeout(update, 50);
+  if(w.getAttribute('data-autoplay') === 'true' && pages > 1){ setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute('data-interval') || '2500')); }
 });
 document.querySelectorAll('.cardcar-wrap').forEach(function(w){
   var track = w.querySelector('.cardcar-track');
@@ -1508,21 +1710,14 @@ document.querySelectorAll('.cardcar-wrap').forEach(function(w){
   var gap = parseInt(w.getAttribute('data-gap') || '16');
   var pages = Math.max(1, Math.ceil(items.length / pv));
   var pg = 0;
-  function update(){
-    var iw = items[0].getBoundingClientRect().width;
-    track.style.transform = 'translateX(-' + (pg * pv * (iw + gap)) + 'px)';
-    dots.forEach(function(d,x){ d.classList.toggle('active', x === pg); });
-  }
+  function update(){ var iw = items[0].getBoundingClientRect().width; track.style.transform = 'translateX(-' + (pg * pv * (iw + gap)) + 'px)'; dots.forEach(function(d,x){ d.classList.toggle('active', x === pg); }); }
   var p = w.querySelector('.cardcar-arrow.prev'), nx = w.querySelector('.cardcar-arrow.next');
   function go(n){ pg = (n + pages) % pages; update(); }
   if(p) p.onclick = function(e){ e.stopPropagation(); go(pg-1); };
   if(nx) nx.onclick = function(e){ e.stopPropagation(); go(pg+1); };
   dots.forEach(function(d,x){ d.onclick = function(e){ e.stopPropagation(); pg = x; update(); }; });
-  window.addEventListener('resize', update);
-  setTimeout(update, 50);
-  if(w.getAttribute('data-autoplay') === 'true' && pages > 1){
-    setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute('data-interval') || '3000'));
-  }
+  window.addEventListener('resize', update); setTimeout(update, 50);
+  if(w.getAttribute('data-autoplay') === 'true' && pages > 1){ setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute('data-interval') || '3000')); }
 });
 </scr` + `ipt>`;
 
