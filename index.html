@@ -219,22 +219,28 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .nav-link-edit .del-btn{padding:5px 8px;background:#fef2f2;color:#dc2626;border:none;border-radius:4px;cursor:pointer;font-size:11px}
 .nav-link-edit .del-btn:hover{background:#fee2e2}
 .nav-link-edit label{font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;display:block;margin-bottom:2px}
-/* Estilos para el editor de borde */
 .border-preview{width:100%;height:40px;border-radius:6px;margin-top:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#9ca3af;background:#f9fafb;transition:all .2s}
-.side-config{display:flex;gap:4px;margin-bottom:6px}
-.side-config button{flex:1;padding:6px 4px;font-size:11px;border:1px solid #e5e7eb;background:#fff;border-radius:4px;cursor:pointer;transition:all .15s;color:#6b7280}
-.side-config button.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
-.side-config button:hover:not(.active){background:#f3f4f6}
+/* === NUEVO: Editor de color con degradado === */
+.color-editor{margin-bottom:12px}
+.color-editor .tabs-color{display:flex;gap:4px;margin-bottom:8px;background:#f3f4f6;padding:3px;border-radius:6px}
+.color-editor .tabs-color button{flex:1;padding:5px;border:none;background:transparent;border-radius:4px;font-size:11px;font-weight:600;color:#6b7280;cursor:pointer;transition:all .15s}
+.color-editor .tabs-color button.active{background:#fff;color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.color-editor .gradient-preview{width:100%;height:36px;border-radius:6px;margin-top:6px;border:1px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,.9);text-shadow:0 1px 2px rgba(0,0,0,.3);font-weight:600}
+.grad-controls{display:flex;flex-direction:column;gap:6px}
+.grad-row{display:flex;gap:6px;align-items:center}
+.grad-row label{font-size:10px;color:#6b7280;font-weight:600;min-width:52px;text-transform:uppercase}
+.grad-row input[type="color"]{width:32px;height:28px;padding:0;border:1px solid #e5e7eb;border-radius:4px;cursor:pointer}
+.grad-row select{flex:1;padding:5px;font-size:11px;border:1px solid #d1d5db;border-radius:4px;outline:none;background:#fff}
+.grad-row input[type="range"]{flex:1}
+.grad-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px}
+.grad-preset{aspect-ratio:1.6;border-radius:5px;cursor:pointer;border:2px solid transparent;transition:transform .15s}
+.grad-preset:hover{transform:scale(1.08);border-color:#3b82f6}
 #page-config-btn{position:fixed;bottom:24px;right:calc(var(--sb) + 24px);width:52px;height:52px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);z-index:1000;transition:transform .2s}
 #page-config-btn:hover{transform:scale(1.08)}
-#page-config-panel{position:fixed;bottom:90px;right:calc(var(--sb) + 24px);background:#fff;border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:20px;width:280px;z-index:1000;display:none;border:1px solid var(--border)}
+#page-config-panel{position:fixed;bottom:90px;right:calc(var(--sb) + 24px);background:#fff;border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:20px;width:300px;z-index:1000;display:none;border:1px solid var(--border)}
 #page-config-panel.show{display:block;animation:slideUp .2s ease}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 #page-config-panel h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin:0 0 12px;display:flex;align-items:center;gap:8px}
-.preset-colors{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:12px}
-.preset-color{aspect-ratio:1;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all .2s}
-.preset-color:hover{transform:scale(1.1);border-color:var(--primary)}
-.preset-color.selected{border-color:var(--primary);box-shadow:0 0 0 2px rgba(59,130,246,.3)}
 </style>
 </head>
 <body>
@@ -290,36 +296,8 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 
 <button id="page-config-btn" title="Color de página"><i class="fa-solid fa-palette"></i></button>
 <div id="page-config-panel">
-  <h3><i class="fa-solid fa-palette"></i> Color de página</h3>
-  <label class="cl">Color de fondo</label>
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
-    <input type="color" id="page-bg-color" value="#ffffff" style="width:44px;height:36px;padding:0;border:none;border-radius:6px;cursor:pointer">
-    <input type="text" id="page-bg-text" class="ci" value="#ffffff" style="flex:1">
-  </div>
-  <label class="cl">Colores rápidos</label>
-  <div class="preset-colors" id="preset-colors">
-    <div class="preset-color selected" data-color="#ffffff" style="background:#ffffff;border:2px solid #e5e7eb"></div>
-    <div class="preset-color" data-color="#f9fafb" style="background:#f9fafb;border:2px solid #e5e7eb"></div>
-    <div class="preset-color" data-color="#f3f4f6" style="background:#f3f4f6"></div>
-    <div class="preset-color" data-color="#fef3c7" style="background:#fef3c7"></div>
-    <div class="preset-color" data-color="#dbeafe" style="background:#dbeafe"></div>
-    <div class="preset-color" data-color="#dcfce7" style="background:#dcfce7"></div>
-    <div class="preset-color" data-color="#fee2e2" style="background:#fee2e2"></div>
-    <div class="preset-color" data-color="#fce7f3" style="background:#fce7f3"></div>
-    <div class="preset-color" data-color="#ede9fe" style="background:#ede9fe"></div>
-    <div class="preset-color" data-color="#e0f2fe" style="background:#e0f2fe"></div>
-    <div class="preset-color" data-color="#1f2937" style="background:#1f2937"></div>
-    <div class="preset-color" data-color="#000000" style="background:#000000"></div>
-  </div>
-  <label class="cl">Fondo con degradado</label>
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
-    <button class="btn-s" style="flex:1;font-size:12px;padding:6px 10px" data-gradient="linear-gradient(135deg,#3b82f6,#8b5cf6)">Azul-Violeta</button>
-    <button class="btn-s" style="flex:1;font-size:12px;padding:6px 10px" data-gradient="linear-gradient(135deg,#ec4899,#f59e0b)">Rosa-Naranja</button>
-  </div>
-  <div style="display:flex;gap:8px;align-items:center">
-    <button class="btn-s" style="flex:1;font-size:12px;padding:6px 10px" data-gradient="linear-gradient(135deg,#10b981,#0ea5e9)">Verde-Cian</button>
-    <button class="btn-s" style="flex:1;font-size:12px;padding:6px 10px" data-gradient="linear-gradient(180deg,#f3f4f6,#ffffff)">Gris-Blanco</button>
-  </div>
+  <h3><i class="fa-solid fa-palette"></i> Fondo de la página</h3>
+  <div id="page-bg-editor"></div>
 </div>
 
 <script>
@@ -327,7 +305,7 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 const state = {
   viewport:'desktop',
   currentPageId:'home',
-  pages:[{id:'home',title:'Inicio',slug:'index',bgColor:'#ffffff',elements:[]}],
+  pages:[{id:'home',title:'Inicio',slug:'index',bgColor:'#ffffff',bgMode:'solid',elements:[]}],
   selectedId:null,
   history:[],
   historyIndex:-1
@@ -349,22 +327,315 @@ const slugify = t => t.toString().toLowerCase().replace(/\s+/g,'-').replace(/[^\
 const getPage = () => state.pages.find(p => p.id === state.currentPageId);
 const getElements = () => getPage()?.elements || [];
 
-/* ========== COLOR DE PÁGINA ========== */
+/* ========== UTILIDADES DE COLOR / DEGRADADO ========== */
+function isGradient(v){
+  return typeof v === 'string' && (v.startsWith('linear-gradient') || v.startsWith('radial-gradient'));
+}
+
+// Convierte un color o degradado a CSS válido
+function toCSS(v){
+  if(!v) return 'transparent';
+  return v;
+}
+
+// Presets de degradados útiles
+const GRADIENT_PRESETS = [
+  'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+  'linear-gradient(135deg, #ec4899, #f59e0b)',
+  'linear-gradient(135deg, #10b981, #0ea5e9)',
+  'linear-gradient(135deg, #f59e0b, #ef4444)',
+  'linear-gradient(135deg, #06b6d4, #3b82f6)',
+  'linear-gradient(135deg, #8b5cf6, #ec4899)',
+  'linear-gradient(180deg, #667eea, #764ba2)',
+  'linear-gradient(180deg, #f3f4f6, #ffffff)',
+  'linear-gradient(90deg, #ff6b6b, #feca57)',
+  'linear-gradient(135deg, #000000, #434343)'
+];
+
+/* ========== EDITOR DE COLOR CON MODO SÓLIDO/DEGRADADO ========== */
+function buildColorEditor(el, key, label){
+  const value = el[key] || '#ffffff';
+  const isGrad = isGradient(value);
+
+  const container = document.createElement('div');
+  container.className = 'color-editor';
+
+  // Título + pestañas
+  const header = document.createElement('label');
+  header.className = 'cl';
+  header.textContent = label;
+  container.appendChild(header);
+
+  const tabs = document.createElement('div');
+  tabs.className = 'tabs-color';
+  const tabSolid = document.createElement('button');
+  tabSolid.textContent = '🎨 Sólido';
+  tabSolid.className = !isGrad ? 'active' : '';
+  const tabGrad = document.createElement('button');
+  tabGrad.textContent = '🌈 Degradado';
+  tabGrad.className = isGrad ? 'active' : '';
+  tabs.appendChild(tabSolid);
+  tabs.appendChild(tabGrad);
+  container.appendChild(tabs);
+
+  // Contenedor sólido
+  const solidBox = document.createElement('div');
+  solidBox.style.display = isGrad ? 'none' : 'block';
+  const safeSolid = isGrad ? '#ffffff' : value;
+  const flex = document.createElement('div');
+  flex.style.cssText = 'display:flex;gap:8px;align-items:center';
+  const cp = document.createElement('input'); cp.type = 'color';
+  cp.value = safeSolid.startsWith('#') ? safeSolid.substring(0,7) : '#ffffff';
+  cp.style.cssText = 'width:32px;height:32px;padding:0;border:none;border-radius:6px;cursor:pointer';
+  const ti = document.createElement('input'); ti.type = 'text'; ti.className = 'ci'; ti.value = safeSolid; ti.style.flex = '1';
+  cp.oninput = e => { ti.value = e.target.value; updateElement(state.selectedId, { [key]: e.target.value, [key+'Mode']: 'solid' }); };
+  cp.onchange = () => saveHistory();
+  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; updateElement(state.selectedId, { [key]: e.target.value, [key+'Mode']: 'solid' }); saveHistory(); };
+  flex.appendChild(cp); flex.appendChild(ti);
+  solidBox.appendChild(flex);
+  container.appendChild(solidBox);
+
+  // Contenedor degradado
+  const gradBox = document.createElement('div');
+  gradBox.style.display = isGrad ? 'block' : 'none';
+
+  // Parsear el degradado actual
+  let gType = 'linear', gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
+  if(isGrad){
+    const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
+    if(m){
+      gAngle = parseInt(m[1]) || 135;
+      gColor1 = m[2].trim();
+      gColor2 = m[3].trim();
+    }
+  }
+
+  const makeGradString = () => `linear-gradient(${gAngle}deg, ${gColor1}, ${gColor2})`;
+
+  const gradControls = document.createElement('div');
+  gradControls.className = 'grad-controls';
+
+  // Ángulo
+  const angleRow = document.createElement('div');
+  angleRow.className = 'grad-row';
+  angleRow.innerHTML = '<label>Ángulo</label>';
+  const angleRange = document.createElement('input'); angleRange.type = 'range'; angleRange.min = 0; angleRange.max = 360; angleRange.value = gAngle;
+  const angleVal = document.createElement('span'); angleVal.style.cssText = 'font-size:11px;color:#6b7280;min-width:34px;text-align:right'; angleVal.textContent = gAngle + '°';
+  angleRange.oninput = e => { gAngle = parseInt(e.target.value); angleVal.textContent = gAngle + '°'; updateElement(state.selectedId, { [key]: makeGradString() }); };
+  angleRange.onchange = () => saveHistory();
+  angleRow.appendChild(angleRange); angleRow.appendChild(angleVal);
+  gradControls.appendChild(angleRow);
+
+  // Color 1
+  const c1Row = document.createElement('div');
+  c1Row.className = 'grad-row';
+  c1Row.innerHTML = '<label>Inicio</label>';
+  const c1 = document.createElement('input'); c1.type = 'color'; c1.value = gColor1.startsWith('#') ? gColor1.substring(0,7) : '#3b82f6';
+  const c1t = document.createElement('input'); c1t.type = 'text'; c1t.className = 'ci'; c1t.value = gColor1; c1t.style.flex = '1';
+  c1.oninput = e => { c1t.value = e.target.value; gColor1 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); };
+  c1.onchange = () => saveHistory();
+  c1t.onchange = e => { c1.value = e.target.value.startsWith('#') ? e.target.value : '#3b82f6'; gColor1 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); saveHistory(); };
+  c1Row.appendChild(c1); c1Row.appendChild(c1t);
+  gradControls.appendChild(c1Row);
+
+  // Color 2
+  const c2Row = document.createElement('div');
+  c2Row.className = 'grad-row';
+  c2Row.innerHTML = '<label>Fin</label>';
+  const c2 = document.createElement('input'); c2.type = 'color'; c2.value = gColor2.startsWith('#') ? gColor2.substring(0,7) : '#8b5cf6';
+  const c2t = document.createElement('input'); c2t.type = 'text'; c2t.className = 'ci'; c2t.value = gColor2; c2t.style.flex = '1';
+  c2.oninput = e => { c2t.value = e.target.value; gColor2 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); };
+  c2.onchange = () => saveHistory();
+  c2t.onchange = e => { c2.value = e.target.value.startsWith('#') ? e.target.value : '#8b5cf6'; gColor2 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); saveHistory(); };
+  c2Row.appendChild(c2); c2Row.appendChild(c2t);
+  gradControls.appendChild(c2Row);
+
+  // Presets
+  const presetsLabel = document.createElement('label');
+  presetsLabel.style.cssText = 'font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;margin-top:4px;display:block';
+  presetsLabel.textContent = 'Degradados rápidos';
+  gradControls.appendChild(presetsLabel);
+  const presets = document.createElement('div');
+  presets.className = 'grad-presets';
+  GRADIENT_PRESETS.forEach(preset => {
+    const p = document.createElement('div');
+    p.className = 'grad-preset';
+    p.style.background = preset;
+    p.onclick = () => {
+      updateElement(state.selectedId, { [key]: preset });
+      saveHistory();
+      renderProps();
+    };
+    presets.appendChild(p);
+  });
+  gradControls.appendChild(presets);
+
+  // Preview
+  const preview = document.createElement('div');
+  preview.className = 'gradient-preview';
+  preview.textContent = 'Vista previa';
+  preview.style.background = isGrad ? value : makeGradString();
+  gradControls.appendChild(preview);
+
+  gradBox.appendChild(gradControls);
+  container.appendChild(gradBox);
+
+  // Lógica de las pestañas
+  tabSolid.onclick = () => {
+    tabSolid.classList.add('active'); tabGrad.classList.remove('active');
+    solidBox.style.display = 'block'; gradBox.style.display = 'none';
+    updateElement(state.selectedId, { [key]: safeSolid, [key+'Mode']: 'solid' });
+    saveHistory();
+  };
+  tabGrad.onclick = () => {
+    tabGrad.classList.add('active'); tabSolid.classList.remove('active');
+    solidBox.style.display = 'none'; gradBox.style.display = 'block';
+    updateElement(state.selectedId, { [key]: makeGradString(), [key+'Mode']: 'gradient' });
+    saveHistory();
+  };
+
+  return container;
+}
+
+/* ========== EDITOR DE COLOR PARA LA PÁGINA ========== */
+function renderPageColorEditor(){
+  const box = document.getElementById('page-bg-editor');
+  const page = getPage();
+  if(!page) return;
+  box.innerHTML = '';
+
+  const value = page.bgColor || '#ffffff';
+  const isGrad = isGradient(value);
+
+  // Tabs
+  const tabs = document.createElement('div');
+  tabs.className = 'tabs-color';
+  const tabSolid = document.createElement('button');
+  tabSolid.textContent = '🎨 Sólido'; tabSolid.className = !isGrad ? 'active' : '';
+  const tabGrad = document.createElement('button');
+  tabGrad.textContent = '🌈 Degradado'; tabGrad.className = isGrad ? 'active' : '';
+  tabs.appendChild(tabSolid); tabs.appendChild(tabGrad);
+  box.appendChild(tabs);
+
+  // Sólido
+  const solidBox = document.createElement('div');
+  solidBox.style.display = isGrad ? 'none' : 'block';
+  const safeSolid = isGrad ? '#ffffff' : value;
+  const flex = document.createElement('div');
+  flex.style.cssText = 'display:flex;gap:8px;align-items:center';
+  const cp = document.createElement('input'); cp.type = 'color';
+  cp.value = safeSolid.startsWith('#') ? safeSolid.substring(0,7) : '#ffffff';
+  cp.style.cssText = 'width:44px;height:36px;padding:0;border:none;border-radius:6px;cursor:pointer';
+  const ti = document.createElement('input'); ti.type = 'text'; ti.className = 'ci'; ti.value = safeSolid; ti.style.flex = '1';
+  cp.oninput = e => { ti.value = e.target.value; page.bgColor = e.target.value; canvas.style.background = e.target.value; };
+  cp.onchange = () => saveHistory();
+  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; page.bgColor = e.target.value; canvas.style.background = e.target.value; saveHistory(); };
+  flex.appendChild(cp); flex.appendChild(ti);
+  solidBox.appendChild(flex);
+
+  // Colores rápidos
+  const rapidLabel = document.createElement('label');
+  rapidLabel.className = 'cl'; rapidLabel.style.marginTop = '10px'; rapidLabel.textContent = 'Colores rápidos';
+  solidBox.appendChild(rapidLabel);
+  const presetColors = document.createElement('div');
+  presetColors.style.cssText = 'display:grid;grid-template-columns:repeat(6,1fr);gap:6px';
+  ['#ffffff','#f9fafb','#f3f4f6','#fef3c7','#dbeafe','#dcfce7','#fee2e2','#fce7f3','#ede9fe','#e0f2fe','#1f2937','#000000'].forEach(c => {
+    const el = document.createElement('div');
+    el.style.cssText = `aspect-ratio:1;border-radius:6px;cursor:pointer;background:${c};border:2px solid ${c==='#ffffff'||c==='#f9fafb'?'#e5e7eb':'transparent'}`;
+    el.onclick = () => { page.bgColor = c; canvas.style.background = c; saveHistory(); renderPageColorEditor(); };
+    presetColors.appendChild(el);
+  });
+  solidBox.appendChild(presetColors);
+  box.appendChild(solidBox);
+
+  // Degradado
+  const gradBox = document.createElement('div');
+  gradBox.style.display = isGrad ? 'block' : 'none';
+
+  let gType = 'linear', gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
+  if(isGrad){
+    const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
+    if(m){
+      gAngle = parseInt(m[1]) || 135;
+      gColor1 = m[2].trim();
+      gColor2 = m[3].trim();
+    }
+  }
+  const makeGrad = () => `linear-gradient(${gAngle}deg, ${gColor1}, ${gColor2})`;
+
+  const gradControls = document.createElement('div');
+  gradControls.className = 'grad-controls';
+
+  const angleRow = document.createElement('div');
+  angleRow.className = 'grad-row';
+  angleRow.innerHTML = '<label>Ángulo</label>';
+  const angleRange = document.createElement('input'); angleRange.type = 'range'; angleRange.min = 0; angleRange.max = 360; angleRange.value = gAngle;
+  const angleVal = document.createElement('span'); angleVal.style.cssText = 'font-size:11px;color:#6b7280;min-width:34px;text-align:right'; angleVal.textContent = gAngle + '°';
+  angleRange.oninput = e => { gAngle = parseInt(e.target.value); angleVal.textContent = gAngle + '°'; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
+  angleRange.onchange = () => saveHistory();
+  angleRow.appendChild(angleRange); angleRow.appendChild(angleVal);
+  gradControls.appendChild(angleRow);
+
+  const c1Row = document.createElement('div');
+  c1Row.className = 'grad-row';
+  c1Row.innerHTML = '<label>Inicio</label>';
+  const c1 = document.createElement('input'); c1.type = 'color'; c1.value = gColor1.startsWith('#') ? gColor1.substring(0,7) : '#3b82f6';
+  const c1t = document.createElement('input'); c1t.type = 'text'; c1t.className = 'ci'; c1t.value = gColor1; c1t.style.flex = '1';
+  c1.oninput = e => { c1t.value = e.target.value; gColor1 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
+  c1.onchange = () => saveHistory();
+  c1t.onchange = e => { c1.value = e.target.value.startsWith('#') ? e.target.value : '#3b82f6'; gColor1 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); };
+  c1Row.appendChild(c1); c1Row.appendChild(c1t);
+  gradControls.appendChild(c1Row);
+
+  const c2Row = document.createElement('div');
+  c2Row.className = 'grad-row';
+  c2Row.innerHTML = '<label>Fin</label>';
+  const c2 = document.createElement('input'); c2.type = 'color'; c2.value = gColor2.startsWith('#') ? gColor2.substring(0,7) : '#8b5cf6';
+  const c2t = document.createElement('input'); c2t.type = 'text'; c2t.className = 'ci'; c2t.value = gColor2; c2t.style.flex = '1';
+  c2.oninput = e => { c2t.value = e.target.value; gColor2 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
+  c2.onchange = () => saveHistory();
+  c2t.onchange = e => { c2.value = e.target.value.startsWith('#') ? e.target.value : '#8b5cf6'; gColor2 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); };
+  c2Row.appendChild(c2); c2Row.appendChild(c2t);
+  gradControls.appendChild(c2Row);
+
+  const presetsLabel = document.createElement('label');
+  presetsLabel.style.cssText = 'font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;margin-top:4px;display:block';
+  presetsLabel.textContent = 'Degradados rápidos';
+  gradControls.appendChild(presetsLabel);
+
+  const presets = document.createElement('div');
+  presets.className = 'grad-presets';
+  GRADIENT_PRESETS.forEach(preset => {
+    const p = document.createElement('div');
+    p.className = 'grad-preset';
+    p.style.background = preset;
+    p.onclick = () => { page.bgColor = preset; canvas.style.background = preset; saveHistory(); renderPageColorEditor(); };
+    presets.appendChild(p);
+  });
+  gradControls.appendChild(presets);
+
+  const preview = document.createElement('div');
+  preview.className = 'gradient-preview';
+  preview.textContent = 'Vista previa';
+  preview.style.background = isGrad ? value : makeGrad();
+  gradControls.appendChild(preview);
+
+  gradBox.appendChild(gradControls);
+  box.appendChild(gradBox);
+
+  tabSolid.onclick = () => { page.bgColor = safeSolid; canvas.style.background = safeSolid; saveHistory(); renderPageColorEditor(); };
+  tabGrad.onclick = () => { page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); renderPageColorEditor(); };
+}
+
+/* ========== APLICAR FONDO DE PÁGINA ========== */
 function applyPageBg(){
   const page = getPage();
   if(!page) return;
-  const bg = page.bgColor || '#ffffff';
-  canvas.style.background = bg;
-  const colorInput = document.getElementById('page-bg-color');
-  const textInput = document.getElementById('page-bg-text');
-  if(colorInput && !bg.startsWith('linear')){
-    colorInput.value = bg.startsWith('#') ? bg.substring(0,7) : '#ffffff';
-  }
-  if(textInput) textInput.value = bg;
-  document.querySelectorAll('.preset-color').forEach(el => {
-    el.classList.toggle('selected', el.dataset.color === bg);
-  });
+  canvas.style.background = page.bgColor || '#ffffff';
+  renderPageColorEditor();
 }
+
+/* ========== BOTÓN FLOTANTE ========== */
 document.getElementById('page-config-btn').onclick = (e) => {
   e.stopPropagation();
   document.getElementById('page-config-panel').classList.toggle('show');
@@ -375,40 +646,6 @@ document.addEventListener('click', e => {
   if(panel.classList.contains('show') && !panel.contains(e.target) && !btn.contains(e.target)){
     panel.classList.remove('show');
   }
-});
-document.getElementById('page-bg-color').oninput = e => {
-  const page = getPage(); if(!page) return;
-  page.bgColor = e.target.value;
-  document.getElementById('page-bg-text').value = e.target.value;
-  canvas.style.background = e.target.value;
-  document.querySelectorAll('.preset-color').forEach(el => el.classList.toggle('selected', el.dataset.color === e.target.value));
-  saveHistory();
-};
-document.getElementById('page-bg-text').onchange = e => {
-  const page = getPage(); if(!page) return;
-  page.bgColor = e.target.value;
-  canvas.style.background = e.target.value;
-  applyPageBg(); saveHistory();
-};
-document.querySelectorAll('.preset-color').forEach(el => {
-  el.onclick = () => {
-    const page = getPage(); if(!page) return;
-    page.bgColor = el.dataset.color;
-    canvas.style.background = el.dataset.color;
-    document.getElementById('page-bg-color').value = el.dataset.color;
-    document.getElementById('page-bg-text').value = el.dataset.color;
-    document.querySelectorAll('.preset-color').forEach(x => x.classList.remove('selected'));
-    el.classList.add('selected'); saveHistory();
-  };
-});
-document.querySelectorAll('[data-gradient]').forEach(el => {
-  el.onclick = () => {
-    const page = getPage(); if(!page) return;
-    page.bgColor = el.dataset.gradient;
-    canvas.style.background = el.dataset.gradient;
-    document.getElementById('page-bg-text').value = el.dataset.gradient;
-    saveHistory();
-  };
 });
 
 /* ========== HISTORIAL ========== */
@@ -743,9 +980,15 @@ function syncDOM(dom, el){
     borderRadius: (el.borderRadius||0)+'px',
     boxShadow: el.boxShadow||'none',
     border: border,
-    backgroundColor: (el.type === 'code') ? 'transparent' : (el.bgColor||'transparent'),
+    background: (el.type === 'code') ? 'transparent' : (el.bgColor||'transparent'),
+    backgroundColor: (el.type === 'code') ? 'transparent' : (isGradient(el.bgColor) ? '' : (el.bgColor||'transparent')),
+    backgroundImage: isGradient(el.bgColor) ? el.bgColor : 'none',
     padding: el.padding||'0'
   });
+  // Para navegadores que no aceptan "background" con degradado:
+  if(isGradient(el.bgColor)){
+    dom.style.background = el.bgColor;
+  }
   const T = el.type;
   let html = '';
 
@@ -760,7 +1003,8 @@ function syncDOM(dom, el){
   else if(T === 'link') html = `<a href="${el.href||'#'}" target="${el.target||'_self'}" style="font-size:${el.fontSize}px;color:${el.color};text-decoration:underline">${esc(el.text)}</a>`;
   else if(T === 'button'){
     const ic = el.icon ? `<i class="fa-solid ${el.icon}"></i>` : '';
-    const btnStyle = `background:${el.bgColor};color:${el.color};font-size:${el.fontSize}px;width:100%;height:100%`;
+    const bg = isGradient(el.bgColor) ? el.bgColor : el.bgColor;
+    const btnStyle = `background:${bg};color:${el.color};font-size:${el.fontSize}px;width:100%;height:100%`;
     if(el.href) html = `<a href="${el.href}" class="e-btn" style="${btnStyle}">${ic}${esc(el.text)}</a>`;
     else html = `<button class="e-btn" type="button" style="${btnStyle}">${ic}${esc(el.text)}</button>`;
   }
@@ -775,7 +1019,10 @@ function syncDOM(dom, el){
   else if(T === 'cardcarousel') html = buildCardCarousel(el);
   else if(T === 'masonry') html = `<div class="e-masonry">${el.images.map(i=>`<img src="${i}" draggable="false">`).join('')}</div>`;
   else if(T === 'navbar') html = buildNavbar(el);
-  else if(T === 'hero') html = `<div class="e-hero" style="background:linear-gradient(135deg,${el.bgColor},${el.bgColor2||el.bgColor})"><h1 style="color:${el.titleColor}">${esc(el.title)}</h1><p style="color:${el.textColor}">${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn" style="background:${el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText)}</a></div>`;
+  else if(T === 'hero'){
+    const bg = isGradient(el.bgColor) ? el.bgColor : `linear-gradient(135deg,${el.bgColor},${el.bgColor2||el.bgColor})`;
+    html = `<div class="e-hero" style="background:${bg}"><h1 style="color:${el.titleColor}">${esc(el.title)}</h1><p style="color:${el.textColor}">${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn" style="background:${isGradient(el.buttonColor)?el.buttonColor:el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText)}</a></div>`;
+  }
   else if(T === 'footer') html = `<footer class="e-footer" style="background:${el.bgColor}"><h3 style="color:${el.titleColor}">${esc(el.title)}</h3><p style="color:${el.textColor}">${esc(el.text)}</p>${el.socials?`<div class="e-footer-social"><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-facebook"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-instagram"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-x-twitter"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-youtube"></i></a></div>`:''}</footer>`;
   else if(T === 'divider') html = `<hr class="e-divider" style="border-top-color:${el.color}">`;
   else if(T === 'sepIcon') html = `<div class="e-sep"><div class="e-sep-line" style="background:${el.lineColor}"></div><i class="fa-solid ${el.icon} e-sep-icon" style="color:${el.color}"></i><div class="e-sep-line" style="background:${el.lineColor}"></div></div>`;
@@ -825,7 +1072,7 @@ function syncDOM(dom, el){
     const ic = { info:'fa-circle-info', success:'fa-circle-check', warning:'fa-triangle-exclamation', danger:'fa-triangle-exclamation' };
     html = `<div class="e-alert e-alert-${el.alertType}"><i class="fa-solid ${ic[el.alertType]}"></i><div>${esc(el.text)}</div></div>`;
   }
-  else if(T === 'ribbon') html = `<div class="e-ribbon" style="background:${el.bgColor};color:${el.color}">${esc(el.text)}</div>`;
+  else if(T === 'ribbon') html = `<div class="e-ribbon" style="background:${isGradient(el.bgColor)?el.bgColor:el.bgColor};color:${el.color}">${esc(el.text)}</div>`;
   else if(T === 'icon'){
     const ih = `<i class="fa-solid ${el.icon}" style="font-size:${el.size}px;color:${el.color}"></i>`;
     html = el.href ? `<a href="${el.href}" target="_blank" style="color:inherit">${ih}</a>` : ih;
@@ -848,7 +1095,7 @@ function buildNavbar(el){
   const bg = el.bgColor || '#ffffff';
   const textColor = el.textColor || '#4b5563';
   const brandColor = el.brandColor || '#1f2937';
-  let h = `<nav class="e-nav" style="background:${bg};border-bottom:1px solid #e5e7eb">`;
+  let h = `<nav class="e-nav" style="background:${isGradient(bg)?bg:bg};border-bottom:1px solid #e5e7eb">`;
   h += `<a href="${el.brandHref||'#'}" class="e-nav-logo" style="color:${brandColor}">${esc(el.brand)}</a>`;
   h += `<ul class="e-nav-links">`;
   links.forEach(l => {
@@ -861,8 +1108,8 @@ function buildNavbar(el){
 function buildCard(el){
   const style = el.cardStyle || 'basic';
   const imgH = el.imgHeight || 180;
-  const btnStyle = `background:${el.buttonColor||'#3b82f6'};color:#fff`;
-  const cardBg = el.bgColor || '#ffffff';
+  const btnStyle = `background:${isGradient(el.buttonColor)?el.buttonColor:el.buttonColor};color:#fff`;
+  const cardBg = isGradient(el.bgColor) ? el.bgColor : el.bgColor;
   const titleColor = el.titleColor || '#1f2937';
   const textColor = el.textColor || '#6b7280';
   const titleStyle = `color:${titleColor}`;
@@ -930,7 +1177,7 @@ function buildGallery(el){
   const total = el.images.length;
   const perView = el.itemsPerView || 3;
   const gap = el.gap || 8;
-  let h = `<div class="gallery-wrap" style="background:${el.bgColor||'#f3f4f6'}" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||2500}"><div class="gallery-track" style="gap:${gap}px">`;
+  let h = `<div class="gallery-wrap" style="background:${isGradient(el.bgColor)?el.bgColor:(el.bgColor||'#f3f4f6')}" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||2500}"><div class="gallery-track" style="gap:${gap}px">`;
   el.images.forEach((img, i) => { h += `<div class="gallery-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})"><img src="${img}" draggable="false" data-i="${i}"></div>`; });
   h += `</div>`;
   if(el.showArrows && total > perView){
@@ -974,7 +1221,7 @@ function buildCardCarousel(el){
   const perView = el.itemsPerView || 3;
   const gap = el.gap || 16;
   const total = cards.length;
-  const cardBg = el.bgColor || '#ffffff';
+  const cardBg = isGradient(el.bgColor) ? el.bgColor : el.bgColor;
   const titleColor = el.titleColor || '#1f2937';
   const textColor = el.textColor || '#6b7280';
   let h = `<div class="cardcar-wrap" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||3000}"><div class="cardcar-track" style="gap:${gap}px">`;
@@ -1146,111 +1393,66 @@ document.getElementById('btn-add-page').onclick = () => {
   const n = prompt('Nombre de la nueva página:', 'Nueva Página');
   if(!n || !n.trim()) return;
   const id = 'p_' + Math.random().toString(36).substr(2,6);
-  state.pages.push({ id, title:n.trim(), slug:slugify(n.trim()), bgColor:'#ffffff', elements:[] });
+  state.pages.push({ id, title:n.trim(), slug:slugify(n.trim()), bgColor:'#ffffff', bgMode:'solid', elements:[] });
   state.currentPageId = id; clearSel(); saveHistory(); renderAll(); renderPages(); applyPageBg();
 };
 
 const upd = (k, v) => updateElement(state.selectedId, { [k]: v });
 
-/* ========== CONTROL COMPLETO DE BORDE ========== */
+/* ========== CONTROL DE BORDE ========== */
 function buildBorderControl(el){
   const container = document.createElement('div');
   container.className = 'cg';
   container.innerHTML = '<label class="cl">🎨 Borde</label>';
 
-  // Fila 1: estilo + ancho
   const row1 = document.createElement('div');
   row1.style.cssText = 'display:flex;gap:8px;margin-bottom:8px';
-
   const styleSelect = document.createElement('select');
-  styleSelect.className = 'ci';
-  styleSelect.style.flex = '1.5';
+  styleSelect.className = 'ci'; styleSelect.style.flex = '1.5';
   [
-    {v:'none', l:'Sin borde'},
-    {v:'solid', l:'─── Sólido'},
-    {v:'dashed', l:'- - - Guiones'},
-    {v:'dotted', l:'··· Puntos'},
-    {v:'double', l:'═══ Doble'},
-    {v:'groove', l:'┌─┐ Groove'},
-    {v:'ridge', l:'┏━┓ Ridge'},
-    {v:'inset', l:'▣ Inset'},
-    {v:'outset', l:'▢ Outset'}
+    {v:'none', l:'Sin borde'},{v:'solid', l:'─── Sólido'},{v:'dashed', l:'- - - Guiones'},
+    {v:'dotted', l:'··· Puntos'},{v:'double', l:'═══ Doble'},{v:'groove', l:'┌─┐ Groove'},
+    {v:'ridge', l:'┏━┓ Ridge'},{v:'inset', l:'▣ Inset'},{v:'outset', l:'▢ Outset'}
   ].forEach(o => {
     const opt = document.createElement('option');
-    opt.value = o.v;
-    opt.textContent = o.l;
+    opt.value = o.v; opt.textContent = o.l;
     if(o.v === (el.borderStyle || 'none')) opt.selected = true;
     styleSelect.appendChild(opt);
   });
-
   const widthInput = document.createElement('input');
-  widthInput.type = 'number';
-  widthInput.className = 'ci';
-  widthInput.style.flex = '1';
-  widthInput.min = 0;
-  widthInput.max = 20;
-  widthInput.value = el.borderWidth || 0;
-  widthInput.placeholder = 'px';
-
-  row1.appendChild(styleSelect);
-  row1.appendChild(widthInput);
+  widthInput.type = 'number'; widthInput.className = 'ci'; widthInput.style.flex = '1';
+  widthInput.min = 0; widthInput.max = 20;
+  widthInput.value = el.borderWidth || 0; widthInput.placeholder = 'px';
+  row1.appendChild(styleSelect); row1.appendChild(widthInput);
   container.appendChild(row1);
 
-  // Fila 2: color del borde
   const row2 = document.createElement('div');
   row2.style.cssText = 'display:flex;gap:8px;align-items:center';
   row2.innerHTML = '<label style="font-size:11px;color:#6b7280;font-weight:600;white-space:nowrap">Color:</label>';
-
-  const colorPicker = document.createElement('input');
-  colorPicker.type = 'color';
+  const colorPicker = document.createElement('input'); colorPicker.type = 'color';
   colorPicker.value = (el.borderColor && el.borderColor.startsWith('#')) ? el.borderColor.substring(0,7) : '#e5e7eb';
   colorPicker.style.cssText = 'width:36px;height:32px;padding:0;border:1px solid #e5e7eb;border-radius:6px;cursor:pointer';
-
-  const colorText = document.createElement('input');
-  colorText.type = 'text';
-  colorText.className = 'ci';
-  colorText.value = el.borderColor || '#e5e7eb';
-  colorText.style.flex = '1';
-
-  colorPicker.oninput = e => {
-    colorText.value = e.target.value;
-    updateElement(state.selectedId, { borderColor: e.target.value });
-    updateBorderPreview();
-    saveHistory();
-  };
+  const colorText = document.createElement('input'); colorText.type = 'text'; colorText.className = 'ci';
+  colorText.value = el.borderColor || '#e5e7eb'; colorText.style.flex = '1';
+  colorPicker.oninput = e => { colorText.value = e.target.value; updateElement(state.selectedId, { borderColor: e.target.value }); updateBorderPreview(); };
   colorPicker.onchange = () => saveHistory();
-  colorText.onchange = e => {
-    colorPicker.value = e.target.value.startsWith('#') ? e.target.value : '#e5e7eb';
-    updateElement(state.selectedId, { borderColor: e.target.value });
-    updateBorderPreview();
-    saveHistory();
-  };
-
-  row2.appendChild(colorPicker);
-  row2.appendChild(colorText);
+  colorText.onchange = e => { colorPicker.value = e.target.value.startsWith('#') ? e.target.value : '#e5e7eb'; updateElement(state.selectedId, { borderColor: e.target.value }); updateBorderPreview(); saveHistory(); };
+  row2.appendChild(colorPicker); row2.appendChild(colorText);
   container.appendChild(row2);
 
-  // Preview
   const preview = document.createElement('div');
   preview.className = 'border-preview';
-  preview.id = 'border-preview-' + el.id;
   preview.textContent = 'Vista previa';
-  preview.style.borderStyle = 'solid';
-  preview.style.borderWidth = '2px';
-  preview.style.borderColor = '#e5e7eb';
   container.appendChild(preview);
 
-  // Botón borrar borde
   const clearBtn = document.createElement('button');
   clearBtn.className = 'btn-s';
   clearBtn.style.cssText = 'width:100%;margin-top:6px;font-size:12px;padding:6px;background:#fef2f2;color:#dc2626';
   clearBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Quitar borde';
   clearBtn.onclick = () => {
-    styleSelect.value = 'none';
-    widthInput.value = 0;
+    styleSelect.value = 'none'; widthInput.value = 0;
     updateElement(state.selectedId, { borderStyle:'none', borderWidth:0 });
-    updateBorderPreview();
-    saveHistory();
+    updateBorderPreview(); saveHistory();
   };
   container.appendChild(clearBtn);
 
@@ -1261,20 +1463,9 @@ function buildBorderControl(el){
     preview.style.borderStyle = st;
     preview.style.borderWidth = (st === 'none' ? 0 : Math.max(1, Math.min(w, 8))) + 'px';
     preview.style.borderColor = c;
-    preview.style.display = 'flex';
   }
-
-  styleSelect.onchange = e => {
-    updateElement(state.selectedId, { borderStyle: e.target.value });
-    updateBorderPreview();
-    saveHistory();
-  };
-  widthInput.onchange = e => {
-    updateElement(state.selectedId, { borderWidth: parseInt(e.target.value) || 0 });
-    updateBorderPreview();
-    saveHistory();
-  };
-
+  styleSelect.onchange = e => { updateElement(state.selectedId, { borderStyle: e.target.value }); updateBorderPreview(); saveHistory(); };
+  widthInput.onchange = e => { updateElement(state.selectedId, { borderWidth: parseInt(e.target.value) || 0 }); updateBorderPreview(); saveHistory(); };
   updateBorderPreview();
   return container;
 }
@@ -1291,17 +1482,18 @@ function renderProps(){
   propsPanel.appendChild(row([inp('number','Radio', el.borderRadius || 0, v => upd('borderRadius', parseFloat(v))), inp('number','Opacidad', el.opacity, v => upd('opacity', parseFloat(v)))]));
 
   propsPanel.appendChild(secH('Apariencia'));
-  propsPanel.appendChild(colInp('Color de fondo', el.bgColor || 'transparent', v => upd('bgColor', v)));
+  // ✅ Editor con degradados para Fondo
+  propsPanel.appendChild(buildColorEditor(el, 'bgColor', '🎨 Fondo (color o degradado)'));
   propsPanel.appendChild(inp('text','Sombra (CSS)', el.boxShadow || 'none', v => upd('boxShadow', v)));
 
-  // ✅ Control COMPLETO de borde
+  // ✅ Control completo de borde
   propsPanel.appendChild(buildBorderControl(el));
 
   const T = el.type;
   if(T === 'heading' || T === 'paragraph' || T === 'blockquote'){
     propsPanel.appendChild(secH('Texto'));
     propsPanel.appendChild(inp('text','Contenido', el.text, v => upd('text', v)));
-    propsPanel.appendChild(row([inp('number','Tamaño', el.fontSize, v => upd('fontSize', parseFloat(v))), colInp('Color', el.color, v => upd('color', v))]));
+    propsPanel.appendChild(row([inp('number','Tamaño', el.fontSize, v => upd('fontSize', parseFloat(v))), colInp('Color texto', el.color, v => upd('color', v))]));
   }
   else if(T === 'code'){
     propsPanel.appendChild(secH('Código'));
@@ -1324,7 +1516,7 @@ function renderProps(){
   else if(T === 'badge'){
     propsPanel.appendChild(secH('Etiqueta'));
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
-    propsPanel.appendChild(colInp('Color fondo', el.bgColor, v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo etiqueta'));
     propsPanel.appendChild(colInp('Color texto', el.color, v => upd('color', v)));
   }
   else if(T === 'stars'){
@@ -1337,7 +1529,8 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
     propsPanel.appendChild(inp('text','URL', el.href, v => upd('href', v)));
     propsPanel.appendChild(inp('text','Icono (fa-star)', el.icon||'', v => upd('icon', v)));
-    propsPanel.appendChild(row([colInp('Fondo', el.bgColor, v => upd('bgColor', v)), colInp('Texto', el.color, v => upd('color', v))]));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo botón'));
+    propsPanel.appendChild(colInp('Color texto', el.color, v => upd('color', v)));
   }
   else if(T === 'image'){
     propsPanel.appendChild(secH('Imagen'));
@@ -1362,10 +1555,10 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText||'', v => upd('buttonText', v)));
     propsPanel.appendChild(inp('text','URL botón', el.buttonHref||'', v => upd('buttonHref', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tarjeta'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#1f2937', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
-    propsPanel.appendChild(colInp('Color botón', el.buttonColor||'#3b82f6', v => upd('buttonColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'buttonColor', 'Color botón'));
   }
   else if(T === 'carousel'){
     propsPanel.appendChild(secH('Carrusel'));
@@ -1402,7 +1595,7 @@ function renderProps(){
     propsPanel.appendChild(inp('number','Visibles', el.itemsPerView||3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
     propsPanel.appendChild(inp('number','Separación', el.gap||8, v => upd('gap', parseInt(v))));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#f3f4f6', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo galería'));
     propsPanel.appendChild(colInp('Color flechas', el.arrowColor||'#ffffff', v => upd('arrowColor', v)));
     propsPanel.appendChild(secH('Imágenes'));
     const imgBox = document.createElement('div');
@@ -1429,7 +1622,7 @@ function renderProps(){
     propsPanel.appendChild(inp('number','Visibles', el.itemsPerView||3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
     propsPanel.appendChild(inp('number','Separación', el.gap||16, v => upd('gap', parseInt(v))));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo tarjetas', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tarjetas'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#1f2937', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
     propsPanel.appendChild(secH('📋 Tarjetas'));
@@ -1467,7 +1660,7 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Marca', el.brand, v => upd('brand', v)));
     propsPanel.appendChild(inp('text','URL de la marca', el.brandHref||'#', v => upd('brandHref', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo barra', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo barra'));
     propsPanel.appendChild(colInp('Color marca', el.brandColor||'#1f2937', v => upd('brandColor', v)));
     propsPanel.appendChild(colInp('Color botones', el.textColor||'#4b5563', v => upd('textColor', v)));
     propsPanel.appendChild(secH('🔗 Botones del menú'));
@@ -1506,11 +1699,10 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText, v => upd('buttonText', v)));
     propsPanel.appendChild(inp('text','URL botón', el.buttonHref, v => upd('buttonHref', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo arriba', el.bgColor, v => upd('bgColor', v)));
-    propsPanel.appendChild(colInp('Fondo abajo', el.bgColor2||'#8b5cf6', v => upd('bgColor2', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo (color o degradado)'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#ffffff', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color subtítulo', el.textColor||'#ffffff', v => upd('textColor', v)));
-    propsPanel.appendChild(colInp('Color botón fondo', el.buttonColor||'#ffffff', v => upd('buttonColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'buttonColor', 'Fondo botón'));
     propsPanel.appendChild(colInp('Color texto botón', el.buttonTextColor||'#3b82f6', v => upd('buttonTextColor', v)));
   }
   else if(T === 'footer'){
@@ -1519,7 +1711,7 @@ function renderProps(){
     propsPanel.appendChild(textar('Texto', el.text, v => upd('text', v)));
     propsPanel.appendChild(chk('Mostrar redes', el.socials, v => upd('socials', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#1f2937', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#ffffff', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#9ca3af', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color iconos redes', el.socialColor||'#9ca3af', v => upd('socialColor', v)));
@@ -1539,8 +1731,8 @@ function renderProps(){
     propsPanel.appendChild(row([inp('number','Valor', el.value, v => upd('value', parseFloat(v))), inp('number','Máximo', el.max, v => upd('max', parseFloat(v)))]));
     propsPanel.appendChild(chk('Mostrar etiqueta', el.showLabel, v => upd('showLabel', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo barra', el.bgColor||'#e5e7eb', v => upd('bgColor', v)));
-    propsPanel.appendChild(colInp('Color barra', el.barColor||'#3b82f6', v => upd('barColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo barra'));
+    propsPanel.appendChild(buildColorEditor(el, 'barColor', 'Color barra'));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#ffffff', v => upd('textColor', v)));
   }
   else if(T === 'circleProgress'){
@@ -1548,20 +1740,20 @@ function renderProps(){
     propsPanel.appendChild(inp('number','Valor (0-100)', el.value, v => upd('value', Math.min(100, Math.max(0, parseFloat(v))))));
     propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo círculo', el.bgColor||'#e5e7eb', v => upd('bgColor', v)));
-    propsPanel.appendChild(colInp('Color progreso', el.barColor||'#3b82f6', v => upd('barColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo círculo'));
+    propsPanel.appendChild(buildColorEditor(el, 'barColor', 'Color progreso'));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#3b82f6', v => upd('textColor', v)));
   }
   else if(T === 'counter'){
     propsPanel.appendChild(secH('Contador'));
     propsPanel.appendChild(inp('number','Valor', el.value, v => upd('value', parseFloat(v))));
     propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
-    propsPanel.appendChild(colInp('Color número', el.numColor||'#3b82f6', v => upd('numColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'numColor', 'Color número'));
     propsPanel.appendChild(colInp('Color etiqueta', el.labelColor||'#6b7280', v => upd('labelColor', v)));
   }
   else if(T === 'stats'){
     propsPanel.appendChild(secH('Estadísticas'));
-    propsPanel.appendChild(colInp('Color números', el.numColor||'#3b82f6', v => upd('numColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'numColor', 'Color números'));
     propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#6b7280', v => upd('labelColor', v)));
   }
   else if(T === 'countdown'){
@@ -1569,8 +1761,8 @@ function renderProps(){
     propsPanel.appendChild(row([inp('number','Días', el.days, v => upd('days', v)), inp('number','Horas', el.hours, v => upd('hours', v))]));
     propsPanel.appendChild(row([inp('number','Min', el.minutes, v => upd('minutes', v)), inp('number','Seg', el.seconds, v => upd('seconds', v))]));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo cajas', el.bgColor||'#1f2937', v => upd('bgColor', v)));
-    propsPanel.appendChild(colInp('Color números', el.numColor||'#ffffff', v => upd('numColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo cajas'));
+    propsPanel.appendChild(buildColorEditor(el, 'numColor', 'Color números'));
     propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#9ca3af', v => upd('labelColor', v)));
   }
   else if(T === 'table'){
@@ -1579,8 +1771,8 @@ function renderProps(){
     const txt = el.rows.map(r => r.join(' | ')).join('\n');
     propsPanel.appendChild(textar('Filas (celdas separadas por |)', txt, v => { const rows = v.split('\n').filter(l => l.trim()).map(l => l.split('|').map(c => c.trim())); upd('rows', rows); }));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo tabla', el.bgColor||'#ffffff', v => upd('bgColor', v)));
-    propsPanel.appendChild(colInp('Fondo encabezado', el.headerBg||'#f9fafb', v => upd('headerBg', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tabla'));
+    propsPanel.appendChild(buildColorEditor(el, 'headerBg', 'Fondo encabezado'));
     propsPanel.appendChild(colInp('Color encabezado', el.headerColor||'#1f2937', v => upd('headerColor', v)));
     propsPanel.appendChild(colInp('Color celdas', el.textColor||'#374151', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color bordes', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
@@ -1588,8 +1780,8 @@ function renderProps(){
   else if(T === 'pricing'){
     propsPanel.appendChild(secH('Tabla precios'));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo tarjetas', el.bgColor||'#ffffff', v => upd('bgColor', v)));
-    propsPanel.appendChild(colInp('Color destacado', el.featuredColor||'#3b82f6', v => upd('featuredColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tarjetas'));
+    propsPanel.appendChild(buildColorEditor(el, 'featuredColor', 'Color destacado'));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#1f2937', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color secundario', el.mutedColor||'#6b7280', v => upd('mutedColor', v)));
     propsPanel.appendChild(colInp('Color check', el.checkColor||'#10b981', v => upd('checkColor', v)));
@@ -1615,7 +1807,7 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Autor', el.author, v => upd('author', v)));
     propsPanel.appendChild(inp('text','Cargo', el.role, v => upd('role', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#4b5563', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color autor', el.authorColor||'#1f2937', v => upd('authorColor', v)));
     propsPanel.appendChild(colInp('Color cargo', el.roleColor||'#9ca3af', v => upd('roleColor', v)));
@@ -1625,9 +1817,9 @@ function renderProps(){
     propsPanel.appendChild(secH('Formulario'));
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText, v => upd('buttonText', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#374151', v => upd('labelColor', v)));
-    propsPanel.appendChild(colInp('Color botón fondo', el.buttonColor||'#3b82f6', v => upd('buttonColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'buttonColor', 'Fondo botón'));
     propsPanel.appendChild(colInp('Color texto botón', el.buttonTextColor||'#ffffff', v => upd('buttonTextColor', v)));
   }
   else if(T === 'input'){
@@ -1666,7 +1858,7 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Título', el.summary, v => upd('summary', v)));
     propsPanel.appendChild(textar('Contenido (HTML)', el.content, v => upd('content', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo título', el.summaryBg||'#f9fafb', v => upd('summaryBg', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'summaryBg', 'Fondo título'));
     propsPanel.appendChild(colInp('Color título', el.summaryColor||'#1f2937', v => upd('summaryColor', v)));
     propsPanel.appendChild(colInp('Color contenido', el.textColor||'#374151', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color borde', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
@@ -1679,7 +1871,7 @@ function renderProps(){
   else if(T === 'ribbon'){
     propsPanel.appendChild(secH('Cinta'));
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
-    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#f59e0b', v => upd('bgColor', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color texto', el.color||'#ffffff', v => upd('color', v)));
   }
   else if(T === 'icon'){
@@ -1691,13 +1883,13 @@ function renderProps(){
   else if(T === 'social'){
     propsPanel.appendChild(secH('Red Social'));
     propsPanel.appendChild(inp('text','URL', el.url, v => upd('url', v)));
-    propsPanel.appendChild(colInp('Color', el.color, v => upd('color', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'color', 'Color fondo'));
     propsPanel.appendChild(sel('Forma', el.shape, [{value:'circle',label:'Círculo'},{value:'square',label:'Cuadrado'}], v => upd('shape', v)));
   }
   else if(T === 'socials'){
     propsPanel.appendChild(secH('Grupo redes'));
     propsPanel.appendChild(textar('Iconos (uno por línea)', el.icons.join('\n'), v => upd('icons', v.split('\n').filter(x=>x.trim()))));
-    propsPanel.appendChild(colInp('Color fondo', el.color||'#3b82f6', v => upd('color', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'color', 'Color fondo'));
   }
   else if(T === 'timeline'){
     propsPanel.appendChild(secH('Timeline'));
@@ -1711,7 +1903,7 @@ function renderProps(){
   else if(T === 'whatsapp'){
     propsPanel.appendChild(secH('WhatsApp'));
     propsPanel.appendChild(inp('text','URL', el.href, v => upd('href', v)));
-    propsPanel.appendChild(colInp('Color fondo', el.color||'#25d366', v => upd('color', v)));
+    propsPanel.appendChild(buildColorEditor(el, 'color', 'Color fondo'));
   }
 
   propsPanel.appendChild(secH('Acciones'));
@@ -1785,13 +1977,14 @@ document.querySelectorAll('.vp-btn').forEach(btn => {
 document.getElementById('btn-export').onclick = () => {
   const page = getPage();
   const pageBg = page.bgColor || '#ffffff';
-  const isGradient = pageBg.startsWith('linear') || pageBg.startsWith('radial');
+  const isGrad = isGradient(pageBg);
   const editorCSS = document.querySelector('style').innerHTML;
 
   let elementsHTML = '';
   page.elements.forEach(el => {
     const border = buildBorder(el);
-    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${border};background-color:${(el.bgColor && !el.bgColor.startsWith('linear') && el.type !== 'code') ? el.bgColor : 'transparent'};`;
+    const bgCSS = isGradient(el.bgColor) ? `background:${el.bgColor};` : `background-color:${(el.bgColor && el.type !== 'code') ? el.bgColor : 'transparent'};`;
+    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${border};${bgCSS}`;
     const dom = document.getElementById(el.id);
     let inner = '';
     if(dom){
@@ -1865,8 +2058,8 @@ document.querySelectorAll('.cardcar-wrap').forEach(function(w){
 <title>${esc(page.title)}</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#1f2937;background:${isGradient ? '#f3f4f6' : pageBg};}
-.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh;background:${pageBg};}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#1f2937;background:${isGrad ? '#f3f4f6' : pageBg};}
+.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh;${isGrad ? 'background:'+pageBg+';' : 'background:'+pageBg+';'}}
 .elemento{position:absolute;box-sizing:border-box;word-break:break-word}
 ${editorCSS}
 </style>
