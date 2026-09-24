@@ -219,6 +219,12 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .nav-link-edit .del-btn{padding:5px 8px;background:#fef2f2;color:#dc2626;border:none;border-radius:4px;cursor:pointer;font-size:11px}
 .nav-link-edit .del-btn:hover{background:#fee2e2}
 .nav-link-edit label{font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;display:block;margin-bottom:2px}
+/* Estilos para el editor de borde */
+.border-preview{width:100%;height:40px;border-radius:6px;margin-top:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#9ca3af;background:#f9fafb;transition:all .2s}
+.side-config{display:flex;gap:4px;margin-bottom:6px}
+.side-config button{flex:1;padding:6px 4px;font-size:11px;border:1px solid #e5e7eb;background:#fff;border-radius:4px;cursor:pointer;transition:all .15s;color:#6b7280}
+.side-config button.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.side-config button:hover:not(.active){background:#f3f4f6}
 #page-config-btn{position:fixed;bottom:24px;right:calc(var(--sb) + 24px);width:52px;height:52px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);z-index:1000;transition:transform .2s}
 #page-config-btn:hover{transform:scale(1.08)}
 #page-config-panel{position:fixed;bottom:90px;right:calc(var(--sb) + 24px);background:#fff;border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:20px;width:280px;z-index:1000;display:none;border:1px solid var(--border)}
@@ -457,7 +463,7 @@ const LIB = [
   { cat:'🔗 Enlaces y Botones', items:[
     { type:'link', label:'Enlace', icon:'fa-link', props:{ text:'Ir a Google', href:'https://google.com', target:'_blank' }},
     { type:'button', label:'Botón', icon:'fa-square', props:{ text:'Haz clic', href:'', bgColor:'#3b82f6', color:'#ffffff' }},
-    { type:'button', label:'Botón contorno', icon:'fa-square', props:{ text:'Más info', href:'#', bgColor:'#ffffff', color:'#3b82f6', border:'2px solid #3b82f6' }},
+    { type:'button', label:'Botón contorno', icon:'fa-square', props:{ text:'Más info', href:'#', bgColor:'#ffffff', color:'#3b82f6', borderStyle:'solid', borderWidth:2, borderColor:'#3b82f6', borderRadius:8 }},
     { type:'button', label:'Botón icono', icon:'fa-star', props:{ text:'Favorito', icon:'fa-star', bgColor:'#f59e0b', color:'#ffffff' }},
     { type:'button', label:'Botón descarga', icon:'fa-download', props:{ text:'Descargar', icon:'fa-download', href:'#', download:true, bgColor:'#10b981', color:'#ffffff' }},
     { type:'button', label:'Botón grande CTA', icon:'fa-bullhorn', props:{ text:'¡Empezar ahora!', bgColor:'#ef4444', color:'#fff', fontSize:18, width:220, height:56, borderRadius:28 }}
@@ -502,7 +508,7 @@ const LIB = [
     }},
     { type:'hero', label:'Hero (portada)', icon:'fa-mountain-sun', props:{ title:'Bienvenido a mi web', subtitle:'Diseño moderno y profesional', buttonText:'Comenzar', buttonHref:'#', bgColor:'#3b82f6' }},
     { type:'footer', label:'Pie de página', icon:'fa-shoe-prints', props:{ title:'Mi Empresa', text:'© 2024 Todos los derechos reservados.', socials:true }},
-    { type:'container', label:'Contenedor', icon:'fa-square', props:{ bgColor:'#f9fafb', border:'1px solid #e5e7eb', borderRadius:8 }},
+    { type:'container', label:'Contenedor', icon:'fa-square', props:{ bgColor:'#f9fafb', borderRadius:8, borderStyle:'solid', borderWidth:1, borderColor:'#e5e7eb' }},
     { type:'divider', label:'Línea divisoria', icon:'fa-minus', props:{}},
     { type:'sepIcon', label:'Separador icono', icon:'fa-asterisk', props:{ icon:'fa-star' }}
   ]},
@@ -576,7 +582,7 @@ const LIB = [
 
 /* ========== DEFAULTS ========== */
 function defaults(type){
-  const base = { x:60,y:60,width:300,height:80,zIndex:1,opacity:1,borderRadius:0,boxShadow:'none',border:'none',bgColor:'transparent',padding:'0' };
+  const base = { x:60,y:60,width:300,height:80,zIndex:1,opacity:1,borderRadius:0,boxShadow:'none',border:'none',bgColor:'transparent',padding:'0',borderStyle:'none',borderWidth:0,borderColor:'#e5e7eb' };
   const d = {
     heading:{ width:600,height:70,text:'Título Principal',level:1,fontSize:42,fontWeight:'bold',color:'#1f2937',textAlign:'left' },
     paragraph:{ width:500,height:60,text:'Escribe tu párrafo aquí.',fontSize:16,color:'#374151',textAlign:'left' },
@@ -587,12 +593,12 @@ function defaults(type){
     badge:{ width:100,height:30,text:'Nuevo',fontSize:12,color:'#1d4ed8',bgColor:'#dbeafe' },
     stars:{ width:150,height:30,count:5,color:'#f59e0b' },
     link:{ width:180,height:40,text:'Ir a Google',href:'https://google.com',target:'_blank',color:'#3b82f6',fontSize:15 },
-    button:{ width:170,height:48,text:'Haz clic',href:'',bgColor:'#3b82f6',color:'#ffffff',fontSize:15,borderRadius:8,icon:'',border:'none' },
+    button:{ width:170,height:48,text:'Haz clic',href:'',bgColor:'#3b82f6',color:'#ffffff',fontSize:15,borderRadius:8,icon:'' },
     image:{ width:400,height:260,src:'https://placehold.co/600x400/3b82f6/fff?text=Imagen',alt:'Imagen',objectFit:'cover',href:'' },
     imgOverlay:{ width:600,height:350,src:'https://placehold.co/700x500/8b5cf6/fff?text=Overlay',title:'Título sobre imagen',subtitle:'Subtítulo descriptivo',href:'',textColor:'#ffffff' },
     card:{ width:300,height:360,cardStyle:'basic',img:'https://placehold.co/400x300/3b82f6/fff?text=Foto',title:'Mi título',text:'Esta es la descripción.',buttonText:'Ver más',buttonHref:'#',buttonColor:'#3b82f6',imgHeight:180,titleColor:'#1f2937',textColor:'#6b7280',bgColor:'#ffffff' },
-    carousel:{ width:500,height:320,images:['https://placehold.co/900x500/3b82f6/fff?text=1','https://placehold.co/900x500/ef4444/fff?text=2','https://placehold.co/900x500/10b981/fff?text=3'],autoplay:true,interval:3000,showArrows:true,showDots:true,transition:'fade',arrowColor:'#000000',arrowBg:'rgba(0,0,0,0.6)',dotColor:'#ffffff' },
-    gallery:{ width:800,height:280,images:['https://placehold.co/400x300/3b82f6/fff?text=1','https://placehold.co/400x300/ef4444/fff?text=2','https://placehold.co/400x300/10b981/fff?text=3','https://placehold.co/400x300/8b5cf6/fff?text=4','https://placehold.co/400x300/f59e0b/fff?text=5','https://placehold.co/400x300/0ea5e9/fff?text=6'],autoplay:true,interval:2500,showArrows:true,showDots:true,itemsPerView:3,gap:8,bgColor:'#f3f4f6' },
+    carousel:{ width:500,height:320,images:['https://placehold.co/900x500/3b82f6/fff?text=1','https://placehold.co/900x500/ef4444/fff?text=2','https://placehold.co/900x500/10b981/fff?text=3'],autoplay:true,interval:3000,showArrows:true,showDots:true,transition:'fade',arrowColor:'#ffffff',dotColor:'#ffffff' },
+    gallery:{ width:800,height:280,images:['https://placehold.co/400x300/3b82f6/fff?text=1','https://placehold.co/400x300/ef4444/fff?text=2','https://placehold.co/400x300/10b981/fff?text=3','https://placehold.co/400x300/8b5cf6/fff?text=4','https://placehold.co/400x300/f59e0b/fff?text=5','https://placehold.co/400x300/0ea5e9/fff?text=6'],autoplay:true,interval:2500,showArrows:true,showDots:true,itemsPerView:3,gap:8,bgColor:'#f3f4f6',arrowColor:'#ffffff' },
     cardcarousel:{ width:900,height:400,cards:[
       { img:'https://placehold.co/400x300/3b82f6/fff?text=1', title:'Primera', text:'Descripción.', buttonText:'Ver más', buttonHref:'#', buttonColor:'#3b82f6' },
       { img:'https://placehold.co/400x300/ef4444/fff?text=2', title:'Segunda', text:'Otra descripción.', buttonText:'Comprar', buttonHref:'#', buttonColor:'#ef4444' },
@@ -608,11 +614,11 @@ function defaults(type){
         { text:'Sobre mí', href:'#sobre', target:'_self' },
         { text:'Contacto', href:'#contacto', target:'_self' }
       ],
-      bgColor:'#ffffff', textColor:'#4b5563', brandColor:'#1f2937', borderBottom:'1px solid #e5e7eb'
+      bgColor:'#ffffff', textColor:'#4b5563', brandColor:'#1f2937'
     },
     hero:{ width:1160,height:400,title:'Bienvenido a mi web',subtitle:'Diseño moderno y profesional',buttonText:'Comenzar',buttonHref:'#',bgColor:'#3b82f6',bgColor2:'#8b5cf6',titleColor:'#ffffff',textColor:'#ffffff',buttonColor:'#ffffff',buttonTextColor:'#3b82f6' },
     footer:{ width:1160,height:220,title:'Mi Empresa',text:'© 2024 Todos los derechos reservados. Hecho con ❤️',socials:true,bgColor:'#1f2937',titleColor:'#ffffff',textColor:'#9ca3af',socialColor:'#9ca3af' },
-    container:{ width:400,height:250,bgColor:'#f9fafb',border:'1px solid #e5e7eb' },
+    container:{ width:400,height:250,bgColor:'#f9fafb',borderStyle:'solid',borderWidth:1,borderColor:'#e5e7eb' },
     divider:{ width:500,height:2,color:'#e5e7eb' },
     sepIcon:{ width:500,height:30,icon:'fa-star',color:'#3b82f6',lineColor:'#e5e7eb' },
     progress:{ width:350,height:20,value:65,max:100,showLabel:true,bgColor:'#e5e7eb',barColor:'#3b82f6',textColor:'#ffffff' },
@@ -636,7 +642,7 @@ function defaults(type){
     checkbox:{ width:280,height:30,label:'Acepto los términos',checked:false,color:'#374151' },
     radio:{ width:280,height:30,label:'Opción A',name:'grupo',value:'a',color:'#374151' },
     textarea:{ width:350,height:110,label:'Mensaje',placeholder:'Escribe aquí...',labelColor:'#374151' },
-    details:{ width:400,height:80,summary:'¿Qué es esto?',content:'Un acordeón con details de HTML.',summaryBg:'#f9fafb',summaryColor:'#1f2937',textColor:'#374151',borderColor:'#e5e7eb',iconColor:'#3b82f6' },
+    details:{ width:400,height:80,summary:'¿Qué es esto?',content:'Un acordeón con details de HTML.',summaryBg:'#f9fafb',summaryColor:'#1f2937',textColor:'#374151',borderColor:'#e5e7eb' },
     alert:{ width:400,height:60,alertType:'info',text:'Esto es un aviso informativo.' },
     ribbon:{ width:400,height:40,text:'🔥 Oferta especial',bgColor:'#f59e0b',color:'#ffffff' },
     icon:{ width:48,height:48,icon:'fa-star',size:32,color:'#f59e0b',href:'' },
@@ -676,6 +682,15 @@ function deleteEl(id){
   document.getElementById(id)?.remove();
   clearSel();
   saveHistory();
+}
+
+/* ========== CONSTRUIR BORDE ========== */
+function buildBorder(el){
+  const style = el.borderStyle || 'none';
+  const width = el.borderWidth || 0;
+  const color = el.borderColor || '#e5e7eb';
+  if(style === 'none' || width === 0) return 'none';
+  return `${width}px ${style} ${color}`;
 }
 
 /* ========== RENDER ========== */
@@ -719,6 +734,7 @@ function renderElement(el){
 }
 
 function syncDOM(dom, el){
+  const border = buildBorder(el);
   Object.assign(dom.style, {
     left: el.x+'px', top: el.y+'px',
     width: typeof el.width==='number' ? el.width+'px' : el.width,
@@ -726,7 +742,7 @@ function syncDOM(dom, el){
     zIndex: el.zIndex, opacity: el.opacity,
     borderRadius: (el.borderRadius||0)+'px',
     boxShadow: el.boxShadow||'none',
-    border: el.border||'none',
+    border: border,
     backgroundColor: (el.type === 'code') ? 'transparent' : (el.bgColor||'transparent'),
     padding: el.padding||'0'
   });
@@ -744,7 +760,7 @@ function syncDOM(dom, el){
   else if(T === 'link') html = `<a href="${el.href||'#'}" target="${el.target||'_self'}" style="font-size:${el.fontSize}px;color:${el.color};text-decoration:underline">${esc(el.text)}</a>`;
   else if(T === 'button'){
     const ic = el.icon ? `<i class="fa-solid ${el.icon}"></i>` : '';
-    const btnStyle = `background:${el.bgColor};color:${el.color};font-size:${el.fontSize}px;border:${el.border||'none'};width:100%;height:100%`;
+    const btnStyle = `background:${el.bgColor};color:${el.color};font-size:${el.fontSize}px;width:100%;height:100%`;
     if(el.href) html = `<a href="${el.href}" class="e-btn" style="${btnStyle}">${ic}${esc(el.text)}</a>`;
     else html = `<button class="e-btn" type="button" style="${btnStyle}">${ic}${esc(el.text)}</button>`;
   }
@@ -827,14 +843,12 @@ function syncDOM(dom, el){
   if(T === 'cardcarousel') initCardCarousel(dom, el);
 }
 
-/* ========== NAVBAR ========== */
 function buildNavbar(el){
   const links = el.navLinks || [];
   const bg = el.bgColor || '#ffffff';
   const textColor = el.textColor || '#4b5563';
   const brandColor = el.brandColor || '#1f2937';
-  const borderBottom = el.borderBottom || '1px solid #e5e7eb';
-  let h = `<nav class="e-nav" style="background:${bg};border-bottom:${borderBottom}">`;
+  let h = `<nav class="e-nav" style="background:${bg};border-bottom:1px solid #e5e7eb">`;
   h += `<a href="${el.brandHref||'#'}" class="e-nav-logo" style="color:${brandColor}">${esc(el.brand)}</a>`;
   h += `<ul class="e-nav-links">`;
   links.forEach(l => {
@@ -844,7 +858,6 @@ function buildNavbar(el){
   return h;
 }
 
-/* ========== CARD ========== */
 function buildCard(el){
   const style = el.cardStyle || 'basic';
   const imgH = el.imgHeight || 180;
@@ -862,7 +875,6 @@ function buildCard(el){
   return '';
 }
 
-/* ========== CARRUSEL ========== */
 function buildCarousel(el){
   const effect = el.transition || 'fade';
   let h = `<div class="carousel" data-autoplay="${el.autoplay}" data-interval="${el.interval||3000}" data-transition="${effect}">`;
@@ -873,7 +885,7 @@ function buildCarousel(el){
     h += `<img src="${img}" class="carousel-slide ${i===0?'active':''}" style="object-fit:cover;width:100%;height:100%;${extra}" draggable="false" data-i="${i}">`;
   });
   if(el.showArrows && el.images.length > 0){
-    const arrowStyle = `background:${el.arrowBg||'rgba(0,0,0,0.6)'};color:${el.arrowColor||'#fff'}`;
+    const arrowStyle = `background:rgba(0,0,0,0.6);color:${el.arrowColor||'#fff'}`;
     h += `<button class="carousel-arrow prev" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-left"></i></button><button class="carousel-arrow next" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-right"></i></button>`;
   }
   if(el.showDots && el.images.length > 0){
@@ -914,7 +926,6 @@ function initCarousel(dom, el){
   if(el.autoplay && el.interval){ if(container._timer) clearInterval(container._timer); container._timer = setInterval(() => update(idx+1), el.interval); }
 }
 
-/* ========== GALERÍA ========== */
 function buildGallery(el){
   const total = el.images.length;
   const perView = el.itemsPerView || 3;
@@ -923,7 +934,7 @@ function buildGallery(el){
   el.images.forEach((img, i) => { h += `<div class="gallery-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})"><img src="${img}" draggable="false" data-i="${i}"></div>`; });
   h += `</div>`;
   if(el.showArrows && total > perView){
-    const arrowStyle = `background:${el.arrowBg||'rgba(0,0,0,0.55)'};color:${el.arrowColor||'#fff'}`;
+    const arrowStyle = `background:rgba(0,0,0,0.55);color:${el.arrowColor||'#fff'}`;
     h += `<button class="gallery-arrow prev" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-arrow next" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-right"></i></button>`;
   }
   if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += `<div class="gallery-dots">`; for(let i = 0; i < pages; i++) h += `<div class="gallery-dot ${i===0?'active':''}" data-page="${i}"></div>`; h += `</div>`; }
@@ -958,7 +969,6 @@ function initGallery(dom, el){
   if(el.autoplay && el.interval && pages > 1){ if(wrap._timer) clearInterval(wrap._timer); wrap._timer = setInterval(() => go(page+1), el.interval); }
 }
 
-/* ========== CARRUSEL TARJETAS ========== */
 function buildCardCarousel(el){
   const cards = el.cards || [];
   const perView = el.itemsPerView || 3;
@@ -1057,7 +1067,6 @@ function onDrag(e){
 }
 function endDrag(){ if(drag) saveHistory(); drag = null; document.removeEventListener('mousemove', onDrag); document.removeEventListener('mouseup', endDrag); }
 
-/* ========== TOOLS ========== */
 function renderTools(filter){
   filter = filter || '';
   const box = document.getElementById('tab-tools');
@@ -1143,6 +1152,133 @@ document.getElementById('btn-add-page').onclick = () => {
 
 const upd = (k, v) => updateElement(state.selectedId, { [k]: v });
 
+/* ========== CONTROL COMPLETO DE BORDE ========== */
+function buildBorderControl(el){
+  const container = document.createElement('div');
+  container.className = 'cg';
+  container.innerHTML = '<label class="cl">🎨 Borde</label>';
+
+  // Fila 1: estilo + ancho
+  const row1 = document.createElement('div');
+  row1.style.cssText = 'display:flex;gap:8px;margin-bottom:8px';
+
+  const styleSelect = document.createElement('select');
+  styleSelect.className = 'ci';
+  styleSelect.style.flex = '1.5';
+  [
+    {v:'none', l:'Sin borde'},
+    {v:'solid', l:'─── Sólido'},
+    {v:'dashed', l:'- - - Guiones'},
+    {v:'dotted', l:'··· Puntos'},
+    {v:'double', l:'═══ Doble'},
+    {v:'groove', l:'┌─┐ Groove'},
+    {v:'ridge', l:'┏━┓ Ridge'},
+    {v:'inset', l:'▣ Inset'},
+    {v:'outset', l:'▢ Outset'}
+  ].forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = o.v;
+    opt.textContent = o.l;
+    if(o.v === (el.borderStyle || 'none')) opt.selected = true;
+    styleSelect.appendChild(opt);
+  });
+
+  const widthInput = document.createElement('input');
+  widthInput.type = 'number';
+  widthInput.className = 'ci';
+  widthInput.style.flex = '1';
+  widthInput.min = 0;
+  widthInput.max = 20;
+  widthInput.value = el.borderWidth || 0;
+  widthInput.placeholder = 'px';
+
+  row1.appendChild(styleSelect);
+  row1.appendChild(widthInput);
+  container.appendChild(row1);
+
+  // Fila 2: color del borde
+  const row2 = document.createElement('div');
+  row2.style.cssText = 'display:flex;gap:8px;align-items:center';
+  row2.innerHTML = '<label style="font-size:11px;color:#6b7280;font-weight:600;white-space:nowrap">Color:</label>';
+
+  const colorPicker = document.createElement('input');
+  colorPicker.type = 'color';
+  colorPicker.value = (el.borderColor && el.borderColor.startsWith('#')) ? el.borderColor.substring(0,7) : '#e5e7eb';
+  colorPicker.style.cssText = 'width:36px;height:32px;padding:0;border:1px solid #e5e7eb;border-radius:6px;cursor:pointer';
+
+  const colorText = document.createElement('input');
+  colorText.type = 'text';
+  colorText.className = 'ci';
+  colorText.value = el.borderColor || '#e5e7eb';
+  colorText.style.flex = '1';
+
+  colorPicker.oninput = e => {
+    colorText.value = e.target.value;
+    updateElement(state.selectedId, { borderColor: e.target.value });
+    updateBorderPreview();
+    saveHistory();
+  };
+  colorPicker.onchange = () => saveHistory();
+  colorText.onchange = e => {
+    colorPicker.value = e.target.value.startsWith('#') ? e.target.value : '#e5e7eb';
+    updateElement(state.selectedId, { borderColor: e.target.value });
+    updateBorderPreview();
+    saveHistory();
+  };
+
+  row2.appendChild(colorPicker);
+  row2.appendChild(colorText);
+  container.appendChild(row2);
+
+  // Preview
+  const preview = document.createElement('div');
+  preview.className = 'border-preview';
+  preview.id = 'border-preview-' + el.id;
+  preview.textContent = 'Vista previa';
+  preview.style.borderStyle = 'solid';
+  preview.style.borderWidth = '2px';
+  preview.style.borderColor = '#e5e7eb';
+  container.appendChild(preview);
+
+  // Botón borrar borde
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'btn-s';
+  clearBtn.style.cssText = 'width:100%;margin-top:6px;font-size:12px;padding:6px;background:#fef2f2;color:#dc2626';
+  clearBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Quitar borde';
+  clearBtn.onclick = () => {
+    styleSelect.value = 'none';
+    widthInput.value = 0;
+    updateElement(state.selectedId, { borderStyle:'none', borderWidth:0 });
+    updateBorderPreview();
+    saveHistory();
+  };
+  container.appendChild(clearBtn);
+
+  function updateBorderPreview(){
+    const st = styleSelect.value;
+    const w = parseInt(widthInput.value) || 0;
+    const c = colorText.value;
+    preview.style.borderStyle = st;
+    preview.style.borderWidth = (st === 'none' ? 0 : Math.max(1, Math.min(w, 8))) + 'px';
+    preview.style.borderColor = c;
+    preview.style.display = 'flex';
+  }
+
+  styleSelect.onchange = e => {
+    updateElement(state.selectedId, { borderStyle: e.target.value });
+    updateBorderPreview();
+    saveHistory();
+  };
+  widthInput.onchange = e => {
+    updateElement(state.selectedId, { borderWidth: parseInt(e.target.value) || 0 });
+    updateBorderPreview();
+    saveHistory();
+  };
+
+  updateBorderPreview();
+  return container;
+}
+
 function renderProps(){
   if(!state.selectedId){ noSel.classList.remove('hidden'); propsPanel.classList.add('hidden'); return; }
   const el = getElements().find(e => e.id === state.selectedId);
@@ -1151,17 +1287,17 @@ function renderProps(){
 
   propsPanel.appendChild(secH('Posición y Tamaño'));
   propsPanel.appendChild(row([inp('number','X', el.x, v => upd('x', parseFloat(v))), inp('number','Y', el.y, v => upd('y', parseFloat(v)))]));
-  propsPanel.appendChild(row([inp('number','Ancho', el.width, v => upd('width', parseFloat(v))), inp('number','Alto', el.height, v => upd('height', parseFloat(v)))]));
+  propsPanel.appendChild(row([inp('number','Ancho', el.width, v => upd('width', parseFloat(v))), inp('number','Alto', el.height, v => upd('height', parseFloat(v))) ]));
+  propsPanel.appendChild(row([inp('number','Radio', el.borderRadius || 0, v => upd('borderRadius', parseFloat(v))), inp('number','Opacidad', el.opacity, v => upd('opacity', parseFloat(v)))]));
 
   propsPanel.appendChild(secH('Apariencia'));
-  propsPanel.appendChild(row([colInp('Fondo', el.bgColor || 'transparent', v => upd('bgColor', v)), inp('number','Radio', el.borderRadius || 0, v => upd('borderRadius', parseFloat(v)))]));
-  propsPanel.appendChild(inp('text','Borde', el.border || 'none', v => upd('border', v)));
-  propsPanel.appendChild(inp('text','Sombra', el.boxShadow || 'none', v => upd('boxShadow', v)));
-  propsPanel.appendChild(row([inp('number','Opacidad', el.opacity, v => upd('opacity', parseFloat(v))), inp('number','z-index', el.zIndex, v => upd('zIndex', parseInt(v)))]));
+  propsPanel.appendChild(colInp('Color de fondo', el.bgColor || 'transparent', v => upd('bgColor', v)));
+  propsPanel.appendChild(inp('text','Sombra (CSS)', el.boxShadow || 'none', v => upd('boxShadow', v)));
+
+  // ✅ Control COMPLETO de borde
+  propsPanel.appendChild(buildBorderControl(el));
 
   const T = el.type;
-
-  // ===== COLORES ESPECÍFICOS POR TIPO =====
   if(T === 'heading' || T === 'paragraph' || T === 'blockquote'){
     propsPanel.appendChild(secH('Texto'));
     propsPanel.appendChild(inp('text','Contenido', el.text, v => upd('text', v)));
@@ -1226,7 +1362,7 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText||'', v => upd('buttonText', v)));
     propsPanel.appendChild(inp('text','URL botón', el.buttonHref||'', v => upd('buttonHref', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(colInp('Fondo tarjeta', el.bgColor||'#ffffff', v => upd('bgColor', v)));
+    propsPanel.appendChild(colInp('Fondo', el.bgColor||'#ffffff', v => upd('bgColor', v)));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#1f2937', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color botón', el.buttonColor||'#3b82f6', v => upd('buttonColor', v)));
@@ -1654,11 +1790,11 @@ document.getElementById('btn-export').onclick = () => {
 
   let elementsHTML = '';
   page.elements.forEach(el => {
-    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${el.border||'none'};background-color:${(el.bgColor && !el.bgColor.startsWith('linear') && el.type !== 'code') ? el.bgColor : 'transparent'};`;
+    const border = buildBorder(el);
+    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${border};background-color:${(el.bgColor && !el.bgColor.startsWith('linear') && el.type !== 'code') ? el.bgColor : 'transparent'};`;
     const dom = document.getElementById(el.id);
     let inner = '';
     if(dom){
-      // Clonamos el HTML renderizado tal cual
       const clone = dom.cloneNode(true);
       inner = clone.innerHTML;
     }
@@ -1756,7 +1892,6 @@ ${scriptsHTML}
   setTimeout(() => alert('✅ Exportado: ' + (page.slug || 'index') + '.html'), 200);
 };
 
-/* ========== INIT ========== */
 renderTools();
 renderPages();
 applyPageBg();
