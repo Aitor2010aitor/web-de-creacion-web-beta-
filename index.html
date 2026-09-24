@@ -64,7 +64,7 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .page-item:hover .actions{opacity:1}
 .page-item .actions button{background:none;border:none;color:#9ca3af;cursor:pointer;padding:3px 5px;border-radius:4px;font-size:11px}
 .canvas-wrap.drag-over .canvas{outline:2px dashed var(--primary);outline-offset:-2px}
-.e-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;text-decoration:none;font-family:inherit}
+.e-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;text-decoration:none;font-family:inherit;width:100%;height:100%}
 .e-img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
 .e-video,.e-audio{width:100%;border-radius:inherit}
 .e-iframe{width:100%;height:100%;border:none;border-radius:inherit}
@@ -89,8 +89,8 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .e-alert-success{background:#f0fdf4;border-color:#10b981;color:#065f46}
 .e-alert-warning{background:#fffbeb;border-color:#f59e0b;color:#92400e}
 .e-alert-danger{background:#fef2f2;border-color:#ef4444;color:#991b1b}
-.e-code{background:#1e293b;color:#e2e8f0;padding:14px 16px;border-radius:8px;font-family:'Courier New',monospace;font-size:13px;overflow-x:auto;white-space:pre;margin:0}
-.e-blockquote{border-left:4px solid var(--primary);padding:10px 16px;margin:0;background:#f9fafb;font-style:italic;color:#4b5563;border-radius:0 8px 8px 0}
+.e-code{background:#1e293b;color:#e2e8f0;padding:14px 16px;border-radius:8px;font-family:'Courier New',monospace;font-size:13px;overflow-x:auto;white-space:pre;margin:0;height:100%;box-sizing:border-box}
+.e-blockquote{border-left:4px solid var(--primary);padding:10px 16px;margin:0;background:#f9fafb;font-style:italic;color:#4b5563;border-radius:0 8px 8px 0;height:100%;box-sizing:border-box;display:flex;align-items:center}
 .e-list{padding-left:24px;margin:0}
 .e-list li{margin-bottom:4px}
 .e-divider{border:none;border-top:2px solid #e5e7eb;margin:8px 0;width:100%}
@@ -192,7 +192,7 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .e-stat{text-align:center}
 .e-stat-num{font-size:36px;font-weight:800;color:#3b82f6;display:block;line-height:1}
 .e-stat-lbl{font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-top:6px;display:block}
-.e-hero{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:#fff;border-radius:inherit}
+.e-hero{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:#fff;border-radius:inherit;box-sizing:border-box}
 .e-hero h1{font-size:42px;font-weight:800;margin:0 0 12px;line-height:1.1}
 .e-hero p{font-size:16px;margin:0 0 24px;opacity:.9;max-width:600px}
 .e-hero-btn{display:inline-block;padding:14px 32px;background:#fff;color:#3b82f6;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px}
@@ -205,7 +205,7 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .e-circle-prog .bg{stroke:#e5e7eb}
 .e-circle-prog .fg{stroke:#3b82f6;stroke-linecap:round;stroke-dasharray:314}
 .e-circle-prog .txt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;font-weight:800;color:#3b82f6}
-.e-ribbon{color:#fff;text-align:center;padding:8px 16px;font-weight:600;font-size:13px;border-radius:6px;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.e-ribbon{color:#fff;text-align:center;padding:8px 16px;font-weight:600;font-size:13px;border-radius:6px;width:100%;height:100%;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
 .e-whatsapp{position:relative;width:60px;height:60px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;text-decoration:none;box-shadow:0 4px 12px rgba(37,211,102,.4);margin:auto}
 .e-masonry{column-count:3;column-gap:12px;width:100%;height:100%;overflow:hidden}
 .e-masonry img{width:100%;margin-bottom:12px;border-radius:8px;display:block}
@@ -219,8 +219,7 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .nav-link-edit .del-btn{padding:5px 8px;background:#fef2f2;color:#dc2626;border:none;border-radius:4px;cursor:pointer;font-size:11px}
 .nav-link-edit .del-btn:hover{background:#fee2e2}
 .nav-link-edit label{font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;display:block;margin-bottom:2px}
-.border-preview{width:100%;height:40px;border-radius:6px;margin-top:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#9ca3af;background:#f9fafb;transition:all .2s}
-/* === NUEVO: Editor de color con degradado === */
+.border-preview{width:100%;height:40px;border-radius:6px;margin-top:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#9ca3af;background:#f9fafb;transition:all .2s;box-sizing:border-box}
 .color-editor{margin-bottom:12px}
 .color-editor .tabs-color{display:flex;gap:4px;margin-bottom:8px;background:#f3f4f6;padding:3px;border-radius:6px}
 .color-editor .tabs-color button{flex:1;padding:5px;border:none;background:transparent;border-radius:4px;font-size:11px;font-weight:600;color:#6b7280;cursor:pointer;transition:all .15s}
@@ -327,32 +326,53 @@ const slugify = t => t.toString().toLowerCase().replace(/\s+/g,'-').replace(/[^\
 const getPage = () => state.pages.find(p => p.id === state.currentPageId);
 const getElements = () => getPage()?.elements || [];
 
-/* ========== UTILIDADES DE COLOR / DEGRADADO ========== */
-function isGradient(v){
-  return typeof v === 'string' && (v.startsWith('linear-gradient') || v.startsWith('radial-gradient'));
-}
-
-// Convierte un color o degradado a CSS válido
-function toCSS(v){
-  if(!v) return 'transparent';
-  return v;
-}
-
-// Presets de degradados útiles
+/* ========== UTILIDADES ========== */
+function isGradient(v){ return typeof v === 'string' && (v.startsWith('linear-gradient') || v.startsWith('radial-gradient')); }
 const GRADIENT_PRESETS = [
-  'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-  'linear-gradient(135deg, #ec4899, #f59e0b)',
-  'linear-gradient(135deg, #10b981, #0ea5e9)',
-  'linear-gradient(135deg, #f59e0b, #ef4444)',
-  'linear-gradient(135deg, #06b6d4, #3b82f6)',
-  'linear-gradient(135deg, #8b5cf6, #ec4899)',
-  'linear-gradient(180deg, #667eea, #764ba2)',
-  'linear-gradient(180deg, #f3f4f6, #ffffff)',
-  'linear-gradient(90deg, #ff6b6b, #feca57)',
-  'linear-gradient(135deg, #000000, #434343)'
+  'linear-gradient(135deg, #3b82f6, #8b5cf6)','linear-gradient(135deg, #ec4899, #f59e0b)',
+  'linear-gradient(135deg, #10b981, #0ea5e9)','linear-gradient(135deg, #f59e0b, #ef4444)',
+  'linear-gradient(135deg, #06b6d4, #3b82f6)','linear-gradient(135deg, #8b5cf6, #ec4899)',
+  'linear-gradient(180deg, #667eea, #764ba2)','linear-gradient(180deg, #f3f4f6, #ffffff)',
+  'linear-gradient(90deg, #ff6b6b, #feca57)','linear-gradient(135deg, #000000, #434343)'
 ];
 
-/* ========== EDITOR DE COLOR CON MODO SÓLIDO/DEGRADADO ========== */
+/* ========== CONSTRUIR BORDE ========== */
+function buildBorder(el){
+  const style = el.borderStyle || 'none';
+  const width = el.borderWidth || 0;
+  const color = el.borderColor || '#e5e7eb';
+  if(style === 'none' || width === 0) return 'none';
+  return `${width}px ${style} ${color}`;
+}
+
+/* ========== APLICAR COLOR/BORDE AL DOM ========== */
+function applyElementStyles(dom, el){
+  const border = buildBorder(el);
+  
+  dom.style.left = el.x+'px';
+  dom.style.top = el.y+'px';
+  dom.style.width = (typeof el.width==='number' ? el.width+'px' : el.width);
+  dom.style.height = (typeof el.height==='number' ? el.height+'px' : el.height);
+  dom.style.zIndex = el.zIndex;
+  dom.style.opacity = el.opacity;
+  dom.style.borderRadius = (el.borderRadius||0)+'px';
+  dom.style.boxShadow = el.boxShadow||'none';
+  // ⚠️ El borde se aplica SIEMPRE
+  dom.style.border = border;
+  dom.style.boxSizing = 'border-box';
+  
+  // Fondo con color o degradado
+  if(isGradient(el.bgColor)){
+    dom.style.background = el.bgColor;
+    dom.style.backgroundColor = 'transparent';
+  } else if(el.bgColor && el.bgColor !== 'transparent'){
+    dom.style.background = el.bgColor;
+  } else {
+    dom.style.background = 'transparent';
+  }
+}
+
+/* ========== COLOR EDITOR CON DEGRADADOS ========== */
 function buildColorEditor(el, key, label){
   const value = el[key] || '#ffffff';
   const isGrad = isGradient(value);
@@ -360,7 +380,6 @@ function buildColorEditor(el, key, label){
   const container = document.createElement('div');
   container.className = 'color-editor';
 
-  // Título + pestañas
   const header = document.createElement('label');
   header.className = 'cl';
   header.textContent = label;
@@ -374,11 +393,9 @@ function buildColorEditor(el, key, label){
   const tabGrad = document.createElement('button');
   tabGrad.textContent = '🌈 Degradado';
   tabGrad.className = isGrad ? 'active' : '';
-  tabs.appendChild(tabSolid);
-  tabs.appendChild(tabGrad);
+  tabs.appendChild(tabSolid); tabs.appendChild(tabGrad);
   container.appendChild(tabs);
 
-  // Contenedor sólido
   const solidBox = document.createElement('div');
   solidBox.style.display = isGrad ? 'none' : 'block';
   const safeSolid = isGrad ? '#ffffff' : value;
@@ -388,34 +405,26 @@ function buildColorEditor(el, key, label){
   cp.value = safeSolid.startsWith('#') ? safeSolid.substring(0,7) : '#ffffff';
   cp.style.cssText = 'width:32px;height:32px;padding:0;border:none;border-radius:6px;cursor:pointer';
   const ti = document.createElement('input'); ti.type = 'text'; ti.className = 'ci'; ti.value = safeSolid; ti.style.flex = '1';
-  cp.oninput = e => { ti.value = e.target.value; updateElement(state.selectedId, { [key]: e.target.value, [key+'Mode']: 'solid' }); };
+  cp.oninput = e => { ti.value = e.target.value; updateElement(state.selectedId, { [key]: e.target.value }); };
   cp.onchange = () => saveHistory();
-  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; updateElement(state.selectedId, { [key]: e.target.value, [key+'Mode']: 'solid' }); saveHistory(); };
+  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; updateElement(state.selectedId, { [key]: e.target.value }); saveHistory(); };
   flex.appendChild(cp); flex.appendChild(ti);
   solidBox.appendChild(flex);
   container.appendChild(solidBox);
 
-  // Contenedor degradado
   const gradBox = document.createElement('div');
   gradBox.style.display = isGrad ? 'block' : 'none';
 
-  // Parsear el degradado actual
-  let gType = 'linear', gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
+  let gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
   if(isGrad){
     const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
-    if(m){
-      gAngle = parseInt(m[1]) || 135;
-      gColor1 = m[2].trim();
-      gColor2 = m[3].trim();
-    }
+    if(m){ gAngle = parseInt(m[1]) || 135; gColor1 = m[2].trim(); gColor2 = m[3].trim(); }
   }
-
   const makeGradString = () => `linear-gradient(${gAngle}deg, ${gColor1}, ${gColor2})`;
 
   const gradControls = document.createElement('div');
   gradControls.className = 'grad-controls';
 
-  // Ángulo
   const angleRow = document.createElement('div');
   angleRow.className = 'grad-row';
   angleRow.innerHTML = '<label>Ángulo</label>';
@@ -426,7 +435,6 @@ function buildColorEditor(el, key, label){
   angleRow.appendChild(angleRange); angleRow.appendChild(angleVal);
   gradControls.appendChild(angleRow);
 
-  // Color 1
   const c1Row = document.createElement('div');
   c1Row.className = 'grad-row';
   c1Row.innerHTML = '<label>Inicio</label>';
@@ -438,7 +446,6 @@ function buildColorEditor(el, key, label){
   c1Row.appendChild(c1); c1Row.appendChild(c1t);
   gradControls.appendChild(c1Row);
 
-  // Color 2
   const c2Row = document.createElement('div');
   c2Row.className = 'grad-row';
   c2Row.innerHTML = '<label>Fin</label>';
@@ -450,7 +457,6 @@ function buildColorEditor(el, key, label){
   c2Row.appendChild(c2); c2Row.appendChild(c2t);
   gradControls.appendChild(c2Row);
 
-  // Presets
   const presetsLabel = document.createElement('label');
   presetsLabel.style.cssText = 'font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;margin-top:4px;display:block';
   presetsLabel.textContent = 'Degradados rápidos';
@@ -461,16 +467,11 @@ function buildColorEditor(el, key, label){
     const p = document.createElement('div');
     p.className = 'grad-preset';
     p.style.background = preset;
-    p.onclick = () => {
-      updateElement(state.selectedId, { [key]: preset });
-      saveHistory();
-      renderProps();
-    };
+    p.onclick = () => { updateElement(state.selectedId, { [key]: preset }); saveHistory(); renderProps(); };
     presets.appendChild(p);
   });
   gradControls.appendChild(presets);
 
-  // Preview
   const preview = document.createElement('div');
   preview.className = 'gradient-preview';
   preview.textContent = 'Vista previa';
@@ -480,24 +481,23 @@ function buildColorEditor(el, key, label){
   gradBox.appendChild(gradControls);
   container.appendChild(gradBox);
 
-  // Lógica de las pestañas
   tabSolid.onclick = () => {
     tabSolid.classList.add('active'); tabGrad.classList.remove('active');
     solidBox.style.display = 'block'; gradBox.style.display = 'none';
-    updateElement(state.selectedId, { [key]: safeSolid, [key+'Mode']: 'solid' });
+    updateElement(state.selectedId, { [key]: safeSolid });
     saveHistory();
   };
   tabGrad.onclick = () => {
     tabGrad.classList.add('active'); tabSolid.classList.remove('active');
     solidBox.style.display = 'none'; gradBox.style.display = 'block';
-    updateElement(state.selectedId, { [key]: makeGradString(), [key+'Mode']: 'gradient' });
+    updateElement(state.selectedId, { [key]: makeGradString() });
     saveHistory();
   };
 
   return container;
 }
 
-/* ========== EDITOR DE COLOR PARA LA PÁGINA ========== */
+/* ========== EDITOR DE COLOR DE PÁGINA ========== */
 function renderPageColorEditor(){
   const box = document.getElementById('page-bg-editor');
   const page = getPage();
@@ -507,7 +507,6 @@ function renderPageColorEditor(){
   const value = page.bgColor || '#ffffff';
   const isGrad = isGradient(value);
 
-  // Tabs
   const tabs = document.createElement('div');
   tabs.className = 'tabs-color';
   const tabSolid = document.createElement('button');
@@ -517,7 +516,6 @@ function renderPageColorEditor(){
   tabs.appendChild(tabSolid); tabs.appendChild(tabGrad);
   box.appendChild(tabs);
 
-  // Sólido
   const solidBox = document.createElement('div');
   solidBox.style.display = isGrad ? 'none' : 'block';
   const safeSolid = isGrad ? '#ffffff' : value;
@@ -533,7 +531,6 @@ function renderPageColorEditor(){
   flex.appendChild(cp); flex.appendChild(ti);
   solidBox.appendChild(flex);
 
-  // Colores rápidos
   const rapidLabel = document.createElement('label');
   rapidLabel.className = 'cl'; rapidLabel.style.marginTop = '10px'; rapidLabel.textContent = 'Colores rápidos';
   solidBox.appendChild(rapidLabel);
@@ -548,18 +545,13 @@ function renderPageColorEditor(){
   solidBox.appendChild(presetColors);
   box.appendChild(solidBox);
 
-  // Degradado
   const gradBox = document.createElement('div');
   gradBox.style.display = isGrad ? 'block' : 'none';
 
-  let gType = 'linear', gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
+  let gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
   if(isGrad){
     const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
-    if(m){
-      gAngle = parseInt(m[1]) || 135;
-      gColor1 = m[2].trim();
-      gColor2 = m[3].trim();
-    }
+    if(m){ gAngle = parseInt(m[1]) || 135; gColor1 = m[2].trim(); gColor2 = m[3].trim(); }
   }
   const makeGrad = () => `linear-gradient(${gAngle}deg, ${gColor1}, ${gColor2})`;
 
@@ -627,7 +619,6 @@ function renderPageColorEditor(){
   tabGrad.onclick = () => { page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); renderPageColorEditor(); };
 }
 
-/* ========== APLICAR FONDO DE PÁGINA ========== */
 function applyPageBg(){
   const page = getPage();
   if(!page) return;
@@ -635,7 +626,6 @@ function applyPageBg(){
   renderPageColorEditor();
 }
 
-/* ========== BOTÓN FLOTANTE ========== */
 document.getElementById('page-config-btn').onclick = (e) => {
   e.stopPropagation();
   document.getElementById('page-config-panel').classList.toggle('show');
@@ -819,11 +809,11 @@ const LIB = [
 
 /* ========== DEFAULTS ========== */
 function defaults(type){
-  const base = { x:60,y:60,width:300,height:80,zIndex:1,opacity:1,borderRadius:0,boxShadow:'none',border:'none',bgColor:'transparent',padding:'0',borderStyle:'none',borderWidth:0,borderColor:'#e5e7eb' };
+  const base = { x:60,y:60,width:300,height:80,zIndex:1,opacity:1,borderRadius:0,boxShadow:'none',bgColor:'transparent',padding:'0',borderStyle:'none',borderWidth:0,borderColor:'#e5e7eb' };
   const d = {
     heading:{ width:600,height:70,text:'Título Principal',level:1,fontSize:42,fontWeight:'bold',color:'#1f2937',textAlign:'left' },
     paragraph:{ width:500,height:60,text:'Escribe tu párrafo aquí.',fontSize:16,color:'#374151',textAlign:'left' },
-    blockquote:{ width:500,height:80,text:'Una cita inspiradora.',fontSize:16,color:'#4b5563' },
+    blockquote:{ width:500,height:80,text:'Una cita inspiradora.',fontSize:16,color:'#4b5563',bgColor:'#f9fafb' },
     code:{ width:500,height:100,text:'const saludo = "Hola";',fontSize:13,codeBg:'#1e293b',codeColor:'#e2e8f0' },
     list:{ width:300,height:120,items:['Elemento 1','Elemento 2','Elemento 3'],ordered:false,fontSize:15,color:'#374151' },
     checklist:{ width:350,height:130,items:['Primer punto completado','Segundo punto','Tercer punto'],fontSize:14,color:'#374151',checkColor:'#10b981' },
@@ -921,15 +911,6 @@ function deleteEl(id){
   saveHistory();
 }
 
-/* ========== CONSTRUIR BORDE ========== */
-function buildBorder(el){
-  const style = el.borderStyle || 'none';
-  const width = el.borderWidth || 0;
-  const color = el.borderColor || '#e5e7eb';
-  if(style === 'none' || width === 0) return 'none';
-  return `${width}px ${style} ${color}`;
-}
-
 /* ========== RENDER ========== */
 function renderAll(){
   canvas.querySelectorAll('.elemento').forEach(n => n.remove());
@@ -971,24 +952,9 @@ function renderElement(el){
 }
 
 function syncDOM(dom, el){
-  const border = buildBorder(el);
-  Object.assign(dom.style, {
-    left: el.x+'px', top: el.y+'px',
-    width: typeof el.width==='number' ? el.width+'px' : el.width,
-    height: typeof el.height==='number' ? el.height+'px' : el.height,
-    zIndex: el.zIndex, opacity: el.opacity,
-    borderRadius: (el.borderRadius||0)+'px',
-    boxShadow: el.boxShadow||'none',
-    border: border,
-    background: (el.type === 'code') ? 'transparent' : (el.bgColor||'transparent'),
-    backgroundColor: (el.type === 'code') ? 'transparent' : (isGradient(el.bgColor) ? '' : (el.bgColor||'transparent')),
-    backgroundImage: isGradient(el.bgColor) ? el.bgColor : 'none',
-    padding: el.padding||'0'
-  });
-  // Para navegadores que no aceptan "background" con degradado:
-  if(isGradient(el.bgColor)){
-    dom.style.background = el.bgColor;
-  }
+  // Aplicar todos los estilos del contenedor
+  applyElementStyles(dom, el);
+  
   const T = el.type;
   let html = '';
 
@@ -1003,8 +969,7 @@ function syncDOM(dom, el){
   else if(T === 'link') html = `<a href="${el.href||'#'}" target="${el.target||'_self'}" style="font-size:${el.fontSize}px;color:${el.color};text-decoration:underline">${esc(el.text)}</a>`;
   else if(T === 'button'){
     const ic = el.icon ? `<i class="fa-solid ${el.icon}"></i>` : '';
-    const bg = isGradient(el.bgColor) ? el.bgColor : el.bgColor;
-    const btnStyle = `background:${bg};color:${el.color};font-size:${el.fontSize}px;width:100%;height:100%`;
+    const btnStyle = `background:transparent;color:${el.color};font-size:${el.fontSize}px;width:100%;height:100%`;
     if(el.href) html = `<a href="${el.href}" class="e-btn" style="${btnStyle}">${ic}${esc(el.text)}</a>`;
     else html = `<button class="e-btn" type="button" style="${btnStyle}">${ic}${esc(el.text)}</button>`;
   }
@@ -1021,7 +986,7 @@ function syncDOM(dom, el){
   else if(T === 'navbar') html = buildNavbar(el);
   else if(T === 'hero'){
     const bg = isGradient(el.bgColor) ? el.bgColor : `linear-gradient(135deg,${el.bgColor},${el.bgColor2||el.bgColor})`;
-    html = `<div class="e-hero" style="background:${bg}"><h1 style="color:${el.titleColor}">${esc(el.title)}</h1><p style="color:${el.textColor}">${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn" style="background:${isGradient(el.buttonColor)?el.buttonColor:el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText)}</a></div>`;
+    html = `<div class="e-hero" style="background:${bg}"><h1 style="color:${el.titleColor}">${esc(el.title)}</h1><p style="color:${el.textColor}">${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn" style="background:${el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText)}</a></div>`;
   }
   else if(T === 'footer') html = `<footer class="e-footer" style="background:${el.bgColor}"><h3 style="color:${el.titleColor}">${esc(el.title)}</h3><p style="color:${el.textColor}">${esc(el.text)}</p>${el.socials?`<div class="e-footer-social"><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-facebook"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-instagram"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-x-twitter"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-youtube"></i></a></div>`:''}</footer>`;
   else if(T === 'divider') html = `<hr class="e-divider" style="border-top-color:${el.color}">`;
@@ -1072,14 +1037,14 @@ function syncDOM(dom, el){
     const ic = { info:'fa-circle-info', success:'fa-circle-check', warning:'fa-triangle-exclamation', danger:'fa-triangle-exclamation' };
     html = `<div class="e-alert e-alert-${el.alertType}"><i class="fa-solid ${ic[el.alertType]}"></i><div>${esc(el.text)}</div></div>`;
   }
-  else if(T === 'ribbon') html = `<div class="e-ribbon" style="background:${isGradient(el.bgColor)?el.bgColor:el.bgColor};color:${el.color}">${esc(el.text)}</div>`;
+  else if(T === 'ribbon') html = `<div class="e-ribbon" style="background:${el.bgColor};color:${el.color}">${esc(el.text)}</div>`;
   else if(T === 'icon'){
     const ih = `<i class="fa-solid ${el.icon}" style="font-size:${el.size}px;color:${el.color}"></i>`;
     html = el.href ? `<a href="${el.href}" target="_blank" style="color:inherit">${ih}</a>` : ih;
   }
   else if(T === 'social') html = `<a href="${el.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:${el.shape==='circle'?'50%':'8px'};background:${el.color};color:#fff;text-decoration:none"><i class="${el.icon}" style="font-size:${el.size}px"></i></a>`;
   else if(T === 'socials') html = `<div class="e-socials">${el.icons.map(ic=>`<a href="#" class="e-social" style="background:${el.color}"><i class="${ic}"></i></a>`).join('')}</div>`;
-  else if(T === 'timeline') html = `<div class="e-timeline">${el.items.map(it=>`<div class="e-timeline-item" style="--line-color:${el.lineColor};--dot-color:${el.dotColor}"><div class="e-timeline-date" style="color:${el.dateColor}">${esc(it.date)}</div><h4 class="e-timeline-title" style="color:${el.titleColor}">${esc(it.title)}</h4><p class="e-timeline-text" style="color:${el.textColor}">${esc(it.text)}</p></div>`).join('')}</div>`;
+  else if(T === 'timeline') html = `<div class="e-timeline">${el.items.map(it=>`<div class="e-timeline-item"><div class="e-timeline-date" style="color:${el.dateColor}">${esc(it.date)}</div><h4 class="e-timeline-title" style="color:${el.titleColor}">${esc(it.title)}</h4><p class="e-timeline-text" style="color:${el.textColor}">${esc(it.text)}</p></div>`).join('')}</div>`;
   else if(T === 'whatsapp') html = `<a href="${el.href}" target="_blank" class="e-whatsapp" style="background:${el.color}"><i class="fa-brands fa-whatsapp"></i></a>`;
   else html = '';
 
@@ -1095,7 +1060,7 @@ function buildNavbar(el){
   const bg = el.bgColor || '#ffffff';
   const textColor = el.textColor || '#4b5563';
   const brandColor = el.brandColor || '#1f2937';
-  let h = `<nav class="e-nav" style="background:${isGradient(bg)?bg:bg};border-bottom:1px solid #e5e7eb">`;
+  let h = `<nav class="e-nav" style="background:${bg};border-bottom:1px solid #e5e7eb">`;
   h += `<a href="${el.brandHref||'#'}" class="e-nav-logo" style="color:${brandColor}">${esc(el.brand)}</a>`;
   h += `<ul class="e-nav-links">`;
   links.forEach(l => {
@@ -1108,8 +1073,8 @@ function buildNavbar(el){
 function buildCard(el){
   const style = el.cardStyle || 'basic';
   const imgH = el.imgHeight || 180;
-  const btnStyle = `background:${isGradient(el.buttonColor)?el.buttonColor:el.buttonColor};color:#fff`;
-  const cardBg = isGradient(el.bgColor) ? el.bgColor : el.bgColor;
+  const btnStyle = `background:${el.buttonColor||'#3b82f6'};color:#fff`;
+  const cardBg = el.bgColor || '#ffffff';
   const titleColor = el.titleColor || '#1f2937';
   const textColor = el.textColor || '#6b7280';
   const titleStyle = `color:${titleColor}`;
@@ -1177,7 +1142,7 @@ function buildGallery(el){
   const total = el.images.length;
   const perView = el.itemsPerView || 3;
   const gap = el.gap || 8;
-  let h = `<div class="gallery-wrap" style="background:${isGradient(el.bgColor)?el.bgColor:(el.bgColor||'#f3f4f6')}" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||2500}"><div class="gallery-track" style="gap:${gap}px">`;
+  let h = `<div class="gallery-wrap" style="background:${el.bgColor||'#f3f4f6'}" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||2500}"><div class="gallery-track" style="gap:${gap}px">`;
   el.images.forEach((img, i) => { h += `<div class="gallery-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})"><img src="${img}" draggable="false" data-i="${i}"></div>`; });
   h += `</div>`;
   if(el.showArrows && total > perView){
@@ -1221,7 +1186,7 @@ function buildCardCarousel(el){
   const perView = el.itemsPerView || 3;
   const gap = el.gap || 16;
   const total = cards.length;
-  const cardBg = isGradient(el.bgColor) ? el.bgColor : el.bgColor;
+  const cardBg = el.bgColor || '#ffffff';
   const titleColor = el.titleColor || '#1f2937';
   const textColor = el.textColor || '#6b7280';
   let h = `<div class="cardcar-wrap" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||3000}"><div class="cardcar-track" style="gap:${gap}px">`;
@@ -1482,11 +1447,8 @@ function renderProps(){
   propsPanel.appendChild(row([inp('number','Radio', el.borderRadius || 0, v => upd('borderRadius', parseFloat(v))), inp('number','Opacidad', el.opacity, v => upd('opacity', parseFloat(v)))]));
 
   propsPanel.appendChild(secH('Apariencia'));
-  // ✅ Editor con degradados para Fondo
   propsPanel.appendChild(buildColorEditor(el, 'bgColor', '🎨 Fondo (color o degradado)'));
   propsPanel.appendChild(inp('text','Sombra (CSS)', el.boxShadow || 'none', v => upd('boxShadow', v)));
-
-  // ✅ Control completo de borde
   propsPanel.appendChild(buildBorderControl(el));
 
   const T = el.type;
@@ -1516,7 +1478,6 @@ function renderProps(){
   else if(T === 'badge'){
     propsPanel.appendChild(secH('Etiqueta'));
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo etiqueta'));
     propsPanel.appendChild(colInp('Color texto', el.color, v => upd('color', v)));
   }
   else if(T === 'stars'){
@@ -1529,7 +1490,6 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
     propsPanel.appendChild(inp('text','URL', el.href, v => upd('href', v)));
     propsPanel.appendChild(inp('text','Icono (fa-star)', el.icon||'', v => upd('icon', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo botón'));
     propsPanel.appendChild(colInp('Color texto', el.color, v => upd('color', v)));
   }
   else if(T === 'image'){
@@ -1555,10 +1515,9 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText||'', v => upd('buttonText', v)));
     propsPanel.appendChild(inp('text','URL botón', el.buttonHref||'', v => upd('buttonHref', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tarjeta'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#1f2937', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'buttonColor', 'Color botón'));
+    propsPanel.appendChild(colInp('Color botón', el.buttonColor||'#3b82f6', v => upd('buttonColor', v)));
   }
   else if(T === 'carousel'){
     propsPanel.appendChild(secH('Carrusel'));
@@ -1595,7 +1554,6 @@ function renderProps(){
     propsPanel.appendChild(inp('number','Visibles', el.itemsPerView||3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
     propsPanel.appendChild(inp('number','Separación', el.gap||8, v => upd('gap', parseInt(v))));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo galería'));
     propsPanel.appendChild(colInp('Color flechas', el.arrowColor||'#ffffff', v => upd('arrowColor', v)));
     propsPanel.appendChild(secH('Imágenes'));
     const imgBox = document.createElement('div');
@@ -1622,7 +1580,6 @@ function renderProps(){
     propsPanel.appendChild(inp('number','Visibles', el.itemsPerView||3, v => upd('itemsPerView', Math.max(1, parseInt(v)))));
     propsPanel.appendChild(inp('number','Separación', el.gap||16, v => upd('gap', parseInt(v))));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tarjetas'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#1f2937', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#6b7280', v => upd('textColor', v)));
     propsPanel.appendChild(secH('📋 Tarjetas'));
@@ -1660,7 +1617,6 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Marca', el.brand, v => upd('brand', v)));
     propsPanel.appendChild(inp('text','URL de la marca', el.brandHref||'#', v => upd('brandHref', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo barra'));
     propsPanel.appendChild(colInp('Color marca', el.brandColor||'#1f2937', v => upd('brandColor', v)));
     propsPanel.appendChild(colInp('Color botones', el.textColor||'#4b5563', v => upd('textColor', v)));
     propsPanel.appendChild(secH('🔗 Botones del menú'));
@@ -1699,10 +1655,8 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText, v => upd('buttonText', v)));
     propsPanel.appendChild(inp('text','URL botón', el.buttonHref, v => upd('buttonHref', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo (color o degradado)'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#ffffff', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color subtítulo', el.textColor||'#ffffff', v => upd('textColor', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'buttonColor', 'Fondo botón'));
     propsPanel.appendChild(colInp('Color texto botón', el.buttonTextColor||'#3b82f6', v => upd('buttonTextColor', v)));
   }
   else if(T === 'footer'){
@@ -1711,7 +1665,6 @@ function renderProps(){
     propsPanel.appendChild(textar('Texto', el.text, v => upd('text', v)));
     propsPanel.appendChild(chk('Mostrar redes', el.socials, v => upd('socials', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color título', el.titleColor||'#ffffff', v => upd('titleColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#9ca3af', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color iconos redes', el.socialColor||'#9ca3af', v => upd('socialColor', v)));
@@ -1731,8 +1684,7 @@ function renderProps(){
     propsPanel.appendChild(row([inp('number','Valor', el.value, v => upd('value', parseFloat(v))), inp('number','Máximo', el.max, v => upd('max', parseFloat(v)))]));
     propsPanel.appendChild(chk('Mostrar etiqueta', el.showLabel, v => upd('showLabel', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo barra'));
-    propsPanel.appendChild(buildColorEditor(el, 'barColor', 'Color barra'));
+    propsPanel.appendChild(colInp('Color barra', el.barColor||'#3b82f6', v => upd('barColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#ffffff', v => upd('textColor', v)));
   }
   else if(T === 'circleProgress'){
@@ -1740,20 +1692,19 @@ function renderProps(){
     propsPanel.appendChild(inp('number','Valor (0-100)', el.value, v => upd('value', Math.min(100, Math.max(0, parseFloat(v))))));
     propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo círculo'));
-    propsPanel.appendChild(buildColorEditor(el, 'barColor', 'Color progreso'));
+    propsPanel.appendChild(colInp('Color progreso', el.barColor||'#3b82f6', v => upd('barColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#3b82f6', v => upd('textColor', v)));
   }
   else if(T === 'counter'){
     propsPanel.appendChild(secH('Contador'));
     propsPanel.appendChild(inp('number','Valor', el.value, v => upd('value', parseFloat(v))));
     propsPanel.appendChild(inp('text','Etiqueta', el.label, v => upd('label', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'numColor', 'Color número'));
+    propsPanel.appendChild(colInp('Color número', el.numColor||'#3b82f6', v => upd('numColor', v)));
     propsPanel.appendChild(colInp('Color etiqueta', el.labelColor||'#6b7280', v => upd('labelColor', v)));
   }
   else if(T === 'stats'){
     propsPanel.appendChild(secH('Estadísticas'));
-    propsPanel.appendChild(buildColorEditor(el, 'numColor', 'Color números'));
+    propsPanel.appendChild(colInp('Color números', el.numColor||'#3b82f6', v => upd('numColor', v)));
     propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#6b7280', v => upd('labelColor', v)));
   }
   else if(T === 'countdown'){
@@ -1761,8 +1712,7 @@ function renderProps(){
     propsPanel.appendChild(row([inp('number','Días', el.days, v => upd('days', v)), inp('number','Horas', el.hours, v => upd('hours', v))]));
     propsPanel.appendChild(row([inp('number','Min', el.minutes, v => upd('minutes', v)), inp('number','Seg', el.seconds, v => upd('seconds', v))]));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo cajas'));
-    propsPanel.appendChild(buildColorEditor(el, 'numColor', 'Color números'));
+    propsPanel.appendChild(colInp('Color números', el.numColor||'#ffffff', v => upd('numColor', v)));
     propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#9ca3af', v => upd('labelColor', v)));
   }
   else if(T === 'table'){
@@ -1771,8 +1721,7 @@ function renderProps(){
     const txt = el.rows.map(r => r.join(' | ')).join('\n');
     propsPanel.appendChild(textar('Filas (celdas separadas por |)', txt, v => { const rows = v.split('\n').filter(l => l.trim()).map(l => l.split('|').map(c => c.trim())); upd('rows', rows); }));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tabla'));
-    propsPanel.appendChild(buildColorEditor(el, 'headerBg', 'Fondo encabezado'));
+    propsPanel.appendChild(colInp('Fondo encabezado', el.headerBg||'#f9fafb', v => upd('headerBg', v)));
     propsPanel.appendChild(colInp('Color encabezado', el.headerColor||'#1f2937', v => upd('headerColor', v)));
     propsPanel.appendChild(colInp('Color celdas', el.textColor||'#374151', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color bordes', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
@@ -1780,8 +1729,7 @@ function renderProps(){
   else if(T === 'pricing'){
     propsPanel.appendChild(secH('Tabla precios'));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo tarjetas'));
-    propsPanel.appendChild(buildColorEditor(el, 'featuredColor', 'Color destacado'));
+    propsPanel.appendChild(colInp('Color destacado', el.featuredColor||'#3b82f6', v => upd('featuredColor', v)));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#1f2937', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color secundario', el.mutedColor||'#6b7280', v => upd('mutedColor', v)));
     propsPanel.appendChild(colInp('Color check', el.checkColor||'#10b981', v => upd('checkColor', v)));
@@ -1807,19 +1755,15 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Autor', el.author, v => upd('author', v)));
     propsPanel.appendChild(inp('text','Cargo', el.role, v => upd('role', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color texto', el.textColor||'#4b5563', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color autor', el.authorColor||'#1f2937', v => upd('authorColor', v)));
     propsPanel.appendChild(colInp('Color cargo', el.roleColor||'#9ca3af', v => upd('roleColor', v)));
-    propsPanel.appendChild(colInp('Color borde', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
   }
   else if(T === 'form'){
     propsPanel.appendChild(secH('Formulario'));
     propsPanel.appendChild(inp('text','Texto botón', el.buttonText, v => upd('buttonText', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color etiquetas', el.labelColor||'#374151', v => upd('labelColor', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'buttonColor', 'Fondo botón'));
     propsPanel.appendChild(colInp('Color texto botón', el.buttonTextColor||'#ffffff', v => upd('buttonTextColor', v)));
   }
   else if(T === 'input'){
@@ -1858,7 +1802,7 @@ function renderProps(){
     propsPanel.appendChild(inp('text','Título', el.summary, v => upd('summary', v)));
     propsPanel.appendChild(textar('Contenido (HTML)', el.content, v => upd('content', v)));
     propsPanel.appendChild(secH('🎨 Colores'));
-    propsPanel.appendChild(buildColorEditor(el, 'summaryBg', 'Fondo título'));
+    propsPanel.appendChild(colInp('Fondo título', el.summaryBg||'#f9fafb', v => upd('summaryBg', v)));
     propsPanel.appendChild(colInp('Color título', el.summaryColor||'#1f2937', v => upd('summaryColor', v)));
     propsPanel.appendChild(colInp('Color contenido', el.textColor||'#374151', v => upd('textColor', v)));
     propsPanel.appendChild(colInp('Color borde', el.borderColor||'#e5e7eb', v => upd('borderColor', v)));
@@ -1871,7 +1815,6 @@ function renderProps(){
   else if(T === 'ribbon'){
     propsPanel.appendChild(secH('Cinta'));
     propsPanel.appendChild(inp('text','Texto', el.text, v => upd('text', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'bgColor', 'Fondo'));
     propsPanel.appendChild(colInp('Color texto', el.color||'#ffffff', v => upd('color', v)));
   }
   else if(T === 'icon'){
@@ -1883,13 +1826,13 @@ function renderProps(){
   else if(T === 'social'){
     propsPanel.appendChild(secH('Red Social'));
     propsPanel.appendChild(inp('text','URL', el.url, v => upd('url', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'color', 'Color fondo'));
+    propsPanel.appendChild(colInp('Color fondo', el.color, v => upd('color', v)));
     propsPanel.appendChild(sel('Forma', el.shape, [{value:'circle',label:'Círculo'},{value:'square',label:'Cuadrado'}], v => upd('shape', v)));
   }
   else if(T === 'socials'){
     propsPanel.appendChild(secH('Grupo redes'));
     propsPanel.appendChild(textar('Iconos (uno por línea)', el.icons.join('\n'), v => upd('icons', v.split('\n').filter(x=>x.trim()))));
-    propsPanel.appendChild(buildColorEditor(el, 'color', 'Color fondo'));
+    propsPanel.appendChild(colInp('Color fondo', el.color||'#3b82f6', v => upd('color', v)));
   }
   else if(T === 'timeline'){
     propsPanel.appendChild(secH('Timeline'));
@@ -1903,7 +1846,7 @@ function renderProps(){
   else if(T === 'whatsapp'){
     propsPanel.appendChild(secH('WhatsApp'));
     propsPanel.appendChild(inp('text','URL', el.href, v => upd('href', v)));
-    propsPanel.appendChild(buildColorEditor(el, 'color', 'Color fondo'));
+    propsPanel.appendChild(colInp('Color fondo', el.color||'#25d366', v => upd('color', v)));
   }
 
   propsPanel.appendChild(secH('Acciones'));
@@ -1983,8 +1926,8 @@ document.getElementById('btn-export').onclick = () => {
   let elementsHTML = '';
   page.elements.forEach(el => {
     const border = buildBorder(el);
-    const bgCSS = isGradient(el.bgColor) ? `background:${el.bgColor};` : `background-color:${(el.bgColor && el.type !== 'code') ? el.bgColor : 'transparent'};`;
-    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${border};${bgCSS}`;
+    const bgCSS = isGradient(el.bgColor) ? `background:${el.bgColor};` : `background:${(el.bgColor && el.type !== 'code') ? el.bgColor : 'transparent'};`;
+    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${border};${bgCSS}box-sizing:border-box;`;
     const dom = document.getElementById(el.id);
     let inner = '';
     if(dom){
@@ -2059,7 +2002,7 @@ document.querySelectorAll('.cardcar-wrap').forEach(function(w){
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#1f2937;background:${isGrad ? '#f3f4f6' : pageBg};}
-.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh;${isGrad ? 'background:'+pageBg+';' : 'background:'+pageBg+';'}}
+.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh;background:${pageBg};}
 .elemento{position:absolute;box-sizing:border-box;word-break:break-word}
 ${editorCSS}
 </style>
