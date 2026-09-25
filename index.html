@@ -235,7 +235,6 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .grad-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px}
 .grad-preset{aspect-ratio:1.6;border-radius:5px;cursor:pointer;border:2px solid transparent;transition:transform .15s}
 .grad-preset:hover{transform:scale(1.08);border-color:#3b82f6}
-/* URLs de páginas en propiedades */
 .page-url-list{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px;margin-bottom:12px}
 .page-url-item{display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;margin-bottom:6px;font-size:12px}
 .page-url-item:last-child{margin-bottom:0}
@@ -243,12 +242,10 @@ body{margin:0;overflow:hidden;font-family:'Inter',system-ui,sans-serif;backgroun
 .page-url-item .copy-url-btn{background:#10b981;color:#fff;border:none;padding:4px 8px;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;transition:all .15s}
 .page-url-item .copy-url-btn:hover{background:#059669}
 .page-url-item .copy-url-btn.copied{background:#3b82f6}
-/* Toast notificación */
 #toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:#1f2937;color:#fff;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;z-index:99999;transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #toast.success{background:#10b981}
 #toast i{font-size:15px}
-/* Botón grande de copiar URL de la página */
 .page-slug-box{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:12px;border-radius:8px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .page-slug-box .slug-info{flex:1;font-size:11px;line-height:1.3}
 .page-slug-box .slug-info strong{font-family:monospace;font-size:13px;display:block;margin-top:2px;color:#fff;font-weight:700}
@@ -348,7 +345,7 @@ const slugify = t => t.toString().toLowerCase().replace(/\s+/g,'-').replace(/[^\
 const getPage = () => state.pages.find(p => p.id === state.currentPageId);
 const getElements = () => getPage()?.elements || [];
 
-/* ========== TOAST NOTIFICACIÓN ========== */
+/* ========== TOAST ========== */
 let toastTimer = null;
 function showToast(msg, type){
   const toast = document.getElementById('toast');
@@ -358,34 +355,47 @@ function showToast(msg, type){
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => {
     toast.classList.remove('show');
-  }, 2200);
+  }, 2500);
 }
 
-/* ========== COPIAR AL PORTAPAPELES ========== */
+/* ========== COPIAR ========== */
 function copyToClipboard(text, customMsg){
-  if(navigator.clipboard && navigator.clipboard.writeText){
+  if(navigator.clipboard && window.isSecureContext){
     navigator.clipboard.writeText(text).then(() => {
       showToast(customMsg || '📋 Copiado: ' + text, 'success');
     }).catch(() => {
-      // Fallback
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); showToast(customMsg || '📋 Copiado: ' + text, 'success'); } catch(e){ showToast('❌ No se pudo copiar'); }
-      document.body.removeChild(ta);
+      fallbackCopy(text, customMsg);
     });
   } else {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand('copy'); showToast(customMsg || '📋 Copiado: ' + text, 'success'); } catch(e){ showToast('❌ No se pudo copiar'); }
-    document.body.removeChild(ta);
+    fallbackCopy(text, customMsg);
+  }
+}
+function fallbackCopy(text, customMsg){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.top = '0';
+  ta.style.left = '0';
+  ta.style.width = '2em';
+  ta.style.height = '2em';
+  ta.style.padding = '0';
+  ta.style.border = 'none';
+  ta.style.outline = 'none';
+  ta.style.boxShadow = 'none';
+  ta.style.background = 'transparent';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  ta.setSelectionRange(0, ta.value.length);
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
+  document.body.removeChild(ta);
+  if(ok){
+    showToast(customMsg || '📋 Copiado: ' + text, 'success');
+  } else {
+    window.prompt('Copia manualmente (Ctrl+C):', text);
   }
 }
 
@@ -551,7 +561,7 @@ function buildColorEditor(el, key, label){
   return container;
 }
 
-/* ========== EDITOR DE COLOR DE PÁGINA ========== */
+/* ========== EDITOR COLOR DE PÁGINA ========== */
 function renderPageColorEditor(){
   const box = document.getElementById('page-bg-editor');
   const page = getPage();
@@ -1160,9 +1170,18 @@ function buildCarousel(el){
   h += `</div>`;
   return h;
 }
+
+/* ✅ initCarousel ARREGLADO: cancela el timer anterior antes de crear uno nuevo */
 function initCarousel(dom, el){
   const container = dom.querySelector('.carousel');
   if(!container) return;
+
+  // ✅ CANCELAR SIEMPRE el timer anterior antes de nada
+  if(container._timer){
+    clearInterval(container._timer);
+    container._timer = null;
+  }
+
   let idx = 0;
   const slides = container.querySelectorAll('.carousel-slide');
   const dots = container.querySelectorAll('.carousel-dot');
@@ -1187,7 +1206,11 @@ function initCarousel(dom, el){
   if(prev) prev.onclick = e => { e.stopPropagation(); update(idx-1); };
   if(next) next.onclick = e => { e.stopPropagation(); update(idx+1); };
   dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); update(i); });
-  if(el.autoplay && el.interval){ if(container._timer) clearInterval(container._timer); container._timer = setInterval(() => update(idx+1), el.interval); }
+
+  // ✅ Timer solo si procede
+  if(el.autoplay && el.interval && el.interval > 0){
+    container._timer = setInterval(() => update(idx+1), el.interval);
+  }
 }
 
 function buildGallery(el){
@@ -1205,9 +1228,18 @@ function buildGallery(el){
   h += `</div>`;
   return h;
 }
+
+/* ✅ initGallery ARREGLADO: cancela el timer anterior */
 function initGallery(dom, el){
   const wrap = dom.querySelector('.gallery-wrap');
   if(!wrap) return;
+
+  // ✅ CANCELAR SIEMPRE el timer anterior
+  if(wrap._timer){
+    clearInterval(wrap._timer);
+    wrap._timer = null;
+  }
+
   const track = wrap.querySelector('.gallery-track');
   const items = track.querySelectorAll('.gallery-item');
   const dots = wrap.querySelectorAll('.gallery-dot');
@@ -1230,7 +1262,11 @@ function initGallery(dom, el){
   dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); page = i; update(); });
   window.addEventListener('resize', update);
   setTimeout(update, 50);
-  if(el.autoplay && el.interval && pages > 1){ if(wrap._timer) clearInterval(wrap._timer); wrap._timer = setInterval(() => go(page+1), el.interval); }
+
+  // ✅ Timer solo si procede
+  if(el.autoplay && el.interval && el.interval > 0 && pages > 1){
+    wrap._timer = setInterval(() => go(page+1), el.interval);
+  }
 }
 
 function buildCardCarousel(el){
@@ -1251,9 +1287,18 @@ function buildCardCarousel(el){
   h += `</div>`;
   return h;
 }
+
+/* ✅ initCardCarousel ARREGLADO: cancela el timer anterior */
 function initCardCarousel(dom, el){
   const wrap = dom.querySelector('.cardcar-wrap');
   if(!wrap) return;
+
+  // ✅ CANCELAR SIEMPRE el timer anterior
+  if(wrap._timer){
+    clearInterval(wrap._timer);
+    wrap._timer = null;
+  }
+
   const track = wrap.querySelector('.cardcar-track');
   const items = track.querySelectorAll('.cardcar-item');
   const dots = wrap.querySelectorAll('.cardcar-dot');
@@ -1276,7 +1321,11 @@ function initCardCarousel(dom, el){
   dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); page = i; update(); });
   window.addEventListener('resize', update);
   setTimeout(update, 50);
-  if(el.autoplay && el.interval && pages > 1){ if(wrap._timer) clearInterval(wrap._timer); wrap._timer = setInterval(() => go(page+1), el.interval); }
+
+  // ✅ Timer solo si procede
+  if(el.autoplay && el.interval && el.interval > 0 && pages > 1){
+    wrap._timer = setInterval(() => go(page+1), el.interval);
+  }
 }
 
 function esc(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
@@ -1383,12 +1432,10 @@ canvasWrap.addEventListener('drop', e => {
 function switchTab(id){ tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === id)); Object.keys(tabContents).forEach(k => tabContents[k].classList.toggle('hidden', k !== id)); }
 tabBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
-/* ========== PÁGINAS CON COPIAR URL ========== */
 function renderPages(){
   const list = document.getElementById('pages-list');
   list.innerHTML = '';
 
-  // ✅ Caja informativa con la URL de la página actual + botón copiar
   const page = getPage();
   if(page){
     const slugBox = document.createElement('div');
@@ -1408,13 +1455,11 @@ function renderPages(){
     list.appendChild(slugBox);
   }
 
-  // Info: cómo usar las URLs
   const infoBox = document.createElement('div');
   infoBox.style.cssText = 'background:#fef3c7;border-left:3px solid #f59e0b;padding:10px 12px;border-radius:6px;font-size:11px;color:#92400e;margin-bottom:14px;line-height:1.5';
   infoBox.innerHTML = '<i class="fa-solid fa-lightbulb"></i> <strong>Tip:</strong> Copia la URL de cualquier página y pégala en el campo "URL" de un botón o enlace.';
   list.appendChild(infoBox);
 
-  // Lista de todas las páginas
   state.pages.forEach(p => {
     const item = document.createElement('div');
     item.className = 'page-item' + (p.id === state.currentPageId ? ' active' : '');
@@ -1432,7 +1477,6 @@ function renderPages(){
     const actions = document.createElement('div');
     actions.className = 'actions';
     
-    // Botón copiar URL
     const copyBtn = document.createElement('button');
     copyBtn.className = 'copy-btn';
     copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
@@ -1443,7 +1487,6 @@ function renderPages(){
     };
     actions.appendChild(copyBtn);
 
-    // Botón renombrar
     const renameBtn = document.createElement('button');
     renameBtn.innerHTML = '<i class="fa-solid fa-pen"></i>';
     renameBtn.title = 'Renombrar';
@@ -1459,7 +1502,6 @@ function renderPages(){
     };
     actions.appendChild(renameBtn);
 
-    // Botón eliminar
     if(state.pages.length > 1){
       const delBtn = document.createElement('button');
       delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
@@ -1490,7 +1532,6 @@ document.getElementById('btn-add-page').onclick = () => {
 
 const upd = (k, v) => updateElement(state.selectedId, { [k]: v });
 
-/* ========== LISTA DE URLs DE PÁGINAS PARA COPIAR ========== */
 function buildPageUrlsList(){
   const container = document.createElement('div');
   container.className = 'page-url-list';
@@ -1532,7 +1573,6 @@ function buildPageUrlsList(){
   return container;
 }
 
-/* ========== CONTROL DE BORDE ========== */
 function buildBorderControl(el){
   const container = document.createElement('div');
   container.className = 'cg';
@@ -1603,7 +1643,6 @@ function buildBorderControl(el){
   return container;
 }
 
-/* ========== PANEL DE PROPIEDADES ========== */
 function renderProps(){
   if(!state.selectedId){ noSel.classList.remove('hidden'); propsPanel.classList.add('hidden'); return; }
   const el = getElements().find(e => e.id === state.selectedId);
@@ -1620,7 +1659,6 @@ function renderProps(){
   propsPanel.appendChild(inp('text','Sombra (CSS)', el.boxShadow || 'none', v => upd('boxShadow', v)));
   propsPanel.appendChild(buildBorderControl(el));
 
-  // ✅ Lista de URLs de páginas SOLO para botones y enlaces
   if(el.type === 'button' || el.type === 'link' || el.type === 'card'){
     propsPanel.appendChild(secH('🔗 URLs de páginas para enlazar'));
     propsPanel.appendChild(buildPageUrlsList());
@@ -2096,7 +2134,6 @@ document.querySelectorAll('.vp-btn').forEach(btn => {
   };
 });
 
-/* ========== EXPORTAR ========== */
 document.getElementById('btn-export').onclick = () => {
   const page = getPage();
   const pageBg = page.bgColor || '#ffffff';
@@ -2208,7 +2245,6 @@ ${scriptsHTML}
   setTimeout(() => alert('✅ Exportado: ' + (page.slug || 'index') + '.html'), 200);
 };
 
-/* ========== INIT ========== */
 renderTools();
 renderPages();
 applyPageBg();
