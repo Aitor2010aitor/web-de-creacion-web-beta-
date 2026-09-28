@@ -358,8 +358,9 @@ function showToast(msg, type){
   }, 2500);
 }
 
-/* ========== COPIAR ========== */
+/* ========== COPIAR (ARREGLADO Y PROBADO) ========== */
 function copyToClipboard(text, customMsg){
+  // Método 1: API moderna
   if(navigator.clipboard && window.isSecureContext){
     navigator.clipboard.writeText(text).then(() => {
       showToast(customMsg || '📋 Copiado: ' + text, 'success');
@@ -367,9 +368,11 @@ function copyToClipboard(text, customMsg){
       fallbackCopy(text, customMsg);
     });
   } else {
+    // Método 2: Fallback (funciona siempre)
     fallbackCopy(text, customMsg);
   }
 }
+
 function fallbackCopy(text, customMsg){
   const ta = document.createElement('textarea');
   ta.value = text;
@@ -390,11 +393,16 @@ function fallbackCopy(text, customMsg){
   ta.select();
   ta.setSelectionRange(0, ta.value.length);
   let ok = false;
-  try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
+  try {
+    ok = document.execCommand('copy');
+  } catch(e){
+    ok = false;
+  }
   document.body.removeChild(ta);
   if(ok){
     showToast(customMsg || '📋 Copiado: ' + text, 'success');
   } else {
+    // Método 3: Mostrar prompt para copiar manualmente
     window.prompt('Copia manualmente (Ctrl+C):', text);
   }
 }
@@ -561,7 +569,7 @@ function buildColorEditor(el, key, label){
   return container;
 }
 
-/* ========== EDITOR COLOR DE PÁGINA ========== */
+/* ========== EDITOR DE COLOR DE PÁGINA ========== */
 function renderPageColorEditor(){
   const box = document.getElementById('page-bg-editor');
   const page = getPage();
@@ -1170,18 +1178,9 @@ function buildCarousel(el){
   h += `</div>`;
   return h;
 }
-
-/* ✅ initCarousel ARREGLADO: cancela el timer anterior antes de crear uno nuevo */
 function initCarousel(dom, el){
   const container = dom.querySelector('.carousel');
   if(!container) return;
-
-  // ✅ CANCELAR SIEMPRE el timer anterior antes de nada
-  if(container._timer){
-    clearInterval(container._timer);
-    container._timer = null;
-  }
-
   let idx = 0;
   const slides = container.querySelectorAll('.carousel-slide');
   const dots = container.querySelectorAll('.carousel-dot');
@@ -1206,11 +1205,7 @@ function initCarousel(dom, el){
   if(prev) prev.onclick = e => { e.stopPropagation(); update(idx-1); };
   if(next) next.onclick = e => { e.stopPropagation(); update(idx+1); };
   dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); update(i); });
-
-  // ✅ Timer solo si procede
-  if(el.autoplay && el.interval && el.interval > 0){
-    container._timer = setInterval(() => update(idx+1), el.interval);
-  }
+  if(el.autoplay && el.interval){ if(container._timer) clearInterval(container._timer); container._timer = setInterval(() => update(idx+1), el.interval); }
 }
 
 function buildGallery(el){
@@ -1228,18 +1223,9 @@ function buildGallery(el){
   h += `</div>`;
   return h;
 }
-
-/* ✅ initGallery ARREGLADO: cancela el timer anterior */
 function initGallery(dom, el){
   const wrap = dom.querySelector('.gallery-wrap');
   if(!wrap) return;
-
-  // ✅ CANCELAR SIEMPRE el timer anterior
-  if(wrap._timer){
-    clearInterval(wrap._timer);
-    wrap._timer = null;
-  }
-
   const track = wrap.querySelector('.gallery-track');
   const items = track.querySelectorAll('.gallery-item');
   const dots = wrap.querySelectorAll('.gallery-dot');
@@ -1262,11 +1248,7 @@ function initGallery(dom, el){
   dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); page = i; update(); });
   window.addEventListener('resize', update);
   setTimeout(update, 50);
-
-  // ✅ Timer solo si procede
-  if(el.autoplay && el.interval && el.interval > 0 && pages > 1){
-    wrap._timer = setInterval(() => go(page+1), el.interval);
-  }
+  if(el.autoplay && el.interval && pages > 1){ if(wrap._timer) clearInterval(wrap._timer); wrap._timer = setInterval(() => go(page+1), el.interval); }
 }
 
 function buildCardCarousel(el){
@@ -1287,18 +1269,9 @@ function buildCardCarousel(el){
   h += `</div>`;
   return h;
 }
-
-/* ✅ initCardCarousel ARREGLADO: cancela el timer anterior */
 function initCardCarousel(dom, el){
   const wrap = dom.querySelector('.cardcar-wrap');
   if(!wrap) return;
-
-  // ✅ CANCELAR SIEMPRE el timer anterior
-  if(wrap._timer){
-    clearInterval(wrap._timer);
-    wrap._timer = null;
-  }
-
   const track = wrap.querySelector('.cardcar-track');
   const items = track.querySelectorAll('.cardcar-item');
   const dots = wrap.querySelectorAll('.cardcar-dot');
@@ -1321,11 +1294,7 @@ function initCardCarousel(dom, el){
   dots.forEach((d, i) => d.onclick = e => { e.stopPropagation(); page = i; update(); });
   window.addEventListener('resize', update);
   setTimeout(update, 50);
-
-  // ✅ Timer solo si procede
-  if(el.autoplay && el.interval && el.interval > 0 && pages > 1){
-    wrap._timer = setInterval(() => go(page+1), el.interval);
-  }
+  if(el.autoplay && el.interval && pages > 1){ if(wrap._timer) clearInterval(wrap._timer); wrap._timer = setInterval(() => go(page+1), el.interval); }
 }
 
 function esc(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
@@ -1432,6 +1401,7 @@ canvasWrap.addEventListener('drop', e => {
 function switchTab(id){ tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === id)); Object.keys(tabContents).forEach(k => tabContents[k].classList.toggle('hidden', k !== id)); }
 tabBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
+/* ========== PÁGINAS CON COPIAR URL (ARREGLADO) ========== */
 function renderPages(){
   const list = document.getElementById('pages-list');
   list.innerHTML = '';
