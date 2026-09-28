@@ -340,10 +340,29 @@ const tabContents = {
 const propsPanel = document.getElementById('props-panel');
 const noSel = document.getElementById('no-sel');
 
-const uid = () => 'el_'+Math.random().toString(36).substr(2,9);
-const slugify = t => t.toString().toLowerCase().replace(/\s+/g,'-').replace(/[^\w\-]+/g,'').replace(/\-\-+/g,'-').replace(/^-+|-+$/g,'') || 'pagina';
-const getPage = () => state.pages.find(p => p.id === state.currentPageId);
-const getElements = () => getPage()?.elements || [];
+/* ========== UTILIDADES BÁSICAS (DEFINIDAS ANTES DE USARSE) ========== */
+function uid(){ return 'el_' + Math.random().toString(36).substr(2,9); }
+function esc(s){
+  if(s === null || s === undefined) return '';
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function slugify(t){
+  return String(t||'').toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'pagina';
+}
+function isGradient(v){
+  return typeof v === 'string' && (v.startsWith('linear-gradient') || v.startsWith('radial-gradient'));
+}
+function getPage(){
+  return state.pages.find(p => p.id === state.currentPageId) || state.pages[0];
+}
+function getElements(){
+  const p = getPage();
+  return p && p.elements ? p.elements : [];
+}
 
 /* ========== TOAST ========== */
 let toastTimer = null;
@@ -358,7 +377,7 @@ function showToast(msg, type){
   }, 2500);
 }
 
-/* ========== COPIAR (ARREGLADO Y PROBADO) ========== */
+/* ========== COPIAR AL PORTAPAPELES (CON FALLBACK) ========== */
 function copyToClipboard(text, customMsg){
   // Método 1: API moderna
   if(navigator.clipboard && window.isSecureContext){
@@ -368,11 +387,9 @@ function copyToClipboard(text, customMsg){
       fallbackCopy(text, customMsg);
     });
   } else {
-    // Método 2: Fallback (funciona siempre)
     fallbackCopy(text, customMsg);
   }
 }
-
 function fallbackCopy(text, customMsg){
   const ta = document.createElement('textarea');
   ta.value = text;
@@ -402,13 +419,11 @@ function fallbackCopy(text, customMsg){
   if(ok){
     showToast(customMsg || '📋 Copiado: ' + text, 'success');
   } else {
-    // Método 3: Mostrar prompt para copiar manualmente
     window.prompt('Copia manualmente (Ctrl+C):', text);
   }
 }
 
-/* ========== UTILIDADES ========== */
-function isGradient(v){ return typeof v === 'string' && (v.startsWith('linear-gradient') || v.startsWith('radial-gradient')); }
+/* ========== GRADIENT PRESETS ========== */
 const GRADIENT_PRESETS = [
   'linear-gradient(135deg, #3b82f6, #8b5cf6)','linear-gradient(135deg, #ec4899, #f59e0b)',
   'linear-gradient(135deg, #10b981, #0ea5e9)','linear-gradient(135deg, #f59e0b, #ef4444)',
@@ -417,320 +432,41 @@ const GRADIENT_PRESETS = [
   'linear-gradient(90deg, #ff6b6b, #feca57)','linear-gradient(135deg, #000000, #434343)'
 ];
 
-function buildBorder(el){
-  const style = el.borderStyle || 'none';
-  const width = el.borderWidth || 0;
-  const color = el.borderColor || '#e5e7eb';
-  if(style === 'none' || width === 0) return 'none';
-  return `${width}px ${style} ${color}`;
-}
-
-function applyElementStyles(dom, el){
-  const border = buildBorder(el);
-  dom.style.left = el.x+'px';
-  dom.style.top = el.y+'px';
-  dom.style.width = (typeof el.width==='number' ? el.width+'px' : el.width);
-  dom.style.height = (typeof el.height==='number' ? el.height+'px' : el.height);
-  dom.style.zIndex = el.zIndex;
-  dom.style.opacity = el.opacity;
-  dom.style.borderRadius = (el.borderRadius||0)+'px';
-  dom.style.boxShadow = el.boxShadow||'none';
-  dom.style.border = border;
-  dom.style.boxSizing = 'border-box';
-  if(isGradient(el.bgColor)){
-    dom.style.background = el.bgColor;
-  } else if(el.bgColor && el.bgColor !== 'transparent'){
-    dom.style.background = el.bgColor;
-  } else {
-    dom.style.background = 'transparent';
-  }
-}
-
-/* ========== COLOR EDITOR ========== */
-function buildColorEditor(el, key, label){
-  const value = el[key] || '#ffffff';
-  const isGrad = isGradient(value);
-  const container = document.createElement('div');
-  container.className = 'color-editor';
-  const header = document.createElement('label');
-  header.className = 'cl';
-  header.textContent = label;
-  container.appendChild(header);
-
-  const tabs = document.createElement('div');
-  tabs.className = 'tabs-color';
-  const tabSolid = document.createElement('button');
-  tabSolid.textContent = '🎨 Sólido';
-  tabSolid.className = !isGrad ? 'active' : '';
-  const tabGrad = document.createElement('button');
-  tabGrad.textContent = '🌈 Degradado';
-  tabGrad.className = isGrad ? 'active' : '';
-  tabs.appendChild(tabSolid); tabs.appendChild(tabGrad);
-  container.appendChild(tabs);
-
-  const solidBox = document.createElement('div');
-  solidBox.style.display = isGrad ? 'none' : 'block';
-  const safeSolid = isGrad ? '#ffffff' : value;
-  const flex = document.createElement('div');
-  flex.style.cssText = 'display:flex;gap:8px;align-items:center';
-  const cp = document.createElement('input'); cp.type = 'color';
-  cp.value = safeSolid.startsWith('#') ? safeSolid.substring(0,7) : '#ffffff';
-  cp.style.cssText = 'width:32px;height:32px;padding:0;border:none;border-radius:6px;cursor:pointer';
-  const ti = document.createElement('input'); ti.type = 'text'; ti.className = 'ci'; ti.value = safeSolid; ti.style.flex = '1';
-  cp.oninput = e => { ti.value = e.target.value; updateElement(state.selectedId, { [key]: e.target.value }); };
-  cp.onchange = () => saveHistory();
-  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; updateElement(state.selectedId, { [key]: e.target.value }); saveHistory(); };
-  flex.appendChild(cp); flex.appendChild(ti);
-  solidBox.appendChild(flex);
-  container.appendChild(solidBox);
-
-  const gradBox = document.createElement('div');
-  gradBox.style.display = isGrad ? 'block' : 'none';
-
-  let gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
-  if(isGrad){
-    const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
-    if(m){ gAngle = parseInt(m[1]) || 135; gColor1 = m[2].trim(); gColor2 = m[3].trim(); }
-  }
-  const makeGradString = () => `linear-gradient(${gAngle}deg, ${gColor1}, ${gColor2})`;
-
-  const gradControls = document.createElement('div');
-  gradControls.className = 'grad-controls';
-
-  const angleRow = document.createElement('div');
-  angleRow.className = 'grad-row';
-  angleRow.innerHTML = '<label>Ángulo</label>';
-  const angleRange = document.createElement('input'); angleRange.type = 'range'; angleRange.min = 0; angleRange.max = 360; angleRange.value = gAngle;
-  const angleVal = document.createElement('span'); angleVal.style.cssText = 'font-size:11px;color:#6b7280;min-width:34px;text-align:right'; angleVal.textContent = gAngle + '°';
-  angleRange.oninput = e => { gAngle = parseInt(e.target.value); angleVal.textContent = gAngle + '°'; updateElement(state.selectedId, { [key]: makeGradString() }); };
-  angleRange.onchange = () => saveHistory();
-  angleRow.appendChild(angleRange); angleRow.appendChild(angleVal);
-  gradControls.appendChild(angleRow);
-
-  const c1Row = document.createElement('div');
-  c1Row.className = 'grad-row';
-  c1Row.innerHTML = '<label>Inicio</label>';
-  const c1 = document.createElement('input'); c1.type = 'color'; c1.value = gColor1.startsWith('#') ? gColor1.substring(0,7) : '#3b82f6';
-  const c1t = document.createElement('input'); c1t.type = 'text'; c1t.className = 'ci'; c1t.value = gColor1; c1t.style.flex = '1';
-  c1.oninput = e => { c1t.value = e.target.value; gColor1 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); };
-  c1.onchange = () => saveHistory();
-  c1t.onchange = e => { c1.value = e.target.value.startsWith('#') ? e.target.value : '#3b82f6'; gColor1 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); saveHistory(); };
-  c1Row.appendChild(c1); c1Row.appendChild(c1t);
-  gradControls.appendChild(c1Row);
-
-  const c2Row = document.createElement('div');
-  c2Row.className = 'grad-row';
-  c2Row.innerHTML = '<label>Fin</label>';
-  const c2 = document.createElement('input'); c2.type = 'color'; c2.value = gColor2.startsWith('#') ? gColor2.substring(0,7) : '#8b5cf6';
-  const c2t = document.createElement('input'); c2t.type = 'text'; c2t.className = 'ci'; c2t.value = gColor2; c2t.style.flex = '1';
-  c2.oninput = e => { c2t.value = e.target.value; gColor2 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); };
-  c2.onchange = () => saveHistory();
-  c2t.onchange = e => { c2.value = e.target.value.startsWith('#') ? e.target.value : '#8b5cf6'; gColor2 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); saveHistory(); };
-  c2Row.appendChild(c2); c2Row.appendChild(c2t);
-  gradControls.appendChild(c2Row);
-
-  const presetsLabel = document.createElement('label');
-  presetsLabel.style.cssText = 'font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;margin-top:4px;display:block';
-  presetsLabel.textContent = 'Degradados rápidos';
-  gradControls.appendChild(presetsLabel);
-  const presets = document.createElement('div');
-  presets.className = 'grad-presets';
-  GRADIENT_PRESETS.forEach(preset => {
-    const p = document.createElement('div');
-    p.className = 'grad-preset';
-    p.style.background = preset;
-    p.onclick = () => { updateElement(state.selectedId, { [key]: preset }); saveHistory(); renderProps(); };
-    presets.appendChild(p);
-  });
-  gradControls.appendChild(presets);
-
-  const preview = document.createElement('div');
-  preview.className = 'gradient-preview';
-  preview.textContent = 'Vista previa';
-  preview.style.background = isGrad ? value : makeGradString();
-  gradControls.appendChild(preview);
-
-  gradBox.appendChild(gradControls);
-  container.appendChild(gradBox);
-
-  tabSolid.onclick = () => {
-    tabSolid.classList.add('active'); tabGrad.classList.remove('active');
-    solidBox.style.display = 'block'; gradBox.style.display = 'none';
-    updateElement(state.selectedId, { [key]: safeSolid });
-    saveHistory();
-  };
-  tabGrad.onclick = () => {
-    tabGrad.classList.add('active'); tabSolid.classList.remove('active');
-    solidBox.style.display = 'none'; gradBox.style.display = 'block';
-    updateElement(state.selectedId, { [key]: makeGradString() });
-    saveHistory();
-  };
-
-  return container;
-}
-
-/* ========== EDITOR DE COLOR DE PÁGINA ========== */
-function renderPageColorEditor(){
-  const box = document.getElementById('page-bg-editor');
-  const page = getPage();
-  if(!page) return;
-  box.innerHTML = '';
-
-  const value = page.bgColor || '#ffffff';
-  const isGrad = isGradient(value);
-
-  const tabs = document.createElement('div');
-  tabs.className = 'tabs-color';
-  const tabSolid = document.createElement('button');
-  tabSolid.textContent = '🎨 Sólido'; tabSolid.className = !isGrad ? 'active' : '';
-  const tabGrad = document.createElement('button');
-  tabGrad.textContent = '🌈 Degradado'; tabGrad.className = isGrad ? 'active' : '';
-  tabs.appendChild(tabSolid); tabs.appendChild(tabGrad);
-  box.appendChild(tabs);
-
-  const solidBox = document.createElement('div');
-  solidBox.style.display = isGrad ? 'none' : 'block';
-  const safeSolid = isGrad ? '#ffffff' : value;
-  const flex = document.createElement('div');
-  flex.style.cssText = 'display:flex;gap:8px;align-items:center';
-  const cp = document.createElement('input'); cp.type = 'color';
-  cp.value = safeSolid.startsWith('#') ? safeSolid.substring(0,7) : '#ffffff';
-  cp.style.cssText = 'width:44px;height:36px;padding:0;border:none;border-radius:6px;cursor:pointer';
-  const ti = document.createElement('input'); ti.type = 'text'; ti.className = 'ci'; ti.value = safeSolid; ti.style.flex = '1';
-  cp.oninput = e => { ti.value = e.target.value; page.bgColor = e.target.value; canvas.style.background = e.target.value; };
-  cp.onchange = () => saveHistory();
-  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; page.bgColor = e.target.value; canvas.style.background = e.target.value; saveHistory(); };
-  flex.appendChild(cp); flex.appendChild(ti);
-  solidBox.appendChild(flex);
-
-  const rapidLabel = document.createElement('label');
-  rapidLabel.className = 'cl'; rapidLabel.style.marginTop = '10px'; rapidLabel.textContent = 'Colores rápidos';
-  solidBox.appendChild(rapidLabel);
-  const presetColors = document.createElement('div');
-  presetColors.style.cssText = 'display:grid;grid-template-columns:repeat(6,1fr);gap:6px';
-  ['#ffffff','#f9fafb','#f3f4f6','#fef3c7','#dbeafe','#dcfce7','#fee2e2','#fce7f3','#ede9fe','#e0f2fe','#1f2937','#000000'].forEach(c => {
-    const el = document.createElement('div');
-    el.style.cssText = `aspect-ratio:1;border-radius:6px;cursor:pointer;background:${c};border:2px solid ${c==='#ffffff'||c==='#f9fafb'?'#e5e7eb':'transparent'}`;
-    el.onclick = () => { page.bgColor = c; canvas.style.background = c; saveHistory(); renderPageColorEditor(); };
-    presetColors.appendChild(el);
-  });
-  solidBox.appendChild(presetColors);
-  box.appendChild(solidBox);
-
-  const gradBox = document.createElement('div');
-  gradBox.style.display = isGrad ? 'block' : 'none';
-
-  let gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
-  if(isGrad){
-    const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
-    if(m){ gAngle = parseInt(m[1]) || 135; gColor1 = m[2].trim(); gColor2 = m[3].trim(); }
-  }
-  const makeGrad = () => `linear-gradient(${gAngle}deg, ${gColor1}, ${gColor2})`;
-
-  const gradControls = document.createElement('div');
-  gradControls.className = 'grad-controls';
-
-  const angleRow = document.createElement('div');
-  angleRow.className = 'grad-row';
-  angleRow.innerHTML = '<label>Ángulo</label>';
-  const angleRange = document.createElement('input'); angleRange.type = 'range'; angleRange.min = 0; angleRange.max = 360; angleRange.value = gAngle;
-  const angleVal = document.createElement('span'); angleVal.style.cssText = 'font-size:11px;color:#6b7280;min-width:34px;text-align:right'; angleVal.textContent = gAngle + '°';
-  angleRange.oninput = e => { gAngle = parseInt(e.target.value); angleVal.textContent = gAngle + '°'; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
-  angleRange.onchange = () => saveHistory();
-  angleRow.appendChild(angleRange); angleRow.appendChild(angleVal);
-  gradControls.appendChild(angleRow);
-
-  const c1Row = document.createElement('div');
-  c1Row.className = 'grad-row';
-  c1Row.innerHTML = '<label>Inicio</label>';
-  const c1 = document.createElement('input'); c1.type = 'color'; c1.value = gColor1.startsWith('#') ? gColor1.substring(0,7) : '#3b82f6';
-  const c1t = document.createElement('input'); c1t.type = 'text'; c1t.className = 'ci'; c1t.value = gColor1; c1t.style.flex = '1';
-  c1.oninput = e => { c1t.value = e.target.value; gColor1 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
-  c1.onchange = () => saveHistory();
-  c1t.onchange = e => { c1.value = e.target.value.startsWith('#') ? e.target.value : '#3b82f6'; gColor1 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); };
-  c1Row.appendChild(c1); c1Row.appendChild(c1t);
-  gradControls.appendChild(c1Row);
-
-  const c2Row = document.createElement('div');
-  c2Row.className = 'grad-row';
-  c2Row.innerHTML = '<label>Fin</label>';
-  const c2 = document.createElement('input'); c2.type = 'color'; c2.value = gColor2.startsWith('#') ? gColor2.substring(0,7) : '#8b5cf6';
-  const c2t = document.createElement('input'); c2t.type = 'text'; c2t.className = 'ci'; c2t.value = gColor2; c2t.style.flex = '1';
-  c2.oninput = e => { c2t.value = e.target.value; gColor2 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
-  c2.onchange = () => saveHistory();
-  c2t.onchange = e => { c2.value = e.target.value.startsWith('#') ? e.target.value : '#8b5cf6'; gColor2 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); };
-  c2Row.appendChild(c2); c2Row.appendChild(c2t);
-  gradControls.appendChild(c2Row);
-
-  const presetsLabel = document.createElement('label');
-  presetsLabel.style.cssText = 'font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;margin-top:4px;display:block';
-  presetsLabel.textContent = 'Degradados rápidos';
-  gradControls.appendChild(presetsLabel);
-
-  const presets = document.createElement('div');
-  presets.className = 'grad-presets';
-  GRADIENT_PRESETS.forEach(preset => {
-    const p = document.createElement('div');
-    p.className = 'grad-preset';
-    p.style.background = preset;
-    p.onclick = () => { page.bgColor = preset; canvas.style.background = preset; saveHistory(); renderPageColorEditor(); };
-    presets.appendChild(p);
-  });
-  gradControls.appendChild(presets);
-
-  const preview = document.createElement('div');
-  preview.className = 'gradient-preview';
-  preview.textContent = 'Vista previa';
-  preview.style.background = isGrad ? value : makeGrad();
-  gradControls.appendChild(preview);
-
-  gradBox.appendChild(gradControls);
-  box.appendChild(gradBox);
-
-  tabSolid.onclick = () => { page.bgColor = safeSolid; canvas.style.background = safeSolid; saveHistory(); renderPageColorEditor(); };
-  tabGrad.onclick = () => { page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); renderPageColorEditor(); };
-}
-
-function applyPageBg(){
-  const page = getPage();
-  if(!page) return;
-  canvas.style.background = page.bgColor || '#ffffff';
-  renderPageColorEditor();
-}
-
-document.getElementById('page-config-btn').onclick = (e) => {
-  e.stopPropagation();
-  document.getElementById('page-config-panel').classList.toggle('show');
-};
-document.addEventListener('click', e => {
-  const panel = document.getElementById('page-config-panel');
-  const btn = document.getElementById('page-config-btn');
-  if(panel.classList.contains('show') && !panel.contains(e.target) && !btn.contains(e.target)){
-    panel.classList.remove('show');
-  }
-});
-
 /* ========== HISTORIAL ========== */
-const saveHistory = () => {
+function saveHistory(){
   const s = JSON.stringify(state.pages);
   state.history = state.history.slice(0, state.historyIndex+1);
   state.history.push(s);
   state.historyIndex++;
-};
-const undo = () => {
+}
+function undo(){
   if(state.historyIndex > 0){
     state.historyIndex--;
-    state.pages = JSON.parse(state.history[state.historyIndex]);
-    clearSel(); renderAll(); renderPages(); applyPageBg();
+    try{
+      state.pages = JSON.parse(state.history[state.historyIndex]);
+    } catch(e){ return; }
+    state.selectedId = null;
+    selBox.style.display = 'none';
+    renderAll();
+    renderPages();
+    renderProps();
+    applyPageBg();
   }
-};
-const redo = () => {
+}
+function redo(){
   if(state.historyIndex < state.history.length-1){
     state.historyIndex++;
-    state.pages = JSON.parse(state.history[state.historyIndex]);
-    clearSel(); renderAll(); renderPages(); applyPageBg();
+    try{
+      state.pages = JSON.parse(state.history[state.historyIndex]);
+    } catch(e){ return; }
+    state.selectedId = null;
+    selBox.style.display = 'none';
+    renderAll();
+    renderPages();
+    renderProps();
+    applyPageBg();
   }
-};
+}
 document.getElementById('btn-undo').onclick = undo;
 document.getElementById('btn-redo').onclick = redo;
 document.addEventListener('keydown', e => {
@@ -958,9 +694,10 @@ function defaults(type){
 }
 
 /* ========== CRUD ========== */
-function addElement(type, x, y, extra = {}){
+function addElement(type, x, y, extra){
+  extra = extra || {};
   const props = defaults(type);
-  const el = { id:uid(), type, x:Math.max(0,x), y:Math.max(0,y), ...props, ...extra };
+  const el = Object.assign({ id:uid(), type:type, x:Math.max(0,x), y:Math.max(0,y) }, props, extra);
   getElements().push(el);
   saveHistory();
   renderElement(el);
@@ -978,10 +715,307 @@ function deleteEl(id){
   const page = getPage();
   if(!page) return;
   page.elements = page.elements.filter(e => e.id !== id);
-  document.getElementById(id)?.remove();
-  clearSel();
+  const dom = document.getElementById(id);
+  if(dom) dom.remove();
+  state.selectedId = null;
+  selBox.style.display = 'none';
   saveHistory();
+  renderProps();
 }
+
+/* ========== BORDE ========== */
+function buildBorder(el){
+  const style = el.borderStyle || 'none';
+  const width = el.borderWidth || 0;
+  const color = el.borderColor || '#e5e7eb';
+  if(style === 'none' || width === 0) return 'none';
+  return width + 'px ' + style + ' ' + color;
+}
+
+function applyElementStyles(dom, el){
+  const border = buildBorder(el);
+  dom.style.left = el.x+'px';
+  dom.style.top = el.y+'px';
+  dom.style.width = (typeof el.width==='number' ? el.width+'px' : el.width);
+  dom.style.height = (typeof el.height==='number' ? el.height+'px' : el.height);
+  dom.style.zIndex = el.zIndex;
+  dom.style.opacity = el.opacity;
+  dom.style.borderRadius = (el.borderRadius||0)+'px';
+  dom.style.boxShadow = el.boxShadow||'none';
+  dom.style.border = border;
+  dom.style.boxSizing = 'border-box';
+  if(isGradient(el.bgColor)){
+    dom.style.background = el.bgColor;
+  } else if(el.bgColor && el.bgColor !== 'transparent'){
+    dom.style.background = el.bgColor;
+  } else {
+    dom.style.background = 'transparent';
+  }
+}
+
+/* ========== COLOR EDITOR ========== */
+function buildColorEditor(el, key, label){
+  const value = el[key] || '#ffffff';
+  const isGrad = isGradient(value);
+  const container = document.createElement('div');
+  container.className = 'color-editor';
+  const header = document.createElement('label');
+  header.className = 'cl';
+  header.textContent = label;
+  container.appendChild(header);
+
+  const tabs = document.createElement('div');
+  tabs.className = 'tabs-color';
+  const tabSolid = document.createElement('button');
+  tabSolid.textContent = '🎨 Sólido';
+  tabSolid.className = !isGrad ? 'active' : '';
+  const tabGrad = document.createElement('button');
+  tabGrad.textContent = '🌈 Degradado';
+  tabGrad.className = isGrad ? 'active' : '';
+  tabs.appendChild(tabSolid); tabs.appendChild(tabGrad);
+  container.appendChild(tabs);
+
+  const solidBox = document.createElement('div');
+  solidBox.style.display = isGrad ? 'none' : 'block';
+  const safeSolid = isGrad ? '#ffffff' : value;
+  const flex = document.createElement('div');
+  flex.style.cssText = 'display:flex;gap:8px;align-items:center';
+  const cp = document.createElement('input'); cp.type = 'color';
+  cp.value = safeSolid.startsWith('#') ? safeSolid.substring(0,7) : '#ffffff';
+  cp.style.cssText = 'width:32px;height:32px;padding:0;border:none;border-radius:6px;cursor:pointer';
+  const ti = document.createElement('input'); ti.type = 'text'; ti.className = 'ci'; ti.value = safeSolid; ti.style.flex = '1';
+  cp.oninput = e => { ti.value = e.target.value; updateElement(state.selectedId, { [key]: e.target.value }); };
+  cp.onchange = () => saveHistory();
+  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; updateElement(state.selectedId, { [key]: e.target.value }); saveHistory(); };
+  flex.appendChild(cp); flex.appendChild(ti);
+  solidBox.appendChild(flex);
+  container.appendChild(solidBox);
+
+  const gradBox = document.createElement('div');
+  gradBox.style.display = isGrad ? 'block' : 'none';
+
+  let gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
+  if(isGrad){
+    const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
+    if(m){ gAngle = parseInt(m[1]) || 135; gColor1 = m[2].trim(); gColor2 = m[3].trim(); }
+  }
+  const makeGradString = () => 'linear-gradient(' + gAngle + 'deg, ' + gColor1 + ', ' + gColor2 + ')';
+
+  const gradControls = document.createElement('div');
+  gradControls.className = 'grad-controls';
+
+  const angleRow = document.createElement('div');
+  angleRow.className = 'grad-row';
+  angleRow.innerHTML = '<label>Ángulo</label>';
+  const angleRange = document.createElement('input'); angleRange.type = 'range'; angleRange.min = 0; angleRange.max = 360; angleRange.value = gAngle;
+  const angleVal = document.createElement('span'); angleVal.style.cssText = 'font-size:11px;color:#6b7280;min-width:34px;text-align:right'; angleVal.textContent = gAngle + '°';
+  angleRange.oninput = e => { gAngle = parseInt(e.target.value); angleVal.textContent = gAngle + '°'; updateElement(state.selectedId, { [key]: makeGradString() }); };
+  angleRange.onchange = () => saveHistory();
+  angleRow.appendChild(angleRange); angleRow.appendChild(angleVal);
+  gradControls.appendChild(angleRow);
+
+  const c1Row = document.createElement('div');
+  c1Row.className = 'grad-row';
+  c1Row.innerHTML = '<label>Inicio</label>';
+  const c1 = document.createElement('input'); c1.type = 'color'; c1.value = gColor1.startsWith('#') ? gColor1.substring(0,7) : '#3b82f6';
+  const c1t = document.createElement('input'); c1t.type = 'text'; c1t.className = 'ci'; c1t.value = gColor1; c1t.style.flex = '1';
+  c1.oninput = e => { c1t.value = e.target.value; gColor1 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); };
+  c1.onchange = () => saveHistory();
+  c1t.onchange = e => { c1.value = e.target.value.startsWith('#') ? e.target.value : '#3b82f6'; gColor1 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); saveHistory(); };
+  c1Row.appendChild(c1); c1Row.appendChild(c1t);
+  gradControls.appendChild(c1Row);
+
+  const c2Row = document.createElement('div');
+  c2Row.className = 'grad-row';
+  c2Row.innerHTML = '<label>Fin</label>';
+  const c2 = document.createElement('input'); c2.type = 'color'; c2.value = gColor2.startsWith('#') ? gColor2.substring(0,7) : '#8b5cf6';
+  const c2t = document.createElement('input'); c2t.type = 'text'; c2t.className = 'ci'; c2t.value = gColor2; c2t.style.flex = '1';
+  c2.oninput = e => { c2t.value = e.target.value; gColor2 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); };
+  c2.onchange = () => saveHistory();
+  c2t.onchange = e => { c2.value = e.target.value.startsWith('#') ? e.target.value : '#8b5cf6'; gColor2 = e.target.value; updateElement(state.selectedId, { [key]: makeGradString() }); saveHistory(); };
+  c2Row.appendChild(c2); c2Row.appendChild(c2t);
+  gradControls.appendChild(c2Row);
+
+  const presetsLabel = document.createElement('label');
+  presetsLabel.style.cssText = 'font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;margin-top:4px;display:block';
+  presetsLabel.textContent = 'Degradados rápidos';
+  gradControls.appendChild(presetsLabel);
+  const presets = document.createElement('div');
+  presets.className = 'grad-presets';
+  GRADIENT_PRESETS.forEach(preset => {
+    const p = document.createElement('div');
+    p.className = 'grad-preset';
+    p.style.background = preset;
+    p.onclick = () => { updateElement(state.selectedId, { [key]: preset }); saveHistory(); renderProps(); };
+    presets.appendChild(p);
+  });
+  gradControls.appendChild(presets);
+
+  const preview = document.createElement('div');
+  preview.className = 'gradient-preview';
+  preview.textContent = 'Vista previa';
+  preview.style.background = isGrad ? value : makeGradString();
+  gradControls.appendChild(preview);
+
+  gradBox.appendChild(gradControls);
+  container.appendChild(gradBox);
+
+  tabSolid.onclick = () => {
+    tabSolid.classList.add('active'); tabGrad.classList.remove('active');
+    solidBox.style.display = 'block'; gradBox.style.display = 'none';
+    updateElement(state.selectedId, { [key]: safeSolid });
+    saveHistory();
+  };
+  tabGrad.onclick = () => {
+    tabGrad.classList.add('active'); tabSolid.classList.remove('active');
+    solidBox.style.display = 'none'; gradBox.style.display = 'block';
+    updateElement(state.selectedId, { [key]: makeGradString() });
+    saveHistory();
+  };
+
+  return container;
+}
+
+/* ========== EDITOR DE COLOR DE PÁGINA ========== */
+function renderPageColorEditor(){
+  const box = document.getElementById('page-bg-editor');
+  const page = getPage();
+  if(!page){ box.innerHTML = ''; return; }
+  box.innerHTML = '';
+
+  const value = page.bgColor || '#ffffff';
+  const isGrad = isGradient(value);
+
+  const tabs = document.createElement('div');
+  tabs.className = 'tabs-color';
+  const tabSolid = document.createElement('button');
+  tabSolid.textContent = '🎨 Sólido'; tabSolid.className = !isGrad ? 'active' : '';
+  const tabGrad = document.createElement('button');
+  tabGrad.textContent = '🌈 Degradado'; tabGrad.className = isGrad ? 'active' : '';
+  tabs.appendChild(tabSolid); tabs.appendChild(tabGrad);
+  box.appendChild(tabs);
+
+  const solidBox = document.createElement('div');
+  solidBox.style.display = isGrad ? 'none' : 'block';
+  const safeSolid = isGrad ? '#ffffff' : value;
+  const flex = document.createElement('div');
+  flex.style.cssText = 'display:flex;gap:8px;align-items:center';
+  const cp = document.createElement('input'); cp.type = 'color';
+  cp.value = safeSolid.startsWith('#') ? safeSolid.substring(0,7) : '#ffffff';
+  cp.style.cssText = 'width:44px;height:36px;padding:0;border:none;border-radius:6px;cursor:pointer';
+  const ti = document.createElement('input'); ti.type = 'text'; ti.className = 'ci'; ti.value = safeSolid; ti.style.flex = '1';
+  cp.oninput = e => { ti.value = e.target.value; page.bgColor = e.target.value; canvas.style.background = e.target.value; };
+  cp.onchange = () => saveHistory();
+  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; page.bgColor = e.target.value; canvas.style.background = e.target.value; saveHistory(); };
+  flex.appendChild(cp); flex.appendChild(ti);
+  solidBox.appendChild(flex);
+
+  const rapidLabel = document.createElement('label');
+  rapidLabel.className = 'cl'; rapidLabel.style.marginTop = '10px'; rapidLabel.textContent = 'Colores rápidos';
+  solidBox.appendChild(rapidLabel);
+  const presetColors = document.createElement('div');
+  presetColors.style.cssText = 'display:grid;grid-template-columns:repeat(6,1fr);gap:6px';
+  ['#ffffff','#f9fafb','#f3f4f6','#fef3c7','#dbeafe','#dcfce7','#fee2e2','#fce7f3','#ede9fe','#e0f2fe','#1f2937','#000000'].forEach(c => {
+    const el = document.createElement('div');
+    el.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;background:' + c + ';border:2px solid ' + (c==='#ffffff'||c==='#f9fafb'?'#e5e7eb':'transparent');
+    el.onclick = () => { page.bgColor = c; canvas.style.background = c; saveHistory(); renderPageColorEditor(); };
+    presetColors.appendChild(el);
+  });
+  solidBox.appendChild(presetColors);
+  box.appendChild(solidBox);
+
+  const gradBox = document.createElement('div');
+  gradBox.style.display = isGrad ? 'block' : 'none';
+
+  let gAngle = 135, gColor1 = '#3b82f6', gColor2 = '#8b5cf6';
+  if(isGrad){
+    const m = value.match(/linear-gradient\(([^,]+),\s*([^,]+),\s*([^,)]+)/);
+    if(m){ gAngle = parseInt(m[1]) || 135; gColor1 = m[2].trim(); gColor2 = m[3].trim(); }
+  }
+  const makeGrad = () => 'linear-gradient(' + gAngle + 'deg, ' + gColor1 + ', ' + gColor2 + ')';
+
+  const gradControls = document.createElement('div');
+  gradControls.className = 'grad-controls';
+
+  const angleRow = document.createElement('div');
+  angleRow.className = 'grad-row';
+  angleRow.innerHTML = '<label>Ángulo</label>';
+  const angleRange = document.createElement('input'); angleRange.type = 'range'; angleRange.min = 0; angleRange.max = 360; angleRange.value = gAngle;
+  const angleVal = document.createElement('span'); angleVal.style.cssText = 'font-size:11px;color:#6b7280;min-width:34px;text-align:right'; angleVal.textContent = gAngle + '°';
+  angleRange.oninput = e => { gAngle = parseInt(e.target.value); angleVal.textContent = gAngle + '°'; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
+  angleRange.onchange = () => saveHistory();
+  angleRow.appendChild(angleRange); angleRow.appendChild(angleVal);
+  gradControls.appendChild(angleRow);
+
+  const c1Row = document.createElement('div');
+  c1Row.className = 'grad-row';
+  c1Row.innerHTML = '<label>Inicio</label>';
+  const c1 = document.createElement('input'); c1.type = 'color'; c1.value = gColor1.startsWith('#') ? gColor1.substring(0,7) : '#3b82f6';
+  const c1t = document.createElement('input'); c1t.type = 'text'; c1t.className = 'ci'; c1t.value = gColor1; c1t.style.flex = '1';
+  c1.oninput = e => { c1t.value = e.target.value; gColor1 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
+  c1.onchange = () => saveHistory();
+  c1t.onchange = e => { c1.value = e.target.value.startsWith('#') ? e.target.value : '#3b82f6'; gColor1 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); };
+  c1Row.appendChild(c1); c1Row.appendChild(c1t);
+  gradControls.appendChild(c1Row);
+
+  const c2Row = document.createElement('div');
+  c2Row.className = 'grad-row';
+  c2Row.innerHTML = '<label>Fin</label>';
+  const c2 = document.createElement('input'); c2.type = 'color'; c2.value = gColor2.startsWith('#') ? gColor2.substring(0,7) : '#8b5cf6';
+  const c2t = document.createElement('input'); c2t.type = 'text'; c2t.className = 'ci'; c2t.value = gColor2; c2t.style.flex = '1';
+  c2.oninput = e => { c2t.value = e.target.value; gColor2 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); };
+  c2.onchange = () => saveHistory();
+  c2t.onchange = e => { c2.value = e.target.value.startsWith('#') ? e.target.value : '#8b5cf6'; gColor2 = e.target.value; page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); };
+  c2Row.appendChild(c2); c2Row.appendChild(c2t);
+  gradControls.appendChild(c2Row);
+
+  const presetsLabel = document.createElement('label');
+  presetsLabel.style.cssText = 'font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;margin-top:4px;display:block';
+  presetsLabel.textContent = 'Degradados rápidos';
+  gradControls.appendChild(presetsLabel);
+
+  const presets = document.createElement('div');
+  presets.className = 'grad-presets';
+  GRADIENT_PRESETS.forEach(preset => {
+    const p = document.createElement('div');
+    p.className = 'grad-preset';
+    p.style.background = preset;
+    p.onclick = () => { page.bgColor = preset; canvas.style.background = preset; saveHistory(); renderPageColorEditor(); };
+    presets.appendChild(p);
+  });
+  gradControls.appendChild(presets);
+
+  const preview = document.createElement('div');
+  preview.className = 'gradient-preview';
+  preview.textContent = 'Vista previa';
+  preview.style.background = isGrad ? value : makeGrad();
+  gradControls.appendChild(preview);
+
+  gradBox.appendChild(gradControls);
+  box.appendChild(gradBox);
+
+  tabSolid.onclick = () => { page.bgColor = safeSolid; canvas.style.background = safeSolid; saveHistory(); renderPageColorEditor(); };
+  tabGrad.onclick = () => { page.bgColor = makeGrad(); canvas.style.background = makeGrad(); saveHistory(); renderPageColorEditor(); };
+}
+
+function applyPageBg(){
+  const page = getPage();
+  if(!page) return;
+  canvas.style.background = page.bgColor || '#ffffff';
+  renderPageColorEditor();
+}
+
+document.getElementById('page-config-btn').onclick = (e) => {
+  e.stopPropagation();
+  document.getElementById('page-config-panel').classList.toggle('show');
+};
+document.addEventListener('click', e => {
+  const panel = document.getElementById('page-config-panel');
+  const btn = document.getElementById('page-config-btn');
+  if(panel.classList.contains('show') && !panel.contains(e.target) && !btn.contains(e.target)){
+    panel.classList.remove('show');
+  }
+});
 
 /* ========== RENDER ========== */
 function renderAll(){
@@ -996,7 +1030,7 @@ function renderElement(el){
     dom.id = el.id;
     dom.className = 'elemento';
     dom.addEventListener('dblclick', e => {
-      if(['heading','paragraph','blockquote','badge','button','link'].includes(el.type)){
+      if(['heading','paragraph','blockquote','badge','button','link'].indexOf(el.type) !== -1){
         const t = dom.querySelector('h1,h2,h3,h4,h5,h6,p,blockquote,span,a,button') || dom;
         t.contentEditable = true;
         t.focus();
@@ -1028,94 +1062,94 @@ function syncDOM(dom, el){
   const T = el.type;
   let html = '';
 
-  if(T === 'heading') html = `<h${el.level} style="margin:0;font-size:${el.fontSize}px;font-weight:${el.fontWeight};color:${el.color};text-align:${el.textAlign}">${esc(el.text)}</h${el.level}>`;
-  else if(T === 'paragraph') html = `<p style="margin:0;font-size:${el.fontSize}px;color:${el.color};text-align:${el.textAlign};line-height:1.6">${esc(el.text)}</p>`;
-  else if(T === 'blockquote') html = `<blockquote class="e-blockquote" style="font-size:${el.fontSize}px;color:${el.color};border-left-color:${el.color}">${esc(el.text)}</blockquote>`;
-  else if(T === 'code') html = `<pre class="e-code" style="font-size:${el.fontSize}px;background:${el.codeBg};color:${el.codeColor}">${esc(el.text)}</pre>`;
-  else if(T === 'list') html = `<ul class="e-list" style="font-size:${el.fontSize}px;color:${el.color};list-style:${el.ordered?'decimal':'disc'}">${el.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`;
-  else if(T === 'checklist') html = `<ul class="e-checklist" style="font-size:${el.fontSize}px;color:${el.color}">${el.items.map(i=>`<li style="color:${el.color}"><span style="color:${el.checkColor};font-weight:800;margin-right:8px">✓</span>${esc(i)}</li>`).join('')}</ul>`;
-  else if(T === 'badge') html = `<span class="e-badge" style="font-size:${el.fontSize}px;color:${el.color};background:${el.bgColor}">${esc(el.text)}</span>`;
-  else if(T === 'stars') html = `<div class="e-stars" style="font-size:${el.fontSize||20}px;color:${el.color}">${'★'.repeat(el.count)}${'☆'.repeat(5-el.count)}</div>`;
-  else if(T === 'link') html = `<a href="${el.href||'#'}" target="${el.target||'_self'}" style="font-size:${el.fontSize}px;color:${el.color};text-decoration:underline">${esc(el.text)}</a>`;
+  if(T === 'heading') html = '<h' + el.level + ' style="margin:0;font-size:' + el.fontSize + 'px;font-weight:' + el.fontWeight + ';color:' + el.color + ';text-align:' + el.textAlign + '">' + esc(el.text) + '</h' + el.level + '>';
+  else if(T === 'paragraph') html = '<p style="margin:0;font-size:' + el.fontSize + 'px;color:' + el.color + ';text-align:' + el.textAlign + ';line-height:1.6">' + esc(el.text) + '</p>';
+  else if(T === 'blockquote') html = '<blockquote class="e-blockquote" style="font-size:' + el.fontSize + 'px;color:' + el.color + ';border-left-color:' + el.color + '">' + esc(el.text) + '</blockquote>';
+  else if(T === 'code') html = '<pre class="e-code" style="font-size:' + el.fontSize + 'px;background:' + el.codeBg + ';color:' + el.codeColor + '">' + esc(el.text) + '</pre>';
+  else if(T === 'list') html = '<ul class="e-list" style="font-size:' + el.fontSize + 'px;color:' + el.color + ';list-style:' + (el.ordered?'decimal':'disc') + '">' + el.items.map(i=>'<li>'+esc(i)+'</li>').join('') + '</ul>';
+  else if(T === 'checklist') html = '<ul class="e-checklist" style="font-size:' + el.fontSize + 'px;color:' + el.color + '">' + el.items.map(i=>'<li style="color:'+el.color+'"><span style="color:'+el.checkColor+';font-weight:800;margin-right:8px">✓</span>'+esc(i)+'</li>').join('') + '</ul>';
+  else if(T === 'badge') html = '<span class="e-badge" style="font-size:' + el.fontSize + 'px;color:' + el.color + ';background:' + el.bgColor + '">' + esc(el.text) + '</span>';
+  else if(T === 'stars') html = '<div class="e-stars" style="font-size:' + (el.fontSize||20) + 'px;color:' + el.color + '">' + '★'.repeat(el.count) + '☆'.repeat(5-el.count) + '</div>';
+  else if(T === 'link') html = '<a href="' + (el.href||'#') + '" target="' + (el.target||'_self') + '" style="font-size:' + el.fontSize + 'px;color:' + el.color + ';text-decoration:underline">' + esc(el.text) + '</a>';
   else if(T === 'button'){
-    const ic = el.icon ? `<i class="fa-solid ${el.icon}"></i>` : '';
-    const btnStyle = `background:transparent;color:${el.color};font-size:${el.fontSize}px;width:100%;height:100%`;
-    if(el.href) html = `<a href="${el.href}" class="e-btn" style="${btnStyle}">${ic}${esc(el.text)}</a>`;
-    else html = `<button class="e-btn" type="button" style="${btnStyle}">${ic}${esc(el.text)}</button>`;
+    const ic = el.icon ? '<i class="fa-solid ' + el.icon + '"></i>' : '';
+    const btnStyle = 'background:transparent;color:' + el.color + ';font-size:' + el.fontSize + 'px;width:100%;height:100%';
+    if(el.href) html = '<a href="' + el.href + '" class="e-btn" style="' + btnStyle + '">' + ic + esc(el.text) + '</a>';
+    else html = '<button class="e-btn" type="button" style="' + btnStyle + '">' + ic + esc(el.text) + '</button>';
   }
   else if(T === 'image'){
-    const img = `<img src="${el.src}" alt="${el.alt||''}" class="e-img" style="object-fit:${el.objectFit||'cover'}" draggable="false">`;
-    html = el.href ? `<a href="${el.href}" target="_blank" style="display:block;width:100%;height:100%;pointer-events:none">${img}</a>` : img;
+    const img = '<img src="' + el.src + '" alt="' + esc(el.alt||'') + '" class="e-img" style="object-fit:' + (el.objectFit||'cover') + '" draggable="false">';
+    html = el.href ? '<a href="' + el.href + '" target="_blank" style="display:block;width:100%;height:100%;pointer-events:none">' + img + '</a>' : img;
   }
-  else if(T === 'imgOverlay') html = `<div class="e-img-overlay"><img src="${el.src}" draggable="false"><div class="e-img-overlay-txt"><h2 style="margin:0 0 6px;font-size:24px;font-weight:800;color:${el.textColor||'#fff'}">${esc(el.title)}</h2><p style="margin:0;font-size:14px;opacity:.9;color:${el.textColor||'#fff'}">${esc(el.subtitle)}</p></div></div>`;
+  else if(T === 'imgOverlay') html = '<div class="e-img-overlay"><img src="' + el.src + '" draggable="false"><div class="e-img-overlay-txt"><h2 style="margin:0 0 6px;font-size:24px;font-weight:800;color:' + (el.textColor||'#fff') + '">' + esc(el.title) + '</h2><p style="margin:0;font-size:14px;opacity:.9;color:' + (el.textColor||'#fff') + '">' + esc(el.subtitle) + '</p></div></div>';
   else if(T === 'card') html = buildCard(el);
   else if(T === 'carousel') html = buildCarousel(el);
   else if(T === 'gallery') html = buildGallery(el);
   else if(T === 'cardcarousel') html = buildCardCarousel(el);
-  else if(T === 'masonry') html = `<div class="e-masonry">${el.images.map(i=>`<img src="${i}" draggable="false">`).join('')}</div>`;
+  else if(T === 'masonry') html = '<div class="e-masonry">' + el.images.map(i=>'<img src="'+i+'" draggable="false">').join('') + '</div>';
   else if(T === 'navbar') html = buildNavbar(el);
   else if(T === 'hero'){
-    const bg = isGradient(el.bgColor) ? el.bgColor : `linear-gradient(135deg,${el.bgColor},${el.bgColor2||el.bgColor})`;
-    html = `<div class="e-hero" style="background:${bg}"><h1 style="color:${el.titleColor}">${esc(el.title)}</h1><p style="color:${el.textColor}">${esc(el.subtitle)}</p><a href="${el.buttonHref||'#'}" class="e-hero-btn" style="background:${el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText)}</a></div>`;
+    const bg = isGradient(el.bgColor) ? el.bgColor : 'linear-gradient(135deg,' + el.bgColor + ',' + (el.bgColor2||el.bgColor) + ')';
+    html = '<div class="e-hero" style="background:' + bg + '"><h1 style="color:' + el.titleColor + '">' + esc(el.title) + '</h1><p style="color:' + el.textColor + '">' + esc(el.subtitle) + '</p><a href="' + (el.buttonHref||'#') + '" class="e-hero-btn" style="background:' + el.buttonColor + ';color:' + el.buttonTextColor + '">' + esc(el.buttonText) + '</a></div>';
   }
-  else if(T === 'footer') html = `<footer class="e-footer" style="background:${el.bgColor}"><h3 style="color:${el.titleColor}">${esc(el.title)}</h3><p style="color:${el.textColor}">${esc(el.text)}</p>${el.socials?`<div class="e-footer-social"><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-facebook"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-instagram"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-x-twitter"></i></a><a href="#" style="color:${el.socialColor}"><i class="fa-brands fa-youtube"></i></a></div>`:''}</footer>`;
-  else if(T === 'divider') html = `<hr class="e-divider" style="border-top-color:${el.color}">`;
-  else if(T === 'sepIcon') html = `<div class="e-sep"><div class="e-sep-line" style="background:${el.lineColor}"></div><i class="fa-solid ${el.icon} e-sep-icon" style="color:${el.color}"></i><div class="e-sep-line" style="background:${el.lineColor}"></div></div>`;
-  else if(T === 'progress') html = `<div class="e-progress" style="background:${el.bgColor}"><div class="e-progress-bar" style="width:${(el.value/el.max*100)}%;background:${el.barColor};color:${el.textColor}">${el.showLabel?el.value+'%':''}</div></div>`;
+  else if(T === 'footer') html = '<footer class="e-footer" style="background:' + el.bgColor + '"><h3 style="color:' + el.titleColor + '">' + esc(el.title) + '</h3><p style="color:' + el.textColor + '">' + esc(el.text) + '</p>' + (el.socials?'<div class="e-footer-social"><a href="#" style="color:' + el.socialColor + '"><i class="fa-brands fa-facebook"></i></a><a href="#" style="color:' + el.socialColor + '"><i class="fa-brands fa-instagram"></i></a><a href="#" style="color:' + el.socialColor + '"><i class="fa-brands fa-x-twitter"></i></a><a href="#" style="color:' + el.socialColor + '"><i class="fa-brands fa-youtube"></i></a></div>':'') + '</footer>';
+  else if(T === 'divider') html = '<hr class="e-divider" style="border-top-color:' + el.color + '">';
+  else if(T === 'sepIcon') html = '<div class="e-sep"><div class="e-sep-line" style="background:' + el.lineColor + '"></div><i class="fa-solid ' + el.icon + ' e-sep-icon" style="color:' + el.color + '"></i><div class="e-sep-line" style="background:' + el.lineColor + '"></div></div>';
+  else if(T === 'progress') html = '<div class="e-progress" style="background:' + el.bgColor + '"><div class="e-progress-bar" style="width:' + (el.value/el.max*100) + '%;background:' + el.barColor + ';color:' + el.textColor + '">' + (el.showLabel?el.value+'%':'') + '</div></div>';
   else if(T === 'circleProgress'){
     const offset = 314 - (314 * el.value / 100);
-    html = `<div class="e-circle-prog"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="50" style="stroke:${el.bgColor}"/><circle class="fg" cx="60" cy="60" r="50" style="stroke:${el.barColor};stroke-dashoffset:${offset}"/></svg><div class="txt" style="color:${el.textColor}">${esc(el.label)}</div></div>`;
+    html = '<div class="e-circle-prog"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="50" style="stroke:' + el.bgColor + '"/><circle class="fg" cx="60" cy="60" r="50" style="stroke:' + el.barColor + ';stroke-dashoffset:' + offset + '"/></svg><div class="txt" style="color:' + el.textColor + '">' + esc(el.label) + '</div></div>';
   }
-  else if(T === 'counter') html = `<div><div class="e-counter" style="color:${el.numColor}">${el.value}</div><div style="text-align:center;color:${el.labelColor};font-size:14px;margin-top:4px">${esc(el.label)}</div></div>`;
-  else if(T === 'stats') html = `<div class="e-stats">${el.items.map(it=>`<div class="e-stat"><span class="e-stat-num" style="color:${el.numColor}">${esc(it.num)}</span><span class="e-stat-lbl" style="color:${el.labelColor}">${esc(it.lbl)}</span></div>`).join('')}</div>`;
-  else if(T === 'countdown') html = `<div class="e-countdown">${['days','hours','minutes','seconds'].map((k,i)=>`<div class="e-cd-box" style="background:${el.bgColor}"><span class="e-cd-num" style="color:${el.numColor}">${el[k]}</span><span class="e-cd-lbl" style="color:${el.labelColor}">${['Días','Horas','Min','Seg'][i]}</span></div>`).join('')}</div>`;
+  else if(T === 'counter') html = '<div><div class="e-counter" style="color:' + el.numColor + '">' + el.value + '</div><div style="text-align:center;color:' + el.labelColor + ';font-size:14px;margin-top:4px">' + esc(el.label) + '</div></div>';
+  else if(T === 'stats') html = '<div class="e-stats">' + el.items.map(it=>'<div class="e-stat"><span class="e-stat-num" style="color:'+el.numColor+'">'+esc(it.num)+'</span><span class="e-stat-lbl" style="color:'+el.labelColor+'">'+esc(it.lbl)+'</span></div>').join('') + '</div>';
+  else if(T === 'countdown') html = '<div class="e-countdown">' + ['days','hours','minutes','seconds'].map((k,i)=>'<div class="e-cd-box" style="background:'+el.bgColor+'"><span class="e-cd-num" style="color:'+el.numColor+'">'+el[k]+'</span><span class="e-cd-lbl" style="color:'+el.labelColor+'">'+['Días','Horas','Min','Seg'][i]+'</span></div>').join('') + '</div>';
   else if(T === 'table'){
-    let t = `<table class="e-table" style="background:${el.bgColor}">`;
+    let t = '<table class="e-table" style="background:' + el.bgColor + '">';
     el.rows.forEach((r,i) => {
       const isHeader = (i===0 && el.header);
       const tag = isHeader ? 'th' : 'td';
-      const style = isHeader ? `background:${el.headerBg};color:${el.headerColor};border-color:${el.borderColor}` : `color:${el.textColor};border-color:${el.borderColor}`;
-      t += `<tr>${r.map(c => `<${tag} style="${style}">${esc(c)}</${tag}>`).join('')}</tr>`;
+      const style = isHeader ? 'background:' + el.headerBg + ';color:' + el.headerColor + ';border-color:' + el.borderColor : 'color:' + el.textColor + ';border-color:' + el.borderColor;
+      t += '<tr>' + r.map(c => '<' + tag + ' style="' + style + '">' + esc(c) + '</' + tag + '>').join('') + '</tr>';
     });
-    t += `</table>`;
+    t += '</table>';
     html = t;
   }
-  else if(T === 'pricing') html = `<div class="e-pricing">${el.plans.map(p=>`<div class="e-price-card ${p.featured?'featured':''}" style="background:${el.bgColor};border-color:${p.featured?el.featuredColor:'#e5e7eb'}"><h3 style="color:${el.mutedColor}">${esc(p.name)}</h3><div class="amount" style="color:${el.textColor}">${esc(p.price)}<span style="color:${el.mutedColor}">${esc(p.period)}</span></div><ul style="color:${el.textColor}">${p.features.map(f=>`<li style="color:${el.textColor}"><span style="color:${el.checkColor};font-weight:700">✓</span> ${esc(f)}</li>`).join('')}</ul><button class="e-btn" style="background:${p.featured?el.featuredColor:'#e5e7eb'};color:${p.featured?'#fff':el.textColor};width:100%">Elegir</button></div>`).join('')}</div>`;
-  else if(T === 'video') html = `<video class="e-video" src="${el.src}" ${el.controls?'controls':''} ${el.autoplay?'autoplay':''} ${el.loop?'loop':''} ${el.muted?'muted':''} style="width:100%;height:100%"></video>`;
-  else if(T === 'audio') html = `<audio class="e-audio" src="${el.src}" ${el.controls?'controls':''} style="width:100%"></audio>`;
-  else if(T === 'iframe') html = `<iframe class="e-iframe" src="${el.src}" allowfullscreen loading="lazy"></iframe>`;
-  else if(T === 'testimonial') html = `<div class="e-testimonial" style="background:${el.bgColor};border-color:${el.borderColor}"><img src="${el.avatar}" draggable="false"><div><p class="e-testimonial-text" style="color:${el.textColor}">"${esc(el.text)}"</p><p class="e-testimonial-author" style="color:${el.authorColor}">${esc(el.author)}</p><p class="e-testimonial-role" style="color:${el.roleColor}">${esc(el.role)}</p></div></div>`;
+  else if(T === 'pricing') html = '<div class="e-pricing">' + el.plans.map(p=>'<div class="e-price-card '+(p.featured?'featured':'')+'" style="background:'+el.bgColor+';border-color:'+(p.featured?el.featuredColor:'#e5e7eb')+'"><h3 style="color:'+el.mutedColor+'">'+esc(p.name)+'</h3><div class="amount" style="color:'+el.textColor+'">'+esc(p.price)+'<span style="color:'+el.mutedColor+'">'+esc(p.period)+'</span></div><ul style="color:'+el.textColor+'">'+p.features.map(f=>'<li style="color:'+el.textColor+'"><span style="color:'+el.checkColor+';font-weight:700">✓</span> '+esc(f)+'</li>').join('')+'</ul><button class="e-btn" style="background:'+(p.featured?el.featuredColor:'#e5e7eb')+';color:'+(p.featured?'#fff':el.textColor)+';width:100%">Elegir</button></div>').join('') + '</div>';
+  else if(T === 'video') html = '<video class="e-video" src="' + el.src + '" ' + (el.controls?'controls':'') + ' ' + (el.autoplay?'autoplay':'') + ' ' + (el.loop?'loop':'') + ' ' + (el.muted?'muted':'') + ' style="width:100%;height:100%"></video>';
+  else if(T === 'audio') html = '<audio class="e-audio" src="' + el.src + '" ' + (el.controls?'controls':'') + ' style="width:100%"></audio>';
+  else if(T === 'iframe') html = '<iframe class="e-iframe" src="' + el.src + '" allowfullscreen loading="lazy"></iframe>';
+  else if(T === 'testimonial') html = '<div class="e-testimonial" style="background:' + el.bgColor + ';border-color:' + el.borderColor + '"><img src="' + el.avatar + '" draggable="false"><div><p class="e-testimonial-text" style="color:' + el.textColor + '">"' + esc(el.text) + '"</p><p class="e-testimonial-author" style="color:' + el.authorColor + '">' + esc(el.author) + '</p><p class="e-testimonial-role" style="color:' + el.roleColor + '">' + esc(el.role) + '</p></div></div>';
   else if(T === 'form'){
     const f = (el.fields||[]).map(x => {
       const req = x.required ? 'required' : '';
-      if(x.type === 'textarea') return `<div><label class="e-label" style="color:${el.labelColor}">${esc(x.label||'')}</label><textarea class="e-input" placeholder="${esc(x.placeholder||'')}" rows="3" ${req}></textarea></div>`;
-      return `<div><label class="e-label" style="color:${el.labelColor}">${esc(x.label||'')}</label><input type="${x.type||'text'}" class="e-input" placeholder="${esc(x.placeholder||'')}" ${req}></div>`;
+      if(x.type === 'textarea') return '<div><label class="e-label" style="color:' + el.labelColor + '">' + esc(x.label||'') + '</label><textarea class="e-input" placeholder="' + esc(x.placeholder||'') + '" rows="3" ' + req + '></textarea></div>';
+      return '<div><label class="e-label" style="color:' + el.labelColor + '">' + esc(x.label||'') + '</label><input type="' + (x.type||'text') + '" class="e-input" placeholder="' + esc(x.placeholder||'') + '" ' + req + '></div>';
     }).join('');
-    html = `<form class="e-form" style="background:${el.bgColor}" onsubmit="event.preventDefault();alert('Formulario enviado')">${f}<button type="submit" class="e-btn" style="background:${el.buttonColor};color:${el.buttonTextColor}">${esc(el.buttonText||'Enviar')}</button></form>`;
+    html = '<form class="e-form" style="background:' + el.bgColor + '" onsubmit="event.preventDefault();alert(\'Formulario enviado\')">' + f + '<button type="submit" class="e-btn" style="background:' + el.buttonColor + ';color:' + el.buttonTextColor + '">' + esc(el.buttonText||'Enviar') + '</button></form>';
   }
   else if(T === 'input'){
     const req = el.required ? 'required' : '';
-    const val = el.value !== undefined ? `value="${el.value}"` : '';
-    html = `<div><label class="e-label" style="color:${el.labelColor}">${esc(el.label||'')}</label><input type="${el.inputType||'text'}" class="e-input" placeholder="${esc(el.placeholder||'')}" ${req} ${val}></div>`;
+    const val = el.value !== undefined ? 'value="' + el.value + '"' : '';
+    html = '<div><label class="e-label" style="color:' + el.labelColor + '">' + esc(el.label||'') + '</label><input type="' + (el.inputType||'text') + '" class="e-input" placeholder="' + esc(el.placeholder||'') + '" ' + req + ' ' + val + '></div>';
   }
-  else if(T === 'select') html = `<div><label class="e-label" style="color:${el.labelColor}">${esc(el.label||'')}</label><select class="e-input">${el.options.map(o=>`<option>${esc(o)}</option>`).join('')}</select></div>`;
-  else if(T === 'checkbox') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:${el.color}"><input type="checkbox" ${el.checked?'checked':''}> ${esc(el.label)}</label>`;
-  else if(T === 'radio') html = `<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:${el.color}"><input type="radio" name="${el.name}" value="${el.value}"> ${esc(el.label)}</label>`;
-  else if(T === 'textarea') html = `<div><label class="e-label" style="color:${el.labelColor}">${esc(el.label||'')}</label><textarea class="e-input" placeholder="${esc(el.placeholder||'')}" rows="3"></textarea></div>`;
-  else if(T === 'details') html = `<details class="e-details" style="border-color:${el.borderColor}"><summary style="background:${el.summaryBg};color:${el.summaryColor}">${esc(el.summary)}</summary><div class="details-content" style="color:${el.textColor}">${el.content}</div></details>`;
+  else if(T === 'select') html = '<div><label class="e-label" style="color:' + el.labelColor + '">' + esc(el.label||'') + '</label><select class="e-input">' + el.options.map(o=>'<option>'+esc(o)+'</option>').join('') + '</select></div>';
+  else if(T === 'checkbox') html = '<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:' + el.color + '"><input type="checkbox" ' + (el.checked?'checked':'') + '> ' + esc(el.label) + '</label>';
+  else if(T === 'radio') html = '<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:' + el.color + '"><input type="radio" name="' + el.name + '" value="' + el.value + '"> ' + esc(el.label) + '</label>';
+  else if(T === 'textarea') html = '<div><label class="e-label" style="color:' + el.labelColor + '">' + esc(el.label||'') + '</label><textarea class="e-input" placeholder="' + esc(el.placeholder||'') + '" rows="3"></textarea></div>';
+  else if(T === 'details') html = '<details class="e-details" style="border-color:' + el.borderColor + '"><summary style="background:' + el.summaryBg + ';color:' + el.summaryColor + '">' + esc(el.summary) + '</summary><div class="details-content" style="color:' + el.textColor + '">' + el.content + '</div></details>';
   else if(T === 'alert'){
     const ic = { info:'fa-circle-info', success:'fa-circle-check', warning:'fa-triangle-exclamation', danger:'fa-triangle-exclamation' };
-    html = `<div class="e-alert e-alert-${el.alertType}"><i class="fa-solid ${ic[el.alertType]}"></i><div>${esc(el.text)}</div></div>`;
+    html = '<div class="e-alert e-alert-' + el.alertType + '"><i class="fa-solid ' + ic[el.alertType] + '"></i><div>' + esc(el.text) + '</div></div>';
   }
-  else if(T === 'ribbon') html = `<div class="e-ribbon" style="background:${el.bgColor};color:${el.color}">${esc(el.text)}</div>`;
+  else if(T === 'ribbon') html = '<div class="e-ribbon" style="background:' + el.bgColor + ';color:' + el.color + '">' + esc(el.text) + '</div>';
   else if(T === 'icon'){
-    const ih = `<i class="fa-solid ${el.icon}" style="font-size:${el.size}px;color:${el.color}"></i>`;
-    html = el.href ? `<a href="${el.href}" target="_blank" style="color:inherit">${ih}</a>` : ih;
+    const ih = '<i class="fa-solid ' + el.icon + '" style="font-size:' + el.size + 'px;color:' + el.color + '"></i>';
+    html = el.href ? '<a href="' + el.href + '" target="_blank" style="color:inherit">' + ih + '</a>' : ih;
   }
-  else if(T === 'social') html = `<a href="${el.url}" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:${el.shape==='circle'?'50%':'8px'};background:${el.color};color:#fff;text-decoration:none"><i class="${el.icon}" style="font-size:${el.size}px"></i></a>`;
-  else if(T === 'socials') html = `<div class="e-socials">${el.icons.map(ic=>`<a href="#" class="e-social" style="background:${el.color}"><i class="${ic}"></i></a>`).join('')}</div>`;
-  else if(T === 'timeline') html = `<div class="e-timeline">${el.items.map(it=>`<div class="e-timeline-item"><div class="e-timeline-date" style="color:${el.dateColor}">${esc(it.date)}</div><h4 class="e-timeline-title" style="color:${el.titleColor}">${esc(it.title)}</h4><p class="e-timeline-text" style="color:${el.textColor}">${esc(it.text)}</p></div>`).join('')}</div>`;
-  else if(T === 'whatsapp') html = `<a href="${el.href}" target="_blank" class="e-whatsapp" style="background:${el.color}"><i class="fa-brands fa-whatsapp"></i></a>`;
+  else if(T === 'social') html = '<a href="' + el.url + '" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:' + (el.shape==='circle'?'50%':'8px') + ';background:' + el.color + ';color:#fff;text-decoration:none"><i class="' + el.icon + '" style="font-size:' + el.size + 'px"></i></a>';
+  else if(T === 'socials') html = '<div class="e-socials">' + el.icons.map(ic=>'<a href="#" class="e-social" style="background:'+el.color+'"><i class="'+ic+'"></i></a>').join('') + '</div>';
+  else if(T === 'timeline') html = '<div class="e-timeline">' + el.items.map(it=>'<div class="e-timeline-item"><div class="e-timeline-date" style="color:'+el.dateColor+'">'+esc(it.date)+'</div><h4 class="e-timeline-title" style="color:'+el.titleColor+'">'+esc(it.title)+'</h4><p class="e-timeline-text" style="color:'+el.textColor+'">'+esc(it.text)+'</p></div>').join('') + '</div>';
+  else if(T === 'whatsapp') html = '<a href="' + el.href + '" target="_blank" class="e-whatsapp" style="background:' + el.color + '"><i class="fa-brands fa-whatsapp"></i></a>';
   else html = '';
 
   if(!dom.querySelector('[contenteditable="true"]')) dom.innerHTML = html;
@@ -1127,55 +1161,50 @@ function syncDOM(dom, el){
 
 function buildNavbar(el){
   const links = el.navLinks || [];
-  const bg = el.bgColor || '#ffffff';
-  const textColor = el.textColor || '#4b5563';
-  const brandColor = el.brandColor || '#1f2937';
-  let h = `<nav class="e-nav" style="background:${bg};border-bottom:1px solid #e5e7eb">`;
-  h += `<a href="${el.brandHref||'#'}" class="e-nav-logo" style="color:${brandColor}">${esc(el.brand)}</a>`;
-  h += `<ul class="e-nav-links">`;
+  let h = '<nav class="e-nav" style="background:' + (el.bgColor || '#ffffff') + ';border-bottom:1px solid #e5e7eb">';
+  h += '<a href="' + (el.brandHref||'#') + '" class="e-nav-logo" style="color:' + (el.brandColor||'#1f2937') + '">' + esc(el.brand) + '</a>';
+  h += '<ul class="e-nav-links">';
   links.forEach(l => {
-    h += `<li><a href="${l.href||'#'}" target="${l.target||'_self'}" style="color:${textColor}">${esc(l.text)}</a></li>`;
+    h += '<li><a href="' + (l.href||'#') + '" target="' + (l.target||'_self') + '" style="color:' + (el.textColor||'#4b5563') + '">' + esc(l.text) + '</a></li>';
   });
-  h += `</ul></nav>`;
+  h += '</ul></nav>';
   return h;
 }
 
 function buildCard(el){
   const style = el.cardStyle || 'basic';
   const imgH = el.imgHeight || 180;
-  const btnStyle = `background:${el.buttonColor||'#3b82f6'};color:#fff`;
+  const btnStyle = 'background:' + (el.buttonColor||'#3b82f6') + ';color:#fff';
   const cardBg = el.bgColor || '#ffffff';
   const titleColor = el.titleColor || '#1f2937';
   const textColor = el.textColor || '#6b7280';
-  const titleStyle = `color:${titleColor}`;
-  const textStyle = `color:${textColor}`;
-  const bgStyle = `background:${cardBg}`;
-  if(style === 'basic') return `<div class="tcard" style="${bgStyle}">${el.img?`<img src="${el.img}" class="tcard-img" style="height:${imgH}px" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
-  if(style === 'horizontal') return `<div class="tcard tcard-horizontal" style="${bgStyle}">${el.img?`<img src="${el.img}" class="tcard-img" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
-  if(style === 'overlay') return `<div class="tcard tcard-overlay"><img src="${el.img}" class="tcard-overlay-img" draggable="false"><div class="tcard-overlay-body"><h3 class="tcard-overlay-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-overlay-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
-  if(style === 'circle') return `<div class="tcard tcard-circle" style="${bgStyle}">${el.img?`<img src="${el.img}" draggable="false">`:''}<div class="tcard-body"><h3 class="tcard-title" style="${titleStyle}">${esc(el.title)}</h3><p class="tcard-text" style="${textStyle}">${esc(el.text)}</p>${el.buttonText?`<a href="${el.buttonHref||'#'}" class="tcard-btn" style="${btnStyle}">${esc(el.buttonText)}</a>`:''}</div></div>`;
+  const bgStyle = 'background:' + cardBg;
+  if(style === 'basic') return '<div class="tcard" style="' + bgStyle + '">' + (el.img?'<img src="'+el.img+'" class="tcard-img" style="height:'+imgH+'px" draggable="false">':'') + '<div class="tcard-body"><h3 class="tcard-title" style="color:'+titleColor+'">'+esc(el.title)+'</h3><p class="tcard-text" style="color:'+textColor+'">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'') + '</div></div>';
+  if(style === 'horizontal') return '<div class="tcard tcard-horizontal" style="' + bgStyle + '">' + (el.img?'<img src="'+el.img+'" class="tcard-img" draggable="false">':'') + '<div class="tcard-body"><h3 class="tcard-title" style="color:'+titleColor+'">'+esc(el.title)+'</h3><p class="tcard-text" style="color:'+textColor+'">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'') + '</div></div>';
+  if(style === 'overlay') return '<div class="tcard tcard-overlay"><img src="'+el.img+'" class="tcard-overlay-img" draggable="false"><div class="tcard-overlay-body"><h3 class="tcard-overlay-title" style="color:'+titleColor+'">'+esc(el.title)+'</h3><p class="tcard-overlay-text" style="color:'+textColor+'">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'') + '</div></div>';
+  if(style === 'circle') return '<div class="tcard tcard-circle" style="' + bgStyle + '">' + (el.img?'<img src="'+el.img+'" draggable="false">':'') + '<div class="tcard-body"><h3 class="tcard-title" style="color:'+titleColor+'">'+esc(el.title)+'</h3><p class="tcard-text" style="color:'+textColor+'">'+esc(el.text)+'</p>'+(el.buttonText?'<a href="'+(el.buttonHref||'#')+'" class="tcard-btn" style="'+btnStyle+'">'+esc(el.buttonText)+'</a>':'') + '</div></div>';
   return '';
 }
 
 function buildCarousel(el){
   const effect = el.transition || 'fade';
-  let h = `<div class="carousel" data-autoplay="${el.autoplay}" data-interval="${el.interval||3000}" data-transition="${effect}">`;
+  let h = '<div class="carousel" data-autoplay="' + el.autoplay + '" data-interval="' + (el.interval||3000) + '" data-transition="' + effect + '">';
   el.images.forEach((img, i) => {
     let extra = 'transition:all .5s ease;';
-    if(effect === 'fade') extra += `opacity:${i===0?1:0};position:absolute;`;
-    else if(effect === 'slide') extra += `transform:translateX(${i===0?'0%':'100%'});position:absolute;`;
-    h += `<img src="${img}" class="carousel-slide ${i===0?'active':''}" style="object-fit:cover;width:100%;height:100%;${extra}" draggable="false" data-i="${i}">`;
+    if(effect === 'fade') extra += 'opacity:' + (i===0?1:0) + ';position:absolute;';
+    else if(effect === 'slide') extra += 'transform:translateX(' + (i===0?'0%':'100%') + ');position:absolute;';
+    h += '<img src="' + img + '" class="carousel-slide ' + (i===0?'active':'') + '" style="object-fit:cover;width:100%;height:100%;' + extra + '" draggable="false" data-i="' + i + '">';
   });
   if(el.showArrows && el.images.length > 0){
-    const arrowStyle = `background:rgba(0,0,0,0.6);color:${el.arrowColor||'#fff'}`;
-    h += `<button class="carousel-arrow prev" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-left"></i></button><button class="carousel-arrow next" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-right"></i></button>`;
+    const arrowStyle = 'background:rgba(0,0,0,0.6);color:' + (el.arrowColor||'#fff');
+    h += '<button class="carousel-arrow prev" type="button" style="' + arrowStyle + '"><i class="fa-solid fa-chevron-left"></i></button><button class="carousel-arrow next" type="button" style="' + arrowStyle + '"><i class="fa-solid fa-chevron-right"></i></button>';
   }
   if(el.showDots && el.images.length > 0){
-    h += `<div class="carousel-dots">`;
-    el.images.forEach((_, i) => h += `<div class="carousel-dot ${i===0?'active':''}" data-i="${i}" style="background:${i===0?(el.dotColor||'#fff'):'rgba(255,255,255,0.5)'}"></div>`);
-    h += `</div>`;
+    h += '<div class="carousel-dots">';
+    el.images.forEach((_, i) => h += '<div class="carousel-dot ' + (i===0?'active':'') + '" data-i="' + i + '" style="background:' + (i===0?(el.dotColor||'#fff'):'rgba(255,255,255,0.5)') + '"></div>');
+    h += '</div>';
   }
-  h += `</div>`;
+  h += '</div>';
   return h;
 }
 function initCarousel(dom, el){
@@ -1192,7 +1221,7 @@ function initCarousel(dom, el){
     slides.forEach((s, i) => {
       s.classList.remove('active');
       if(effect === 'fade') s.style.opacity = i === idx ? '1' : '0';
-      else if(effect === 'slide'){ s.style.transform = `translateX(${(i-idx)*100}%)`; s.style.opacity = '1'; }
+      else if(effect === 'slide'){ s.style.transform = 'translateX(' + ((i-idx)*100) + '%)'; s.style.opacity = '1'; }
     });
     slides[idx].classList.add('active');
     dots.forEach((d, i) => {
@@ -1212,15 +1241,15 @@ function buildGallery(el){
   const total = el.images.length;
   const perView = el.itemsPerView || 3;
   const gap = el.gap || 8;
-  let h = `<div class="gallery-wrap" style="background:${el.bgColor||'#f3f4f6'}" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||2500}"><div class="gallery-track" style="gap:${gap}px">`;
-  el.images.forEach((img, i) => { h += `<div class="gallery-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView})"><img src="${img}" draggable="false" data-i="${i}"></div>`; });
-  h += `</div>`;
+  let h = '<div class="gallery-wrap" style="background:' + (el.bgColor||'#f3f4f6') + '" data-perview="' + perView + '" data-gap="' + gap + '" data-autoplay="' + el.autoplay + '" data-interval="' + (el.interval||2500) + '"><div class="gallery-track" style="gap:' + gap + 'px">';
+  el.images.forEach((img, i) => { h += '<div class="gallery-item" style="width:calc((100% - ' + (gap*(perView-1)) + 'px)/' + perView + ')"><img src="' + img + '" draggable="false" data-i="' + i + '"></div>'; });
+  h += '</div>';
   if(el.showArrows && total > perView){
-    const arrowStyle = `background:rgba(0,0,0,0.55);color:${el.arrowColor||'#fff'}`;
-    h += `<button class="gallery-arrow prev" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-arrow next" type="button" style="${arrowStyle}"><i class="fa-solid fa-chevron-right"></i></button>`;
+    const arrowStyle = 'background:rgba(0,0,0,0.55);color:' + (el.arrowColor||'#fff');
+    h += '<button class="gallery-arrow prev" type="button" style="' + arrowStyle + '"><i class="fa-solid fa-chevron-left"></i></button><button class="gallery-arrow next" type="button" style="' + arrowStyle + '"><i class="fa-solid fa-chevron-right"></i></button>';
   }
-  if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += `<div class="gallery-dots">`; for(let i = 0; i < pages; i++) h += `<div class="gallery-dot ${i===0?'active':''}" data-page="${i}"></div>`; h += `</div>`; }
-  h += `</div>`;
+  if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += '<div class="gallery-dots">'; for(let i = 0; i < pages; i++) h += '<div class="gallery-dot ' + (i===0?'active':'') + '" data-page="' + i + '"></div>'; h += '</div>'; }
+  h += '</div>';
   return h;
 }
 function initGallery(dom, el){
@@ -1237,7 +1266,7 @@ function initGallery(dom, el){
   const update = () => {
     const itemW = items[0].getBoundingClientRect().width;
     const offset = page * perView * (itemW + gap);
-    track.style.transform = `translateX(-${offset}px)`;
+    track.style.transform = 'translateX(-' + offset + 'px)';
     dots.forEach((d, i) => d.classList.toggle('active', i === page));
   };
   const prev = wrap.querySelector('.gallery-arrow.prev');
@@ -1259,14 +1288,14 @@ function buildCardCarousel(el){
   const cardBg = el.bgColor || '#ffffff';
   const titleColor = el.titleColor || '#1f2937';
   const textColor = el.textColor || '#6b7280';
-  let h = `<div class="cardcar-wrap" data-perview="${perView}" data-gap="${gap}" data-autoplay="${el.autoplay}" data-interval="${el.interval||3000}"><div class="cardcar-track" style="gap:${gap}px">`;
+  let h = '<div class="cardcar-wrap" data-perview="' + perView + '" data-gap="' + gap + '" data-autoplay="' + el.autoplay + '" data-interval="' + (el.interval||3000) + '"><div class="cardcar-track" style="gap:' + gap + 'px">';
   cards.forEach((c, i) => {
-    h += `<div class="cardcar-item" style="width:calc((100% - ${gap*(perView-1)}px)/${perView});background:${cardBg}">${c.img ? `<img src="${c.img}" class="cardcar-img" draggable="false">` : ''}<div class="cardcar-body"><h3 class="cardcar-title" style="color:${titleColor}">${esc(c.title)}</h3><p class="cardcar-text" style="color:${textColor}">${esc(c.text)}</p>${c.buttonText ? `<a href="${c.buttonHref||'#'}" class="cardcar-btn" style="background:${c.buttonColor||'#3b82f6'}">${esc(c.buttonText)}</a>` : ''}</div></div>`;
+    h += '<div class="cardcar-item" style="width:calc((100% - ' + (gap*(perView-1)) + 'px)/' + perView + ');background:' + cardBg + '">' + (c.img ? '<img src="' + c.img + '" class="cardcar-img" draggable="false">' : '') + '<div class="cardcar-body"><h3 class="cardcar-title" style="color:' + titleColor + '">' + esc(c.title) + '</h3><p class="cardcar-text" style="color:' + textColor + '">' + esc(c.text) + '</p>' + (c.buttonText ? '<a href="' + (c.buttonHref||'#') + '" class="cardcar-btn" style="background:' + (c.buttonColor||'#3b82f6') + '">' + esc(c.buttonText) + '</a>' : '') + '</div></div>';
   });
-  h += `</div>`;
-  if(el.showArrows && total > perView){ h += `<button class="cardcar-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="cardcar-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>`; }
-  if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += `<div class="cardcar-dots">`; for(let i = 0; i < pages; i++) h += `<div class="cardcar-dot ${i===0?'active':''}" data-page="${i}"></div>`; h += `</div>`; }
-  h += `</div>`;
+  h += '</div>';
+  if(el.showArrows && total > perView){ h += '<button class="cardcar-arrow prev" type="button"><i class="fa-solid fa-chevron-left"></i></button><button class="cardcar-arrow next" type="button"><i class="fa-solid fa-chevron-right"></i></button>'; }
+  if(el.showDots && total > perView){ const pages = Math.ceil(total / perView); h += '<div class="cardcar-dots">'; for(let i = 0; i < pages; i++) h += '<div class="cardcar-dot ' + (i===0?'active':'') + '" data-page="' + i + '"></div>'; h += '</div>'; }
+  h += '</div>';
   return h;
 }
 function initCardCarousel(dom, el){
@@ -1283,7 +1312,7 @@ function initCardCarousel(dom, el){
   const update = () => {
     const itemW = items[0].getBoundingClientRect().width;
     const offset = page * perView * (itemW + gap);
-    track.style.transform = `translateX(-${offset}px)`;
+    track.style.transform = 'translateX(-' + offset + 'px)';
     dots.forEach((d, i) => d.classList.toggle('active', i === page));
   };
   const prev = wrap.querySelector('.cardcar-arrow.prev');
@@ -1297,11 +1326,18 @@ function initCardCarousel(dom, el){
   if(el.autoplay && el.interval && pages > 1){ if(wrap._timer) clearInterval(wrap._timer); wrap._timer = setInterval(() => go(page+1), el.interval); }
 }
 
-function esc(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
 /* ========== SELECCIÓN ========== */
-function selectElement(id){ state.selectedId = id; switchTab('props'); updateSelBox(); renderProps(); }
-function clearSel(){ state.selectedId = null; selBox.style.display = 'none'; renderProps(); }
+function selectElement(id){
+  state.selectedId = id;
+  switchTab('props');
+  updateSelBox();
+  renderProps();
+}
+function clearSel(){
+  state.selectedId = null;
+  selBox.style.display = 'none';
+  renderProps();
+}
 function updateSelBox(){
   if(!state.selectedId){ selBox.style.display='none'; return; }
   const el = getElements().find(e => e.id === state.selectedId);
@@ -1318,7 +1354,7 @@ function startDrag(e, id){
   if(e.target.classList.contains('rh')) return;
   const el = getElements().find(x => x.id === id);
   if(!el) return;
-  drag = { type:'move', id, sx:e.clientX, sy:e.clientY, ox:el.x, oy:el.y };
+  drag = { type:'move', id:id, sx:e.clientX, sy:e.clientY, ox:el.x, oy:el.y };
   document.addEventListener('mousemove', onDrag);
   document.addEventListener('mouseup', endDrag);
 }
@@ -1336,19 +1372,21 @@ document.querySelectorAll('.rh').forEach(h => {
 function onDrag(e){
   if(!drag) return;
   const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
-  if(drag.type === 'move'){ updateElement(drag.id, { x: drag.ox + dx, y: drag.oy + dy }); }
-  else {
+  if(drag.type === 'move'){
+    updateElement(drag.id, { x: drag.ox + dx, y: drag.oy + dy });
+  } else {
     let x = drag.ox, y = drag.oy, w = drag.ow, h = drag.oh;
     const d = drag.dir;
-    if(d.includes('e')) w = Math.max(30, drag.ow + dx);
-    if(d.includes('s')) h = Math.max(20, drag.oh + dy);
-    if(d.includes('w')){ const diff = Math.min(dx, drag.ow-30); w = drag.ow-diff; x = drag.ox+diff; }
-    if(d.includes('n')){ const diff = Math.min(dy, drag.oh-20); h = drag.oh-diff; y = drag.oy+diff; }
-    updateElement(drag.id, { x, y, width:w, height:h });
+    if(d.indexOf('e') !== -1) w = Math.max(30, drag.ow + dx);
+    if(d.indexOf('s') !== -1) h = Math.max(20, drag.oh + dy);
+    if(d.indexOf('w') !== -1){ const diff = Math.min(dx, drag.ow-30); w = drag.ow-diff; x = drag.ox+diff; }
+    if(d.indexOf('n') !== -1){ const diff = Math.min(dy, drag.oh-20); h = drag.oh-diff; y = drag.oy+diff; }
+    updateElement(drag.id, { x:x, y:y, width:w, height:h });
   }
 }
 function endDrag(){ if(drag) saveHistory(); drag = null; document.removeEventListener('mousemove', onDrag); document.removeEventListener('mouseup', endDrag); }
 
+/* ========== TOOLS ========== */
 function renderTools(filter){
   filter = filter || '';
   const box = document.getElementById('tab-tools');
@@ -1356,13 +1394,13 @@ function renderTools(filter){
   let html = '<input type="text" class="search-box" id="tool-search" placeholder="🔎 Buscar elementos..." value="' + f.replace(/"/g,'&quot;') + '">';
   let found = false;
   LIB.forEach((cat, ci) => {
-    const items = cat.items.filter(it => !f || it.label.toLowerCase().includes(f) || it.type.toLowerCase().includes(f));
+    const items = cat.items.filter(it => !f || it.label.toLowerCase().indexOf(f) !== -1 || it.type.toLowerCase().indexOf(f) !== -1);
     if(!items.length) return;
     found = true;
     html += '<div class="tool-cat"><div class="tool-cat-title"><i class="fa-solid fa-chevron-down arrow"></i>' + cat.cat + '</div><div class="tool-grid">';
     cat.items.forEach((it, ii) => {
-      if(f && !it.label.toLowerCase().includes(f) && !it.type.toLowerCase().includes(f)) return;
-      const iconClass = it.icon.startsWith('fa-brands') ? it.icon : 'fa-solid ' + it.icon;
+      if(f && it.label.toLowerCase().indexOf(f) === -1 && it.type.toLowerCase().indexOf(f) === -1) return;
+      const iconClass = it.icon.indexOf('fa-brands') !== -1 ? it.icon : 'fa-solid ' + it.icon;
       html += '<div class="draggable" draggable="true" data-cat="' + ci + '" data-idx="' + ii + '"><i class="' + iconClass + '"></i><span>' + it.label + '</span></div>';
     });
     html += '</div></div>';
@@ -1398,27 +1436,23 @@ canvasWrap.addEventListener('drop', e => {
   } catch(err){ console.error(err); }
 });
 
-function switchTab(id){ tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === id)); Object.keys(tabContents).forEach(k => tabContents[k].classList.toggle('hidden', k !== id)); }
+function switchTab(id){
+  tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+  Object.keys(tabContents).forEach(k => tabContents[k].classList.toggle('hidden', k !== id));
+}
 tabBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
-/* ========== PÁGINAS CON COPIAR URL (ARREGLADO) ========== */
+/* ========== PÁGINAS ========== */
 function renderPages(){
   const list = document.getElementById('pages-list');
+  if(!list) return;
   list.innerHTML = '';
 
   const page = getPage();
   if(page){
     const slugBox = document.createElement('div');
     slugBox.className = 'page-slug-box';
-    slugBox.innerHTML = `
-      <div class="slug-info">
-        <span style="opacity:.85;font-size:10px;text-transform:uppercase;letter-spacing:.5px">URL de esta página</span>
-        <strong>${esc(page.slug)}.html</strong>
-      </div>
-      <button title="Copiar URL" data-copy-url="${esc(page.slug)}.html">
-        <i class="fa-solid fa-copy"></i> Copiar
-      </button>
-    `;
+    slugBox.innerHTML = '<div class="slug-info"><span style="opacity:.85;font-size:10px;text-transform:uppercase;letter-spacing:.5px">URL de esta página</span><strong>' + esc(page.slug) + '.html</strong></div><button title="Copiar URL"><i class="fa-solid fa-copy"></i> Copiar</button>';
     slugBox.querySelector('button').onclick = () => {
       copyToClipboard(page.slug + '.html', '✅ URL copiada: ' + page.slug + '.html');
     };
@@ -1433,24 +1467,19 @@ function renderPages(){
   state.pages.forEach(p => {
     const item = document.createElement('div');
     item.className = 'page-item' + (p.id === state.currentPageId ? ' active' : '');
-    
+
     const info = document.createElement('div');
     info.style.cssText = 'flex:1;min-width:0';
-    info.innerHTML = `
-      <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.title)}</div>
-      <div style="font-size:11px;font-family:monospace;color:#6b7280;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-        <i class="fa-solid fa-link" style="font-size:9px"></i> ${esc(p.slug)}.html
-      </div>
-    `;
+    info.innerHTML = '<div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(p.title) + '</div><div style="font-size:11px;font-family:monospace;color:#6b7280;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><i class="fa-solid fa-link" style="font-size:9px"></i> ' + esc(p.slug) + '.html</div>';
     info.onclick = () => { state.currentPageId = p.id; clearSel(); renderAll(); renderPages(); applyPageBg(); };
 
     const actions = document.createElement('div');
     actions.className = 'actions';
-    
+
     const copyBtn = document.createElement('button');
     copyBtn.className = 'copy-btn';
     copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
-    copyBtn.title = 'Copiar URL de esta página';
+    copyBtn.title = 'Copiar URL';
     copyBtn.onclick = (e) => {
       e.stopPropagation();
       copyToClipboard(p.slug + '.html', '✅ URL copiada: ' + p.slug + '.html');
@@ -1496,8 +1525,13 @@ document.getElementById('btn-add-page').onclick = () => {
   const n = prompt('Nombre de la nueva página:', 'Nueva Página');
   if(!n || !n.trim()) return;
   const id = 'p_' + Math.random().toString(36).substr(2,6);
-  state.pages.push({ id, title:n.trim(), slug:slugify(n.trim()), bgColor:'#ffffff', elements:[] });
-  state.currentPageId = id; clearSel(); saveHistory(); renderAll(); renderPages(); applyPageBg();
+  state.pages.push({ id:id, title:n.trim(), slug:slugify(n.trim()), bgColor:'#ffffff', elements:[] });
+  state.currentPageId = id;
+  clearSel();
+  saveHistory();
+  renderAll();
+  renderPages();
+  applyPageBg();
 };
 
 const upd = (k, v) => updateElement(state.selectedId, { [k]: v });
@@ -1505,22 +1539,18 @@ const upd = (k, v) => updateElement(state.selectedId, { [k]: v });
 function buildPageUrlsList(){
   const container = document.createElement('div');
   container.className = 'page-url-list';
-  
   const label = document.createElement('label');
   label.className = 'cl';
   label.style.marginBottom = '8px';
   label.innerHTML = '🔗 URLs de páginas (clic para copiar)';
   container.appendChild(label);
-
   state.pages.forEach(p => {
     const item = document.createElement('div');
     item.className = 'page-url-item';
-    
     const urlText = document.createElement('span');
     urlText.className = 'url-text';
     urlText.textContent = p.slug + '.html';
     urlText.title = p.slug + '.html';
-    
     const copyBtn = document.createElement('button');
     copyBtn.className = 'copy-url-btn';
     copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
@@ -1534,12 +1564,10 @@ function buildPageUrlsList(){
         copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
       }, 1500);
     };
-    
     item.appendChild(urlText);
     item.appendChild(copyBtn);
     container.appendChild(item);
   });
-
   return container;
 }
 
@@ -1547,7 +1575,6 @@ function buildBorderControl(el){
   const container = document.createElement('div');
   container.className = 'cg';
   container.innerHTML = '<label class="cl">🎨 Borde</label>';
-
   const row1 = document.createElement('div');
   row1.style.cssText = 'display:flex;gap:8px;margin-bottom:8px';
   const styleSelect = document.createElement('select');
@@ -1568,26 +1595,23 @@ function buildBorderControl(el){
   widthInput.value = el.borderWidth || 0; widthInput.placeholder = 'px';
   row1.appendChild(styleSelect); row1.appendChild(widthInput);
   container.appendChild(row1);
-
   const row2 = document.createElement('div');
   row2.style.cssText = 'display:flex;gap:8px;align-items:center';
   row2.innerHTML = '<label style="font-size:11px;color:#6b7280;font-weight:600;white-space:nowrap">Color:</label>';
   const colorPicker = document.createElement('input'); colorPicker.type = 'color';
-  colorPicker.value = (el.borderColor && el.borderColor.startsWith('#')) ? el.borderColor.substring(0,7) : '#e5e7eb';
+  colorPicker.value = (el.borderColor && el.borderColor.charAt(0) === '#') ? el.borderColor.substring(0,7) : '#e5e7eb';
   colorPicker.style.cssText = 'width:36px;height:32px;padding:0;border:1px solid #e5e7eb;border-radius:6px;cursor:pointer';
   const colorText = document.createElement('input'); colorText.type = 'text'; colorText.className = 'ci';
   colorText.value = el.borderColor || '#e5e7eb'; colorText.style.flex = '1';
   colorPicker.oninput = e => { colorText.value = e.target.value; updateElement(state.selectedId, { borderColor: e.target.value }); updateBorderPreview(); };
   colorPicker.onchange = () => saveHistory();
-  colorText.onchange = e => { colorPicker.value = e.target.value.startsWith('#') ? e.target.value : '#e5e7eb'; updateElement(state.selectedId, { borderColor: e.target.value }); updateBorderPreview(); saveHistory(); };
+  colorText.onchange = e => { colorPicker.value = e.target.value.charAt(0) === '#' ? e.target.value : '#e5e7eb'; updateElement(state.selectedId, { borderColor: e.target.value }); updateBorderPreview(); saveHistory(); };
   row2.appendChild(colorPicker); row2.appendChild(colorText);
   container.appendChild(row2);
-
   const preview = document.createElement('div');
   preview.className = 'border-preview';
   preview.textContent = 'Vista previa';
   container.appendChild(preview);
-
   const clearBtn = document.createElement('button');
   clearBtn.className = 'btn-s';
   clearBtn.style.cssText = 'width:100%;margin-top:6px;font-size:12px;padding:6px;background:#fef2f2;color:#dc2626';
@@ -1598,7 +1622,6 @@ function buildBorderControl(el){
     updateBorderPreview(); saveHistory();
   };
   container.appendChild(clearBtn);
-
   function updateBorderPreview(){
     const st = styleSelect.value;
     const w = parseInt(widthInput.value) || 0;
@@ -1613,6 +1636,7 @@ function buildBorderControl(el){
   return container;
 }
 
+/* ========== PROPIEDADES ========== */
 function renderProps(){
   if(!state.selectedId){ noSel.classList.remove('hidden'); propsPanel.classList.add('hidden'); return; }
   const el = getElements().find(e => e.id === state.selectedId);
@@ -1773,21 +1797,13 @@ function renderProps(){
     (el.cards || []).forEach((c, i) => {
       const item = document.createElement('div');
       item.style.cssText = 'border:1px solid #e5e7eb;border-radius:8px;padding:8px;margin-bottom:8px;background:#f9fafb';
-      item.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <strong style="font-size:11px;color:#6b7280">TARJETA ${i+1}</strong>
-          <button class="btn-s" style="padding:2px 6px;background:#fef2f2;color:#dc2626;font-size:10px;border-radius:4px;border:none;cursor:pointer" data-del="${i}"><i class="fa-solid fa-trash"></i></button>
-        </div>
-        <input type="text" class="ci" placeholder="URL imagen" value="${esc(c.img||'')}" data-i="${i}" data-k="img" style="margin-bottom:4px;padding:5px;font-size:12px">
-        <input type="text" class="ci" placeholder="Título" value="${esc(c.title||'')}" data-i="${i}" data-k="title" style="margin-bottom:4px;padding:5px;font-size:12px">
-        <textarea class="ci" placeholder="Descripción" data-i="${i}" data-k="text" rows="2" style="margin-bottom:4px;padding:5px;font-size:12px">${esc(c.text||'')}</textarea>
-        <input type="text" class="ci" placeholder="Texto botón" value="${esc(c.buttonText||'')}" data-i="${i}" data-k="buttonText" style="margin-bottom:4px;padding:5px;font-size:12px">
-        <input type="text" class="ci" placeholder="URL botón" value="${esc(c.buttonHref||'')}" data-i="${i}" data-k="buttonHref" style="margin-bottom:4px;padding:5px;font-size:12px">
-        <div style="display:flex;gap:6px;align-items:center">
-          <label style="font-size:10px;color:#6b7280">Color botón:</label>
-          <input type="color" value="${c.buttonColor||'#3b82f6'}" data-i="${i}" data-k="buttonColor" style="width:36px;height:24px;border:none;border-radius:4px;cursor:pointer">
-        </div>
-      `;
+      item.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><strong style="font-size:11px;color:#6b7280">TARJETA ' + (i+1) + '</strong><button class="btn-s" style="padding:2px 6px;background:#fef2f2;color:#dc2626;font-size:10px;border-radius:4px;border:none;cursor:pointer" data-del="' + i + '"><i class="fa-solid fa-trash"></i></button></div>' +
+        '<input type="text" class="ci" placeholder="URL imagen" value="' + esc(c.img||'') + '" data-i="' + i + '" data-k="img" style="margin-bottom:4px;padding:5px;font-size:12px">' +
+        '<input type="text" class="ci" placeholder="Título" value="' + esc(c.title||'') + '" data-i="' + i + '" data-k="title" style="margin-bottom:4px;padding:5px;font-size:12px">' +
+        '<textarea class="ci" placeholder="Descripción" data-i="' + i + '" data-k="text" rows="2" style="margin-bottom:4px;padding:5px;font-size:12px">' + esc(c.text||'') + '</textarea>' +
+        '<input type="text" class="ci" placeholder="Texto botón" value="' + esc(c.buttonText||'') + '" data-i="' + i + '" data-k="buttonText" style="margin-bottom:4px;padding:5px;font-size:12px">' +
+        '<input type="text" class="ci" placeholder="URL botón" value="' + esc(c.buttonHref||'') + '" data-i="' + i + '" data-k="buttonHref" style="margin-bottom:4px;padding:5px;font-size:12px">' +
+        '<div style="display:flex;gap:6px;align-items:center"><label style="font-size:10px;color:#6b7280">Color botón:</label><input type="color" value="' + (c.buttonColor||'#3b82f6') + '" data-i="' + i + '" data-k="buttonColor" style="width:36px;height:24px;border:none;border-radius:4px;cursor:pointer"></div>';
       cardsBox.appendChild(item);
     });
     const addCard = document.createElement('button');
@@ -1812,20 +1828,9 @@ function renderProps(){
     (el.navLinks || []).forEach((link, i) => {
       const row = document.createElement('div');
       row.className = 'nav-link-edit';
-      row.innerHTML = `
-        <label>Texto ${i+1}</label>
-        <div class="nav-row"><input type="text" data-i="${i}" data-k="text" value="${esc(link.text)}" placeholder="Ej: Inicio"></div>
-        <label>URL destino</label>
-        <div class="nav-row"><input type="text" data-i="${i}" data-k="href" value="${esc(link.href)}" placeholder="#seccion"></div>
-        <label>¿Abrir en?</label>
-        <div class="nav-row">
-          <select data-i="${i}" data-k="target" style="flex:1;padding:5px 8px;font-size:12px;border:1px solid #d1d5db;border-radius:4px">
-            <option value="_self"${link.target==='_self'?' selected':''}>Misma pestaña</option>
-            <option value="_blank"${link.target==='_blank'?' selected':''}>Nueva pestaña</option>
-          </select>
-          <button class="del-btn" data-del="${i}"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      `;
+      row.innerHTML = '<label>Texto ' + (i+1) + '</label><div class="nav-row"><input type="text" data-i="' + i + '" data-k="text" value="' + esc(link.text) + '" placeholder="Ej: Inicio"></div>' +
+        '<label>URL destino</label><div class="nav-row"><input type="text" data-i="' + i + '" data-k="href" value="' + esc(link.href) + '" placeholder="#seccion"></div>' +
+        '<label>¿Abrir en?</label><div class="nav-row"><select data-i="' + i + '" data-k="target" style="flex:1;padding:5px 8px;font-size:12px;border:1px solid #d1d5db;border-radius:4px"><option value="_self"' + (link.target==='_self'?' selected':'') + '>Misma pestaña</option><option value="_blank"' + (link.target==='_blank'?' selected':'') + '>Nueva pestaña</option></select><button class="del-btn" data-del="' + i + '"><i class="fa-solid fa-trash"></i></button></div>';
       navBox.appendChild(row);
     });
     const addBtn = document.createElement('button');
@@ -2069,12 +2074,12 @@ function colInp(label, value, onChange){
   const w = document.createElement('div'); w.className = 'cg'; w.style.flex = '1';
   w.innerHTML = '<label class="cl">' + label + '</label>';
   const flex = document.createElement('div'); flex.style.cssText = 'display:flex;gap:8px;align-items:center';
-  const cp = document.createElement('input'); cp.type = 'color'; cp.value = safe.startsWith('#') ? safe.substring(0,7) : '#ffffff';
+  const cp = document.createElement('input'); cp.type = 'color'; cp.value = safe.charAt(0) === '#' ? safe.substring(0,7) : '#ffffff';
   cp.style.cssText = 'width:28px;height:28px;padding:0;border:none;border-radius:4px;cursor:pointer';
   const ti = document.createElement('input'); ti.type = 'text'; ti.value = safe; ti.className = 'ci'; ti.style.flex = '1';
   cp.oninput = e => { ti.value = e.target.value; onChange(e.target.value); };
   cp.onchange = () => saveHistory();
-  ti.onchange = e => { cp.value = e.target.value.startsWith('#') ? e.target.value : '#ffffff'; onChange(e.target.value); saveHistory(); };
+  ti.onchange = e => { cp.value = e.target.value.charAt(0) === '#' ? e.target.value : '#ffffff'; onChange(e.target.value); saveHistory(); };
   flex.appendChild(cp); flex.appendChild(ti); w.appendChild(flex); return w;
 }
 function sel(label, value, options, onChange){
@@ -2104,8 +2109,10 @@ document.querySelectorAll('.vp-btn').forEach(btn => {
   };
 });
 
+/* ========== EXPORTAR ========== */
 document.getElementById('btn-export').onclick = () => {
   const page = getPage();
+  if(!page) return;
   const pageBg = page.bgColor || '#ffffff';
   const isGrad = isGradient(pageBg);
   const editorCSS = document.querySelector('style').innerHTML;
@@ -2113,94 +2120,24 @@ document.getElementById('btn-export').onclick = () => {
   let elementsHTML = '';
   page.elements.forEach(el => {
     const border = buildBorder(el);
-    const bgCSS = isGradient(el.bgColor) ? `background:${el.bgColor};` : `background:${(el.bgColor && el.type !== 'code') ? el.bgColor : 'transparent'};`;
-    const baseStyle = `position:absolute;left:${el.x}px;top:${el.y}px;width:${typeof el.width==='number'?el.width+'px':el.width};height:${typeof el.height==='number'?el.height+'px':el.height};z-index:${el.zIndex};opacity:${el.opacity};border-radius:${el.borderRadius||0}px;box-shadow:${el.boxShadow||'none'};border:${border};${bgCSS}box-sizing:border-box;`;
+    const bgCSS = isGradient(el.bgColor) ? 'background:' + el.bgColor + ';' : 'background:' + ((el.bgColor && el.type !== 'code') ? el.bgColor : 'transparent') + ';';
+    const baseStyle = 'position:absolute;left:' + el.x + 'px;top:' + el.y + 'px;width:' + (typeof el.width==='number'?el.width+'px':el.width) + ';height:' + (typeof el.height==='number'?el.height+'px':el.height) + ';z-index:' + el.zIndex + ';opacity:' + el.opacity + ';border-radius:' + (el.borderRadius||0) + 'px;box-shadow:' + el.boxShadow + ';border:' + border + ';' + bgCSS + 'box-sizing:border-box;';
     const dom = document.getElementById(el.id);
     let inner = '';
     if(dom){
       const clone = dom.cloneNode(true);
       inner = clone.innerHTML;
     }
-    elementsHTML += `<div class="elemento" style="${baseStyle}">${inner}</div>\n`;
+    elementsHTML += '<div class="elemento" style="' + baseStyle + '">' + inner + '</div>\n';
   });
 
-  const scriptsHTML = `<script>
-document.querySelectorAll('.carousel').forEach(function(c){
-  var i = 0;
-  var slides = c.querySelectorAll('.carousel-slide');
-  var dots = c.querySelectorAll('.carousel-dot');
-  if(!slides.length) return;
-  function update(n){
-    i = (n + slides.length) % slides.length;
-    slides.forEach(function(s,x){ s.classList.remove('active'); s.style.opacity = x === i ? '1' : '0'; });
-    slides[i].classList.add('active');
-    dots.forEach(function(d,x){ d.classList.toggle('active', x === i); });
-  }
-  var p = c.querySelector('.prev'), nx = c.querySelector('.next');
-  if(p) p.onclick = function(e){ e.stopPropagation(); update(i-1); };
-  if(nx) nx.onclick = function(e){ e.stopPropagation(); update(i+1); };
-  dots.forEach(function(d,x){ d.onclick = function(e){ e.stopPropagation(); update(x); }; });
-  if(c.getAttribute('data-autoplay') === 'true'){ setInterval(function(){ update(i+1); }, parseInt(c.getAttribute('data-interval') || '3000')); }
-});
-document.querySelectorAll('.gallery-wrap').forEach(function(w){
-  var track = w.querySelector('.gallery-track');
-  var items = track ? track.querySelectorAll('.gallery-item') : [];
-  var dots = w.querySelectorAll('.gallery-dot');
-  if(!items.length) return;
-  var pv = parseInt(w.getAttribute('data-perview') || '3');
-  var gap = parseInt(w.getAttribute('data-gap') || '8');
-  var pages = Math.max(1, Math.ceil(items.length / pv));
-  var pg = 0;
-  function update(){ var iw = items[0].getBoundingClientRect().width; track.style.transform = 'translateX(-' + (pg * pv * (iw + gap)) + 'px)'; dots.forEach(function(d,x){ d.classList.toggle('active', x === pg); }); }
-  var p = w.querySelector('.gallery-arrow.prev'), nx = w.querySelector('.gallery-arrow.next');
-  function go(n){ pg = (n + pages) % pages; update(); }
-  if(p) p.onclick = function(e){ e.stopPropagation(); go(pg-1); };
-  if(nx) nx.onclick = function(e){ e.stopPropagation(); go(pg+1); };
-  dots.forEach(function(d,x){ d.onclick = function(e){ e.stopPropagation(); pg = x; update(); }; });
-  window.addEventListener('resize', update); setTimeout(update, 50);
-  if(w.getAttribute('data-autoplay') === 'true' && pages > 1){ setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute('data-interval') || '2500')); }
-});
-document.querySelectorAll('.cardcar-wrap').forEach(function(w){
-  var track = w.querySelector('.cardcar-track');
-  var items = track ? track.querySelectorAll('.cardcar-item') : [];
-  var dots = w.querySelectorAll('.cardcar-dot');
-  if(!items.length) return;
-  var pv = parseInt(w.getAttribute('data-perview') || '3');
-  var gap = parseInt(w.getAttribute('data-gap') || '16');
-  var pages = Math.max(1, Math.ceil(items.length / pv));
-  var pg = 0;
-  function update(){ var iw = items[0].getBoundingClientRect().width; track.style.transform = 'translateX(-' + (pg * pv * (iw + gap)) + 'px)'; dots.forEach(function(d,x){ d.classList.toggle('active', x === pg); }); }
-  var p = w.querySelector('.cardcar-arrow.prev'), nx = w.querySelector('.cardcar-arrow.next');
-  function go(n){ pg = (n + pages) % pages; update(); }
-  if(p) p.onclick = function(e){ e.stopPropagation(); go(pg-1); };
-  if(nx) nx.onclick = function(e){ e.stopPropagation(); go(pg+1); };
-  dots.forEach(function(d,x){ d.onclick = function(e){ e.stopPropagation(); pg = x; update(); }; });
-  window.addEventListener('resize', update); setTimeout(update, 50);
-  if(w.getAttribute('data-autoplay') === 'true' && pages > 1){ setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute('data-interval') || '3000')); }
-});
-</scr` + `ipt>`;
+  const scriptsHTML = '<scr' + 'ipt>\n' +
+    'document.querySelectorAll(".carousel").forEach(function(c){ var i=0; var slides=c.querySelectorAll(".carousel-slide"); var dots=c.querySelectorAll(".carousel-dot"); if(!slides.length) return; function update(n){ i=(n+slides.length)%slides.length; slides.forEach(function(s,x){ s.classList.remove("active"); s.style.opacity=x===i?"1":"0"; }); slides[i].classList.add("active"); dots.forEach(function(d,x){ d.classList.toggle("active", x===i); }); } var p=c.querySelector(".prev"), nx=c.querySelector(".next"); if(p) p.onclick=function(e){ e.stopPropagation(); update(i-1); }; if(nx) nx.onclick=function(e){ e.stopPropagation(); update(i+1); }; dots.forEach(function(d,x){ d.onclick=function(e){ e.stopPropagation(); update(x); }; }); if(c.getAttribute("data-autoplay")==="true"){ setInterval(function(){ update(i+1); }, parseInt(c.getAttribute("data-interval")||"3000")); } });\n' +
+    'document.querySelectorAll(".gallery-wrap").forEach(function(w){ var track=w.querySelector(".gallery-track"); var items=track?track.querySelectorAll(".gallery-item"):[]; var dots=w.querySelectorAll(".gallery-dot"); if(!items.length) return; var pv=parseInt(w.getAttribute("data-perview")||"3"); var gap=parseInt(w.getAttribute("data-gap")||"8"); var pages=Math.max(1,Math.ceil(items.length/pv)); var pg=0; function update(){ var iw=items[0].getBoundingClientRect().width; track.style.transform="translateX(-"+(pg*pv*(iw+gap))+"px)"; dots.forEach(function(d,x){ d.classList.toggle("active", x===pg); }); } var p=w.querySelector(".gallery-arrow.prev"), nx=w.querySelector(".gallery-arrow.next"); function go(n){ pg=(n+pages)%pages; update(); } if(p) p.onclick=function(e){ e.stopPropagation(); go(pg-1); }; if(nx) nx.onclick=function(e){ e.stopPropagation(); go(pg+1); }; dots.forEach(function(d,x){ d.onclick=function(e){ e.stopPropagation(); pg=x; update(); }; }); window.addEventListener("resize", update); setTimeout(update, 50); if(w.getAttribute("data-autoplay")==="true" && pages>1){ setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute("data-interval")||"2500")); } });\n' +
+    'document.querySelectorAll(".cardcar-wrap").forEach(function(w){ var track=w.querySelector(".cardcar-track"); var items=track?track.querySelectorAll(".cardcar-item"):[]; var dots=w.querySelectorAll(".cardcar-dot"); if(!items.length) return; var pv=parseInt(w.getAttribute("data-perview")||"3"); var gap=parseInt(w.getAttribute("data-gap")||"16"); var pages=Math.max(1,Math.ceil(items.length/pv)); var pg=0; function update(){ var iw=items[0].getBoundingClientRect().width; track.style.transform="translateX(-"+(pg*pv*(iw+gap))+"px)"; dots.forEach(function(d,x){ d.classList.toggle("active", x===pg); }); } var p=w.querySelector(".cardcar-arrow.prev"), nx=w.querySelector(".cardcar-arrow.next"); function go(n){ pg=(n+pages)%pages; update(); } if(p) p.onclick=function(e){ e.stopPropagation(); go(pg-1); }; if(nx) nx.onclick=function(e){ e.stopPropagation(); go(pg+1); }; dots.forEach(function(d,x){ d.onclick=function(e){ e.stopPropagation(); pg=x; update(); }; }); window.addEventListener("resize", update); setTimeout(update, 50); if(w.getAttribute("data-autoplay")==="true" && pages>1){ setInterval(function(){ go(pg+1); }, parseInt(w.getAttribute("data-interval")||"3000")); } });\n' +
+    '</scr' + 'ipt>';
 
-  const finalHTML = `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(page.title)}</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#1f2937;background:${isGrad ? '#f3f4f6' : pageBg};}
-.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh;background:${pageBg};}
-.elemento{position:absolute;box-sizing:border-box;word-break:break-word}
-${editorCSS}
-</style>
-</head>
-<body>
-<div class="page-container">
-${elementsHTML}
-</div>
-${scriptsHTML}
-</body>
-</html>`;
+  const finalHTML = '<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(page.title) + '</title>\n<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">\n<style>\nbody{margin:0;font-family:\'Inter\',system-ui,sans-serif;color:#1f2937;background:' + (isGrad ? '#f3f4f6' : pageBg) + ';}\n.page-container{position:relative;width:100%;max-width:1200px;margin:0 auto;min-height:100vh;background:' + pageBg + ';}\n.elemento{position:absolute;box-sizing:border-box;word-break:break-word}\n' + editorCSS + '\n</style>\n</head>\n<body>\n<div class="page-container">\n' + elementsHTML + '\n</div>\n' + scriptsHTML + '\n</body>\n</html>';
 
   const blob = new Blob([finalHTML], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -2215,6 +2152,7 @@ ${scriptsHTML}
   setTimeout(() => alert('✅ Exportado: ' + (page.slug || 'index') + '.html'), 200);
 };
 
+/* ========== INIT ========== */
 renderTools();
 renderPages();
 applyPageBg();
